@@ -198,3 +198,30 @@
   transform: translateY(-8px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
+
+/* Atom particle animations */
+@keyframes spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: translate(-50%, -50%) rotate(60deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-300deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 30s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 25s linear infinite;
+}
