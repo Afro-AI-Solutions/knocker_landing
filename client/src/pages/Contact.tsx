@@ -63,22 +63,41 @@ export default function Contact() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Header */}
-            <section className="py-20 bg-muted/30">
-                <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Get in Touch</h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/10">
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+                <div className="container mx-auto px-4 text-center relative z-10">
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
+                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                    >
+                        Get in Touch
+                    </motion.h1>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+                    >
                         Have a project in mind? We'd love to hear from you. Fill out the form below or reach out directly.
-                    </p>
+                    </motion.p>
                 </div>
             </section>
 
-            <section className="py-20">
-                <div className="container mx-auto px-4">
+            <section className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+                <div className="container mx-auto px-4 relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                         {/* Contact Info */}
                         <div className="lg:col-span-1 space-y-6">
-                            <Card3D max={8} scale={1.02}>
-                                <Card className="shadow-3d-md hover:shadow-3d-lg transition-shadow">
+                            <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <Card className="border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/20">
                                     <CardHeader>
                                         <CardTitle>Contact Information</CardTitle>
                                         <CardDescription>Reach out to us directly.</CardDescription>
@@ -114,13 +133,15 @@ export default function Contact() {
                                         </div>
                                     </CardContent>
                                 </Card>
-                            </Card3D>
+                            </motion.div>
 
                             <motion.div
+                                initial={{ opacity: 0, x: -30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
                                 whileHover={{ scale: 1.02, y: -5 }}
-                                transition={{ duration: 0.2 }}
                             >
-                                <Card className="bg-primary text-primary-foreground border-none shadow-3d-colored">
+                                <Card className="bg-primary text-primary-foreground border-none shadow-lg hover:shadow-xl transition-all duration-300">
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2">
                                             <MessageSquare className="h-5 w-5" />
@@ -138,8 +159,13 @@ export default function Contact() {
                         </div>
 
                         {/* Contact Form */}
-                        <div className="lg:col-span-2">
-                            <Card>
+                        <motion.div 
+                            className="lg:col-span-2"
+                            initial={{ opacity: 0, x: 30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <Card className="border-2 border-border/50 hover:border-primary/50 transition-all duration-500">
                                 <CardHeader>
                                     <CardTitle>Send us a Message</CardTitle>
                                     <CardDescription>
@@ -214,18 +240,24 @@ export default function Contact() {
                                     </Form>
                                 </CardContent>
                             </Card>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* FAQ Section */}
-            <section className="py-20 bg-muted/30">
-                <div className="container mx-auto px-4 max-w-4xl">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Frequently Asked Questions</h2>
-                        <p className="text-muted-foreground">Common questions about working with us.</p>
-                    </div>
+            <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+                <div className="container mx-auto px-4 max-w-4xl relative z-10">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-12"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Frequently Asked Questions</h2>
+                        <p className="text-muted-foreground text-lg">Common questions about working with us.</p>
+                    </motion.div>
 
                     <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="item-1">

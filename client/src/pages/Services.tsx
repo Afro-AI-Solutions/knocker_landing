@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, Code2, Database, Globe, Cpu, Layers, Smartphone, BarChart, ArrowRight, Sparkles } from "lucide-react";
+import { Check, Code2, Database, Globe, Cpu, Layers, Smartphone, BarChart, ArrowRight, Sparkles, Heart, DollarSign, ShoppingCart, GraduationCap, Building2, Truck } from "lucide-react";
 import { Link } from "wouter";
 import { Card3D } from "@/components/Card3D";
 import { motion } from "framer-motion";
@@ -232,7 +232,7 @@ export default function Services() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-3xl md:text-4xl font-bold mb-4 text-primary-foreground"
+                        className="text-3xl md:text-5xl font-bold mb-6 text-primary-foreground"
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
                         Industries We Serve
@@ -242,28 +242,36 @@ export default function Services() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        className="text-primary-foreground/80 mb-12 max-w-2xl mx-auto"
+                        className="text-primary-foreground/80 mb-16 max-w-2xl mx-auto text-lg leading-relaxed"
                     >
                         Delivering excellence across diverse sectors with specialized expertise
                     </motion.p>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                        {industries.map((industry, i) => (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                        {[
+                            { name: "Healthcare", icon: <Heart className="h-10 w-10" /> },
+                            { name: "Finance & Fintech", icon: <DollarSign className="h-10 w-10" /> },
+                            { name: "E-commerce", icon: <ShoppingCart className="h-10 w-10" /> },
+                            { name: "Education", icon: <GraduationCap className="h-10 w-10" /> },
+                            { name: "Real Estate", icon: <Building2 className="h-10 w-10" /> },
+                            { name: "Logistics", icon: <Truck className="h-10 w-10" /> }
+                        ].map((industry, i) => (
                             <motion.div
                                 key={i}
-                                className="group relative p-8 rounded-2xl bg-primary-foreground/10 backdrop-blur-md hover:bg-primary-foreground/20 transition-all duration-300 border border-primary-foreground/20 hover:border-primary-foreground/40"
+                                className="group relative p-8 rounded-2xl bg-primary-foreground/10 backdrop-blur-md hover:bg-primary-foreground/20 transition-all duration-500 border-2 border-primary-foreground/20 hover:border-primary-foreground/60 cursor-pointer"
                                 whileHover={{
-                                    y: -8,
+                                    y: -12,
                                     scale: 1.05,
-                                    transition: { duration: 0.2 }
+                                    transition: { duration: 0.3 }
                                 }}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: i * 0.05 }}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1, duration: 0.6 }}
                                 viewport={{ once: true }}
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
                                 <div className="relative z-10">
-                                    <div className="font-semibold text-lg text-primary-foreground">{industry}</div>
+                                    <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-white flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 shadow-lg">{industry.icon}</div>
+                                    <div className="font-bold text-lg text-primary-foreground group-hover:text-white transition-colors duration-300">{industry.name}</div>
                                 </div>
                             </motion.div>
                         ))}
@@ -294,7 +302,7 @@ export default function Services() {
                     </motion.p>
 
                     <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-                        {["React", "TypeScript", "Node.js", "Python", "PostgreSQL", "AWS", "Docker", "Next.js", "Tailwind CSS", "TensorFlow"].map((tech, i) => (
+                        {["React", "TypeScript", "Node.js", "Python", "Laravel", "PostgreSQL", "AWS", "Docker", "Next.js", "Tailwind CSS", "TensorFlow"].map((tech, i) => (
                             <motion.div
                                 key={i}
                                 initial={{ opacity: 0, scale: 0.8 }}

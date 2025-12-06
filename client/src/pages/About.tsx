@@ -9,21 +9,41 @@ export default function About() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero */}
-            <section className="py-20 md:py-32 bg-muted/30">
-                <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6" style={{ fontFamily: 'Orbitron, sans-serif' }}>About Knocker AI</h1>
-                    <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/10">
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+                <div className="container mx-auto px-4 text-center relative z-10">
+                    <motion.h1 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
+                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                    >
+                        About Knocker AI
+                    </motion.h1>
+                    <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+                    >
                         We are a team of passionate innovators, developers, and strategists dedicated to redefining the digital landscape through Artificial Intelligence and modern web technologies.
-                    </p>
+                    </motion.p>
                 </div>
             </section>
 
             {/* Story Section */}
-            <section className="py-20">
+            <section className="py-24 bg-gradient-to-b from-background to-muted/20">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="prose prose-lg dark:prose-invert">
-                            <h2 className="text-3xl font-bold mb-6" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Story</h2>
+                        <motion.div 
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+                            className="prose prose-lg dark:prose-invert"
+                        >
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Story</h2>
                             <p className="text-muted-foreground mb-4">
                                 Founded in 2023, Knocker AI began with a simple idea: that advanced technology shouldn't be accessible only to tech giants. We saw a gap in the market where small to medium-sized businesses were struggling to adopt AI and modern web standards due to complexity and cost.
                             </p>
@@ -33,45 +53,70 @@ export default function About() {
                             <p className="text-muted-foreground">
                                 Today, we continue to push the boundaries of what's possible, constantly exploring new technologies like Generative AI, Edge Computing, and Web3 to give our clients a competitive edge.
                             </p>
-                        </div>
-                        <div className="bg-muted rounded-2xl h-[400px] flex items-center justify-center relative overflow-hidden">
+                        </motion.div>
+                        <motion.div 
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+                            className="bg-muted rounded-2xl h-[400px] flex items-center justify-center relative overflow-hidden border-2 border-primary/20 hover:border-primary/40 transition-all duration-500"
+                        >
                             {/* Abstract visual representation */}
                             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-purple-500/20" />
                             <div className="text-9xl font-bold text-primary/10">AI</div>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* Mission & Vision */}
-            <section className="py-20 bg-primary text-primary-foreground">
-                <div className="container mx-auto px-4">
+            <section className="py-24 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground relative overflow-hidden">
+                <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+                <div className="container mx-auto px-4 relative z-10">
                     <div className="grid md:grid-cols-2 gap-12">
-                        <div className="bg-primary-foreground/10 p-8 rounded-2xl backdrop-blur-sm">
+                        <motion.div 
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                            viewport={{ once: true }}
+                            className="bg-primary-foreground/10 p-8 rounded-2xl backdrop-blur-sm border border-primary-foreground/20 hover:border-primary-foreground/40 transition-all duration-500"
+                        >
                             <Target className="h-12 w-12 mb-6 text-blue-300" />
-                            <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Mission</h2>
+                            <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Mission</h2>
                             <p className="text-primary-foreground/80 leading-relaxed">
                                 To democratize access to advanced technology, enabling startups and enterprises alike to leverage AI and modern web frameworks for sustainable growth. We believe in building tools that empower humans, not replace them.
                             </p>
-                        </div>
-                        <div className="bg-primary-foreground/10 p-8 rounded-2xl backdrop-blur-sm">
+                        </motion.div>
+                        <motion.div 
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            viewport={{ once: true }}
+                            className="bg-primary-foreground/10 p-8 rounded-2xl backdrop-blur-sm border border-primary-foreground/20 hover:border-primary-foreground/40 transition-all duration-500"
+                        >
                             <Lightbulb className="h-12 w-12 mb-6 text-yellow-300" />
-                            <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Vision</h2>
+                            <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Vision</h2>
                             <p className="text-primary-foreground/80 leading-relaxed">
                                 A world where technology serves as a seamless catalyst for human creativity and business efficiency. We envision a future where every business, regardless of size, has the digital infrastructure to compete on a global scale.
                             </p>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* Values */}
-            <section className="py-20">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Core Values</h2>
-                        <p className="text-muted-foreground">The principles that guide every decision we make.</p>
-                    </div>
+            <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+                <div className="container mx-auto px-4 relative z-10">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Core Values</h2>
+                        <p className="text-muted-foreground text-lg">The principles that guide every decision we make.</p>
+                    </motion.div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {[
                             { icon: <Heart className="h-8 w-8 text-red-500" />, title: "Passion", desc: "We love what we do, and it shows in our work." },
@@ -81,20 +126,21 @@ export default function About() {
                         ].map((value, i) => (
                             <motion.div
                                 key={i}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.1 }}
+                                transition={{ delay: i * 0.1, duration: 0.6 }}
                                 viewport={{ once: true }}
+                                whileHover={{ y: -10, scale: 1.02 }}
+                                className="group"
                             >
-                                <Card3D max={12} scale={1.04}>
-                                    <Card className="text-center hover:shadow-md transition-shadow shadow-3d-sm hover:shadow-3d-md">
-                                        <CardContent className="pt-6">
-                                            <div className="mb-4 flex justify-center layer-2">{value.icon}</div>
-                                            <h3 className="font-bold text-lg mb-2">{value.title}</h3>
-                                            <p className="text-muted-foreground text-sm">{value.desc}</p>
-                                        </CardContent>
-                                    </Card>
-                                </Card3D>
+                                <Card className="text-center border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/20 relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    <CardContent className="pt-6 relative z-10">
+                                        <div className="mb-4 flex justify-center">{value.icon}</div>
+                                        <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{value.title}</h3>
+                                        <p className="text-muted-foreground text-sm leading-relaxed">{value.desc}</p>
+                                    </CardContent>
+                                </Card>
                             </motion.div>
                         ))}
                     </div>
@@ -102,39 +148,64 @@ export default function About() {
             </section>
 
             {/* Team Placeholder */}
-            <section className="py-20 bg-muted/30">
+            <section className="py-24 bg-gradient-to-b from-background to-muted/20">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-3xl font-bold mb-12" style={{ fontFamily: 'Orbitron, sans-serif' }}>Meet the Team</h2>
+                    <motion.h2 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-3xl md:text-4xl font-bold mb-12 text-primary" 
+                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                    >
+                        Meet the Team
+                    </motion.h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                         {[1, 2, 3, 4].map((i) => (
-                            <div key={i} className="group">
-                                <div className="bg-muted h-64 rounded-xl mb-4 overflow-hidden relative">
+                            <motion.div 
+                                key={i} 
+                                className="group"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                viewport={{ once: true }}
+                                whileHover={{ y: -10 }}
+                            >
+                                <div className="bg-muted h-64 rounded-xl mb-4 overflow-hidden relative border-2 border-border/50 group-hover:border-primary/50 transition-all duration-500">
                                     <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors" />
                                     {/* Placeholder avatar */}
                                     <div className="w-full h-full flex items-center justify-center text-muted-foreground">
                                         Member {i}
                                     </div>
                                 </div>
-                                <h3 className="font-bold text-lg">Team Member {i}</h3>
+                                <h3 className="font-bold text-lg group-hover:text-primary transition-colors">Team Member {i}</h3>
                                 <p className="text-sm text-muted-foreground">Position Title</p>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* CTA */}
-            <section className="py-20">
-                <div className="container mx-auto px-4">
-                    <div className="bg-primary/5 rounded-3xl p-8 md:p-12 text-center border border-primary/10">
-                        <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>Join Us on Our Journey</h2>
-                        <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <section className="py-24 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5"></div>
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+                <div className="container mx-auto px-4 relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="glass-card rounded-3xl p-8 md:p-12 text-center border-2 border-primary/20 hover:border-primary/40 transition-all duration-500 shadow-2xl"
+                    >
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: 'Orbitron, sans-serif' }}>Join Us on Our Journey</h2>
+                        <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
                             Whether you're a startup looking for your first MVP or an established enterprise seeking digital transformation, we're here to help.
                         </p>
                         <Link href="/contact">
-                            <Button size="lg">Contact Us</Button>
+                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                <Button size="lg" className="text-lg px-10 py-6 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300">Contact Us</Button>
+                            </motion.div>
                         </Link>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
         </div>
