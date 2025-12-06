@@ -8,38 +8,15 @@ import { Card3D } from "@/components/Card3D";
 import { GlitchText } from "@/components/GlitchText";
 import { HolographicCard } from "@/components/HolographicCard";
 import { NeonButton } from "@/components/NeonButton";
+import { InteractiveParticles } from "@/components/InteractiveParticles";
 
 export default function Home() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Section */}
             <section className="relative py-24 lg:py-36 overflow-hidden flex items-center justify-center min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
-                {/* Atom Particle System */}
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
-                
-                {/* Central Nucleus */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-primary/40 rounded-full blur-2xl animate-pulse"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-primary rounded-full blur-md animate-pulse"></div>
-                
-                {/* Orbital Rings */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-primary/20 rounded-full animate-spin-slow"></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] border border-cyan-500/20 rounded-full animate-spin-reverse" style={{ transform: 'translate(-50%, -50%) rotate(60deg)' }}></div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] border border-purple-500/20 rounded-full animate-spin-slow" style={{ transform: 'translate(-50%, -50%) rotate(-60deg)' }}></div>
-                
-                {/* Orbiting Particles */}
-                <motion.div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] -translate-x-1/2 -translate-y-1/2" animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}>
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-primary rounded-full shadow-lg shadow-primary/50"></div>
-                </motion.div>
-                <motion.div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] -translate-x-1/2 -translate-y-1/2" animate={{ rotate: -360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }}>
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-cyan-500 rounded-full shadow-lg shadow-cyan-500/50"></div>
-                </motion.div>
-                <motion.div className="absolute top-1/2 left-1/2 w-[600px] h-[300px] -translate-x-1/2 -translate-y-1/2 rotate-60" animate={{ rotate: 420 }} transition={{ duration: 25, repeat: Infinity, ease: "linear" }}>
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-purple-500 rounded-full shadow-lg shadow-purple-500/50"></div>
-                </motion.div>
-                <motion.div className="absolute top-1/2 left-1/2 w-[600px] h-[300px] -translate-x-1/2 -translate-y-1/2 -rotate-60" animate={{ rotate: -420 }} transition={{ duration: 18, repeat: Infinity, ease: "linear" }}>
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-pink-500 rounded-full shadow-lg shadow-pink-500/50"></div>
-                </motion.div>
-                
+                <InteractiveParticles />
                 <GridBackground />
 
                 <div className="container mx-auto px-4 text-center relative z-10">
@@ -105,13 +82,7 @@ export default function Home() {
                         </Link>
                     </motion.div>
                     
-                    {/* Scattered Particles */}
-                    <div className="absolute top-20 left-10 w-2 h-2 bg-primary rounded-full shadow-lg shadow-primary/50 animate-float"></div>
-                    <div className="absolute bottom-20 right-10 w-2 h-2 bg-cyan-500 rounded-full shadow-lg shadow-cyan-500/50 animate-float" style={{ animationDelay: '2s' }}></div>
-                    <div className="absolute top-1/2 left-20 w-1.5 h-1.5 bg-purple-500 rounded-full shadow-lg shadow-purple-500/50 animate-float" style={{ animationDelay: '4s' }}></div>
-                    <div className="absolute top-1/3 right-1/4 w-2 h-2 bg-pink-500 rounded-full shadow-lg shadow-pink-500/50 animate-float" style={{ animationDelay: '3s' }}></div>
-                    <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50 animate-float" style={{ animationDelay: '1s' }}></div>
-                    <div className="absolute top-1/4 right-1/3 w-2 h-2 bg-primary rounded-full shadow-lg shadow-primary/50 animate-float" style={{ animationDelay: '5s' }}></div>
+
                 </div>
             </section>
 
