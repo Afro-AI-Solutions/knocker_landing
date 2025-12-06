@@ -21,13 +21,12 @@ export default function Home() {
 
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="inline-block mb-6 px-6 py-2 rounded-full glass-card border border-primary/30 text-sm font-semibold text-primary animate-pulse-glow"
-                        style={{ fontFamily: 'Rajdhani, sans-serif' }}
+                        className="mb-6 text-sm font-medium text-muted-foreground uppercase tracking-wider"
                     >
-                         Revolutionizing Digital Solutions
+                        Revolutionizing Digital Solutions
                     </motion.div>
 
                     <motion.h1
