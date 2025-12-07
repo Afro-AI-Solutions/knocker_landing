@@ -14,7 +14,6 @@ export const InteractiveParticles: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
   const particlesRef = useRef<Particle[]>([]);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   const colors = ['#a855f7', '#8b5cf6', '#06b6d4', '#ec4899', '#3b82f6'];
 
@@ -37,19 +36,6 @@ export const InteractiveParticles: React.FC = () => {
 
   const updateParticles = useCallback((canvas: HTMLCanvasElement) => {
     particlesRef.current.forEach((particle) => {
-      const dx = mousePos.x - particle.x;
-      const dy = mousePos.y - particle.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < 150) {
-        const force = (150 - distance) / 150;
-        const angle = Math.atan2(dy, dx);
-        particle.vx += Math.cos(angle) * force * 0.03;
-        particle.vy += Math.sin(angle) * force * 0.03;
-        particle.alpha = Math.min(particle.alpha * 1.02, 0.9);
-      } else {
-        particle.alpha = Math.max(particle.alpha * 0.99, 0.3);
-      }
 
       particle.x += particle.vx;
       particle.y += particle.vy;
@@ -66,7 +52,7 @@ export const InteractiveParticles: React.FC = () => {
       particle.vx *= 0.99;
       particle.vy *= 0.99;
     });
-  }, [mousePos]);
+  }, []);
 
   const drawParticles = useCallback((ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -145,19 +131,14 @@ export const InteractiveParticles: React.FC = () => {
     animate();
 
     const handleResize = () => resizeCanvas();
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
 
     window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [resizeCanvas, animate]);
 
