@@ -112,33 +112,39 @@ export default function About() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="text-center mb-20"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Core Values</h2>
-                        <p className="text-muted-foreground text-lg">The principles that guide every decision we make.</p>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Our Core Values</h2>
+                        <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">The principles that guide every decision we make.</p>
                     </motion.div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
-                            { icon: <Heart className="h-8 w-8 text-red-500" />, title: "Passion", desc: "We love what we do, and it shows in our work." },
-                            { icon: <Shield className="h-8 w-8 text-blue-500" />, title: "Integrity", desc: "We are transparent, honest, and keep our promises." },
-                            { icon: <Zap className="h-8 w-8 text-yellow-500" />, title: "Innovation", desc: "We constantly challenge the status quo." },
-                            { icon: <Users className="h-8 w-8 text-green-500" />, title: "Collaboration", desc: "We work with you, not just for you." },
+                            { icon: <Heart className="h-10 w-10" />, title: "Passion", desc: "We love what we do, and it shows in our work.", color: "from-red-500/20 to-pink-500/20", iconColor: "text-red-500" },
+                            { icon: <Shield className="h-10 w-10" />, title: "Integrity", desc: "We are transparent, honest, and keep our promises.", color: "from-blue-500/20 to-cyan-500/20", iconColor: "text-blue-500" },
+                            { icon: <Zap className="h-10 w-10" />, title: "Innovation", desc: "We constantly challenge the status quo.", color: "from-yellow-500/20 to-orange-500/20", iconColor: "text-yellow-500" },
+                            { icon: <Users className="h-10 w-10" />, title: "Collaboration", desc: "We work with you, not just for you.", color: "from-green-500/20 to-emerald-500/20", iconColor: "text-green-500" },
                         ].map((value, i) => (
                             <motion.div
                                 key={i}
-                                initial={{ opacity: 0, y: 30 }}
+                                initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.1, duration: 0.6 }}
+                                transition={{ delay: i * 0.15, duration: 0.7 }}
                                 viewport={{ once: true }}
-                                whileHover={{ y: -10, scale: 1.02 }}
+                                whileHover={{ y: -15, scale: 1.03 }}
                                 className="group"
                             >
-                                <Card className="text-center border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/20 relative overflow-hidden">
-                                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                    <CardContent className="pt-6 relative z-10">
-                                        <div className="mb-4 flex justify-center">{value.icon}</div>
-                                        <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{value.title}</h3>
-                                        <p className="text-muted-foreground text-sm leading-relaxed">{value.desc}</p>
+                                <Card className="h-full text-center border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/30 relative overflow-hidden bg-gradient-to-br from-background to-muted/30">
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                                    <CardContent className="pt-8 pb-8 px-6 relative z-10">
+                                        <motion.div 
+                                            className={`mb-6 inline-flex p-4 rounded-2xl bg-gradient-to-br ${value.color} border border-primary/20 ${value.iconColor} group-hover:scale-110 transition-transform duration-500`}
+                                            whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                                            transition={{ duration: 0.5 }}
+                                        >
+                                            {value.icon}
+                                        </motion.div>
+                                        <h3 className="font-bold text-xl mb-3 group-hover:text-primary transition-colors duration-300" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{value.title}</h3>
+                                        <p className="text-muted-foreground leading-relaxed">{value.desc}</p>
                                     </CardContent>
                                 </Card>
                             </motion.div>
