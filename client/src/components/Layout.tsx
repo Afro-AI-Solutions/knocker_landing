@@ -30,7 +30,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             <nav
                 className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled 
                         ? "bg-background/80 backdrop-blur-2xl border-b border-primary/20 shadow-2xl shadow-primary/10" 
-                        : "bg-gradient-to-b from-background/50 to-transparent backdrop-blur-sm"
+                        : "bg-transparent"
                     }`}
             >
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
