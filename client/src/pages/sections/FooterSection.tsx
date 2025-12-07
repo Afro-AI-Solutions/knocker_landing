@@ -134,14 +134,7 @@ export const FooterSection = (): JSX.Element => {
             </span>
           </div>
 
-          <div className="flex items-center justify-center gap-1">
-            <span className="[font-family:'Roboto',Helvetica] font-normal text-white text-[13px] text-center tracking-[0] leading-[19.5px]">
-              Designed by
-            </span>
-            <span className="[font-family:'Roboto',Helvetica] font-normal text-[#12a16b] text-[13px] text-center tracking-[0] leading-[19.5px]">
-              BootstrapMade
-            </span>
-          </div>
+        
         </div>
       </div>
     </footer>
