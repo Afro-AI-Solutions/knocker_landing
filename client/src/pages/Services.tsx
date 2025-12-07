@@ -4,6 +4,8 @@ import { Check, Code2, Database, Globe, Cpu, Layers, Smartphone, BarChart, Arrow
 import { Link } from "wouter";
 import { Card3D } from "@/components/Card3D";
 import { motion } from "framer-motion";
+import { InteractiveParticles } from "@/components/InteractiveParticles";
+import { GridBackground } from "@/components/GridBackground";
 
 export default function Services() {
     const services = [
@@ -112,8 +114,8 @@ export default function Services() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Header */}
-            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-primary/5 via-background to-primary/10">
-                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
+                <InteractiveParticles />
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
