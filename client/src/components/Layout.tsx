@@ -57,11 +57,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                             {navItems.map((item) => (
                                 <Link key={item.path} href={item.path}>
                                     <a
-                                        className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg group ${location === item.path ? "text-primary" : "text-foreground hover:text-primary"
+                                        className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 group ${location === item.path ? "text-primary" : "text-foreground hover:text-primary"
                                             }`}
                                     >
                                         <span className="relative z-10">{item.label}</span>
-                                        <div className={`absolute inset-0 rounded-lg transition-all duration-300 ${location === item.path ? "bg-primary/10" : "bg-transparent group-hover:bg-primary/5"}`}></div>
                                         {location === item.path && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-primary rounded-full"></div>}
                                     </a>
                                 </Link>
