@@ -120,10 +120,10 @@ export default function About() {
                     </motion.div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
-                            { icon: <Heart className="h-10 w-10" />, title: "Passion", desc: "We love what we do, and it shows in our work.", color: "from-red-500/20 to-pink-500/20", iconColor: "text-red-500" },
-                            { icon: <Shield className="h-10 w-10" />, title: "Integrity", desc: "We are transparent, honest, and keep our promises.", color: "from-blue-500/20 to-cyan-500/20", iconColor: "text-blue-500" },
-                            { icon: <Zap className="h-10 w-10" />, title: "Innovation", desc: "We constantly challenge the status quo.", color: "from-yellow-500/20 to-orange-500/20", iconColor: "text-yellow-500" },
-                            { icon: <Users className="h-10 w-10" />, title: "Collaboration", desc: "We work with you, not just for you.", color: "from-green-500/20 to-emerald-500/20", iconColor: "text-green-500" },
+                            { icon: <Heart className="h-10 w-10" />, title: "Passion", desc: "We love what we do, and it shows in our work.", color: "from-primary/20 to-primary/10", iconColor: "text-primary" },
+                            { icon: <Shield className="h-10 w-10" />, title: "Integrity", desc: "We are transparent, honest, and keep our promises.", color: "from-primary/20 to-primary/10", iconColor: "text-primary" },
+                            { icon: <Zap className="h-10 w-10" />, title: "Innovation", desc: "We constantly challenge the status quo.", color: "from-primary/20 to-primary/10", iconColor: "text-primary" },
+                            { icon: <Users className="h-10 w-10" />, title: "Collaboration", desc: "We work with you, not just for you.", color: "from-primary/20 to-primary/10", iconColor: "text-primary" },
                         ].map((value, i) => (
                             <motion.div
                                 key={i}
