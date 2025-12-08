@@ -33,12 +33,12 @@ export default function Home() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.2 }}
-                        className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1] text-center"
+                        className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-center"
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
                         Building the Future with{" "}
                         <br className="hidden md:block" />
-                        <span className="text-primary">
+                        <span className="text-primary ">
                             <GlitchText glitchIntensity="medium">
                                 Knocker AI
                             </GlitchText>
@@ -49,14 +49,14 @@ export default function Home() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.4 }}
-                        className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed text-center"
+                        className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed text-center"
                         style={{ fontFamily: 'Inter, sans-serif' }}
                     >
-                        We fuse{" "}
-                        <span className="text-primary font-semibold">Artificial Intelligence</span>{" "}
-                        with{" "}
-                        <span className="text-primary font-semibold">Premium Web Design</span>{" "}
-                        to create digital experiences that captivate and convert.
+                        We {" "}
+                        <span className="text-primary font-semibold">knock </span>{" "}
+                        with next-generation digital innovation you{" "}
+                        <span className="text-primary font-semibold"> win</span>{" "}
+                        with results that matter.
                     </motion.p>
 
                     <motion.div

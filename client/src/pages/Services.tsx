@@ -259,7 +259,7 @@ export default function Services() {
                         ].map((industry, i) => (
                             <motion.div
                                 key={i}
-                                className="group relative p-8 rounded-2xl bg-primary-foreground/10 backdrop-blur-md hover:bg-primary-foreground/20 transition-all duration-500 border-2 border-primary-foreground/20 hover:border-primary-foreground/60 cursor-pointer"
+                                className="group relative p-8 rounded-2xl bg-gray-100 hover:bg-gray-200 transition-all duration-500 border-2 border-gray-200 hover:border-gray-300 cursor-pointer shadow-lg"
                                 whileHover={{
                                     y: -12,
                                     scale: 1.05,
@@ -270,10 +270,10 @@ export default function Services() {
                                 transition={{ delay: i * 0.1, duration: 0.6 }}
                                 viewport={{ once: true }}
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
+                                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
                                 <div className="relative z-10">
                                     <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-white flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 shadow-lg">{industry.icon}</div>
-                                    <div className="font-bold text-lg text-primary-foreground group-hover:text-white transition-colors duration-300">{industry.name}</div>
+                                    <div className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-300">{industry.name}</div>
                                 </div>
                             </motion.div>
                         ))}

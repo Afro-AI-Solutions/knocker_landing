@@ -65,12 +65,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                                     </a>
                                 </Link>
                             ))}
-                            <Link href="/contact">
-                                <a className="ml-4 relative px-8 py-3 rounded-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground text-sm font-bold hover:from-primary/90 hover:to-primary/70 transition-all duration-300 shadow-lg shadow-primary/40 hover:shadow-xl hover:shadow-primary/60 hover:scale-105 overflow-hidden group">
-                                    <span className="relative z-10">Get Started</span>
-                                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                </a>
-                            </Link>
                         </div>
 
                         {/* Mobile Menu Button */}
