@@ -23,7 +23,7 @@ export default function Home() {
                 hero: {
                     tagline: "Revolutionizing Digital Solutions",
                     heading: "We Knock. You Win.",
-                    description: "Empowering your business with intelligent solutions that unlock growth, automate processes, and elevate performance—effortlessly.",
+                    description: "We knock with next-generation digital innovation you win with results that matter.",
                     buttons: { primary: "Start Your Project", secondary: "View Our Work" }
                 },
                 stats: [
