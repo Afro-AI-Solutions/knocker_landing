@@ -15,9 +15,13 @@ The admin panel allows you to manage content for all pages:
 ### 1. Home Page
 - **Hero Section**: Edit tagline, heading, description, and upload hero image
 - **Stats Section**: Update the 4 stat cards (values and labels)
-- **Features Section**: Edit features with image uploads
-- **Projects Section**: Manage featured projects with images
-- **Process, Testimonials, CTA, Newsletter**: Full content management
+- **Tech Stack Section**: Edit title and manage technology list
+- **Features Section**: Add/remove features with titles, descriptions, and images
+- **Projects Section**: Add/remove featured projects with images and tags
+- **Process Section**: Add/remove process steps with hex codes and descriptions
+- **Testimonials Section**: Add/remove client testimonials with quotes and author info
+- **CTA Section**: Edit call-to-action title, description, and button texts
+- **Newsletter Section**: Edit newsletter signup title, description, and button text
 
 ### 2. Services Page
 - **Hero Section**: Edit tagline, heading, and description

@@ -3,11 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Save, Eye, EyeOff, Upload, CheckCircle, AlertCircle, Plus, Trash2, Copy, Download, Upload as UploadIcon } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Save, Eye, EyeOff, Upload, CheckCircle, AlertCircle, Plus, Trash2, Copy, Download, Upload as UploadIcon, Home, Briefcase, FolderOpen, User, Phone, Settings, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Admin() {
@@ -490,69 +490,134 @@ export default function Admin() {
     );
   }
 
+  const sidebarItems = [
+    { id: 'home', label: 'Home Page', icon: Home },
+    { id: 'services', label: 'Services', icon: Briefcase },
+    { id: 'portfolio', label: 'Portfolio', icon: FolderOpen },
+    { id: 'about', label: 'About', icon: User },
+    { id: 'contact', label: 'Contact', icon: Phone },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20 py-12">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold flex items-center gap-3">
-              Admin Dashboard
-              {hasUnsavedChanges && <Badge variant="destructive">Unsaved Changes</Badge>}
-              {isSaving && <Badge variant="secondary">Saving...</Badge>}
-            </h1>
-            {lastSaved && (
-              <p className="text-sm text-muted-foreground mt-2">
-                Last saved: {lastSaved.toLocaleString()}
-              </p>
-            )}
-          </div>
-          <div className="flex gap-2">
-            <Button onClick={exportData} variant="outline" size="sm">
-              <Download className="h-4 w-4 mr-2" />
-              Export
-            </Button>
-            <div className="relative">
-              <Input
-                type="file"
-                accept=".json"
-                onChange={importData}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-              <Button variant="outline" size="sm">
-                <UploadIcon className="h-4 w-4 mr-2" />
-                Import
-              </Button>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      <div className="flex">
+        {/* Sidebar */}
+        <div className="w-64 min-h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700 shadow-lg">
+          <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <Settings className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-slate-900 dark:text-white">Admin Panel</h1>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Content Management</p>
+              </div>
             </div>
-            <Button onClick={() => handleSave()} disabled={isSaving} className="gap-2">
-              {isSaving ? (
-                <AlertCircle className="h-4 w-4 animate-spin" />
-              ) : (
-                <Save className="h-4 w-4" />
-              )}
-              {isSaving ? "Saving..." : "Save All"}
+          </div>
+          
+          <ScrollArea className="h-[calc(100vh-140px)]">
+            <div className="p-4 space-y-2">
+              {sidebarItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
+                      activeTab === item.id
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                        : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="font-medium">{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </ScrollArea>
+          
+          <div className="p-4 border-t border-slate-200 dark:border-slate-700">
+            <Button
+              onClick={() => {
+                setIsAuthenticated(false);
+                setPassword('');
+              }}
+              variant="ghost"
+              className="w-full justify-start text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400"
+            >
+              <LogOut className="h-4 w-4 mr-3" />
+              Logout
             </Button>
           </div>
         </div>
 
-        {hasUnsavedChanges && (
-          <Alert className="mb-6">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              You have unsaved changes. They will be auto-saved in a few seconds, or click "Save All" to save now.
-            </AlertDescription>
-          </Alert>
-        )}
+        {/* Main Content */}
+        <div className="flex-1">
+          {/* Header */}
+          <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 p-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+                  {sidebarItems.find(item => item.id === activeTab)?.label || 'Dashboard'}
+                  {hasUnsavedChanges && <Badge variant="destructive" className="text-xs">Unsaved</Badge>}
+                  {isSaving && <Badge variant="secondary" className="text-xs">Saving...</Badge>}
+                </h2>
+                {lastSaved && (
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    Last saved: {lastSaved.toLocaleString()}
+                  </p>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={exportData} variant="outline" size="sm" className="border-slate-300 dark:border-slate-600">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export
+                </Button>
+                <div className="relative">
+                  <Input
+                    type="file"
+                    accept=".json"
+                    onChange={importData}
+                    className="absolute inset-0 opacity-0 cursor-pointer"
+                  />
+                  <Button variant="outline" size="sm" className="border-slate-300 dark:border-slate-600">
+                    <UploadIcon className="h-4 w-4 mr-2" />
+                    Import
+                  </Button>
+                </div>
+                <Button 
+                  onClick={() => handleSave()} 
+                  disabled={isSaving} 
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg"
+                >
+                  {isSaving ? (
+                    <AlertCircle className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4 mr-2" />
+                  )}
+                  {isSaving ? "Saving..." : "Save All"}
+                </Button>
+              </div>
+            </div>
+            
+            {hasUnsavedChanges && (
+              <Alert className="mt-4 border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20">
+                <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                <AlertDescription className="text-amber-800 dark:text-amber-200">
+                  You have unsaved changes. They will be auto-saved in a few seconds, or click "Save All" to save now.
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
 
-        <Tabs value={activeTab} onValueChange={(value) => { setActiveTab(value); setHasUnsavedChanges(true); }}>
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="home">Home</TabsTrigger>
-            <TabsTrigger value="services">Services</TabsTrigger>
-            <TabsTrigger value="portfolio">Portfolio</TabsTrigger>
-            <TabsTrigger value="about">About</TabsTrigger>
-            <TabsTrigger value="contact">Contact</TabsTrigger>
-          </TabsList>
+          {/* Content Area */}
+          <div className="p-6">
+            <ScrollArea className="h-[calc(100vh-200px)]">
+              <div className="max-w-4xl mx-auto space-y-6">
 
-          <TabsContent value="home" className="space-y-6">
+                {activeTab === 'home' && (
+                  <div className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Hero Section</CardTitle>
@@ -670,14 +735,20 @@ export default function Admin() {
                   <Label>Title</Label>
                   <Input
                     value={homeContent.techStack.title}
-                    onChange={(e) => setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, title: e.target.value } })}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Technologies (comma separated)</Label>
                   <Textarea
                     value={homeContent.techStack.technologies.join(", ")}
-                    onChange={(e) => setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, technologies: e.target.value.split(", ").map(t => t.trim()) } })}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, technologies: e.target.value.split(", ").map(t => t.trim()) } });
+                      setHasUnsavedChanges(true);
+                    }}
                     rows={2}
                   />
                 </div>
@@ -1042,6 +1113,532 @@ export default function Admin() {
             </Card>
 
             <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Features Section</CardTitle>
+                <Button
+                  onClick={() => {
+                    const newFeature = {
+                      title: "New Feature",
+                      description: "Feature description",
+                      image: ""
+                    };
+                    setHomeContent({ ...homeContent, features: { ...homeContent.features, items: [...homeContent.features.items, newFeature] } });
+                    setHasUnsavedChanges(true);
+                  }}
+                  size="sm"
+                  variant="outline"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Feature
+                </Button>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Title</Label>
+                  <Input
+                    value={homeContent.features.title}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, features: { ...homeContent.features, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subtitle</Label>
+                  <Textarea
+                    value={homeContent.features.subtitle}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, features: { ...homeContent.features, subtitle: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                    rows={2}
+                  />
+                </div>
+                {homeContent.features.items.map((feature, index) => (
+                  <div key={index} className="border p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-semibold">Feature {index + 1}</h4>
+                      <Button
+                        onClick={() => {
+                          const newFeatures = homeContent.features.items.filter((_, i) => i !== index);
+                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        size="sm"
+                        variant="destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Input
+                        value={feature.title}
+                        onChange={(e) => {
+                          const newFeatures = [...homeContent.features.items];
+                          newFeatures[index].title = e.target.value;
+                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                          setHasUnsavedChanges(true);
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={feature.description}
+                        onChange={(e) => {
+                          const newFeatures = [...homeContent.features.items];
+                          newFeatures[index].description = e.target.value;
+                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Image</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              handleImageUpload(file, (dataUrl) => {
+                                const newFeatures = [...homeContent.features.items];
+                                newFeatures[index].image = dataUrl;
+                                setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                              });
+                            }
+                          }}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newFeatures = [...homeContent.features.items];
+                            newFeatures[index].image = "";
+                            setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        >
+                          Clear
+                        </Button>
+                      </div>
+                      {feature.image && (
+                        <img src={feature.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Projects Section</CardTitle>
+                <Button
+                  onClick={() => {
+                    const newProject = {
+                      title: "New Project",
+                      desc: "Project description",
+                      image: "",
+                      tag: "Web Dev"
+                    };
+                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: [...homeContent.projects.items, newProject] } });
+                    setHasUnsavedChanges(true);
+                  }}
+                  size="sm"
+                  variant="outline"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Project
+                </Button>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Title</Label>
+                  <Input
+                    value={homeContent.projects.title}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, projects: { ...homeContent.projects, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subtitle</Label>
+                  <Textarea
+                    value={homeContent.projects.subtitle}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, projects: { ...homeContent.projects, subtitle: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                    rows={2}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Button Text</Label>
+                  <Input
+                    value={homeContent.projects.buttonText}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, projects: { ...homeContent.projects, buttonText: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                  />
+                </div>
+                {homeContent.projects.items.map((project, index) => (
+                  <div key={index} className="border p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-semibold">Project {index + 1}</h4>
+                      <Button
+                        onClick={() => {
+                          const newProjects = homeContent.projects.items.filter((_, i) => i !== index);
+                          setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        size="sm"
+                        variant="destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label>Title</Label>
+                        <Input
+                          value={project.title}
+                          onChange={(e) => {
+                            const newProjects = [...homeContent.projects.items];
+                            newProjects[index].title = e.target.value;
+                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Tag</Label>
+                        <Input
+                          value={project.tag}
+                          onChange={(e) => {
+                            const newProjects = [...homeContent.projects.items];
+                            newProjects[index].tag = e.target.value;
+                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={project.desc}
+                        onChange={(e) => {
+                          const newProjects = [...homeContent.projects.items];
+                          newProjects[index].desc = e.target.value;
+                          setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Image</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              handleImageUpload(file, (dataUrl) => {
+                                const newProjects = [...homeContent.projects.items];
+                                newProjects[index].image = dataUrl;
+                                setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                              });
+                            }
+                          }}
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newProjects = [...homeContent.projects.items];
+                            newProjects[index].image = "";
+                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        >
+                          Clear
+                        </Button>
+                      </div>
+                      {project.image && (
+                        <img src={project.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Process Section</CardTitle>
+                <Button
+                  onClick={() => {
+                    const newStep = {
+                      title: "NEW STEP",
+                      desc: "Step description",
+                      hex: `0x0${homeContent.process.steps.length + 1}`
+                    };
+                    setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: [...homeContent.process.steps, newStep] } });
+                    setHasUnsavedChanges(true);
+                  }}
+                  size="sm"
+                  variant="outline"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Step
+                </Button>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Title</Label>
+                  <Input
+                    value={homeContent.process.title}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, process: { ...homeContent.process, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subtitle</Label>
+                  <Textarea
+                    value={homeContent.process.subtitle}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, process: { ...homeContent.process, subtitle: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                    rows={2}
+                  />
+                </div>
+                {homeContent.process.steps.map((step, index) => (
+                  <div key={index} className="border p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-semibold">Step {index + 1}</h4>
+                      <Button
+                        onClick={() => {
+                          const newSteps = homeContent.process.steps.filter((_, i) => i !== index);
+                          setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        size="sm"
+                        variant="destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label>Title</Label>
+                        <Input
+                          value={step.title}
+                          onChange={(e) => {
+                            const newSteps = [...homeContent.process.steps];
+                            newSteps[index].title = e.target.value;
+                            setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Hex Code</Label>
+                        <Input
+                          value={step.hex}
+                          onChange={(e) => {
+                            const newSteps = [...homeContent.process.steps];
+                            newSteps[index].hex = e.target.value;
+                            setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={step.desc}
+                        onChange={(e) => {
+                          const newSteps = [...homeContent.process.steps];
+                          newSteps[index].desc = e.target.value;
+                          setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        rows={2}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Testimonials Section</CardTitle>
+                <Button
+                  onClick={() => {
+                    const newTestimonial = {
+                      quote: "New testimonial quote",
+                      author: "Client Name",
+                      role: "Position, Company"
+                    };
+                    setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: [...homeContent.testimonials.items, newTestimonial] } });
+                    setHasUnsavedChanges(true);
+                  }}
+                  size="sm"
+                  variant="outline"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Testimonial
+                </Button>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Title</Label>
+                  <Input
+                    value={homeContent.testimonials.title}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subtitle</Label>
+                  <Textarea
+                    value={homeContent.testimonials.subtitle}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, subtitle: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                    rows={2}
+                  />
+                </div>
+                {homeContent.testimonials.items.map((testimonial, index) => (
+                  <div key={index} className="border p-4 rounded-lg space-y-3">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-semibold">Testimonial {index + 1}</h4>
+                      <Button
+                        onClick={() => {
+                          const newTestimonials = homeContent.testimonials.items.filter((_, i) => i !== index);
+                          setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        size="sm"
+                        variant="destructive"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Quote</Label>
+                      <Textarea
+                        value={testimonial.quote}
+                        onChange={(e) => {
+                          const newTestimonials = [...homeContent.testimonials.items];
+                          newTestimonials[index].quote = e.target.value;
+                          setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                          setHasUnsavedChanges(true);
+                        }}
+                        rows={3}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label>Author</Label>
+                        <Input
+                          value={testimonial.author}
+                          onChange={(e) => {
+                            const newTestimonials = [...homeContent.testimonials.items];
+                            newTestimonials[index].author = e.target.value;
+                            setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Role</Label>
+                        <Input
+                          value={testimonial.role}
+                          onChange={(e) => {
+                            const newTestimonials = [...homeContent.testimonials.items];
+                            newTestimonials[index].role = e.target.value;
+                            setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                            setHasUnsavedChanges(true);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>CTA Section</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Title</Label>
+                  <Input
+                    value={homeContent.cta.title}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, cta: { ...homeContent.cta, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Description</Label>
+                  <Textarea
+                    value={homeContent.cta.description}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, cta: { ...homeContent.cta, description: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                    rows={3}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Primary Button</Label>
+                    <Input
+                      value={homeContent.cta.buttons.primary}
+                      onChange={(e) => {
+                        setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, primary: e.target.value } } });
+                        setHasUnsavedChanges(true);
+                      }}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Secondary Button</Label>
+                    <Input
+                      value={homeContent.cta.buttons.secondary}
+                      onChange={(e) => {
+                        setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, secondary: e.target.value } } });
+                        setHasUnsavedChanges(true);
+                      }}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
               <CardHeader>
                 <CardTitle>Newsletter Section</CardTitle>
               </CardHeader>
@@ -1050,14 +1647,20 @@ export default function Admin() {
                   <Label>Title</Label>
                   <Input
                     value={homeContent.newsletter.title}
-                    onChange={(e) => setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, title: e.target.value } })}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
                   />
                 </div>
                 <div className="space-y-2">
                   <Label>Description</Label>
                   <Textarea
                     value={homeContent.newsletter.description}
-                    onChange={(e) => setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, description: e.target.value } })}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, description: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
                     rows={2}
                   />
                 </div>
@@ -1065,14 +1668,19 @@ export default function Admin() {
                   <Label>Button Text</Label>
                   <Input
                     value={homeContent.newsletter.buttonText}
-                    onChange={(e) => setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, buttonText: e.target.value } })}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, buttonText: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
                   />
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+                  </div>
+                )}
 
-          <TabsContent value="services" className="space-y-6">
+                {activeTab === 'services' && (
+                  <div className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Hero Section</CardTitle>
@@ -1209,9 +1817,11 @@ export default function Admin() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+                  </div>
+                )}
 
-          <TabsContent value="portfolio" className="space-y-6">
+                {activeTab === 'portfolio' && (
+                  <div className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Hero Section</CardTitle>
@@ -1401,9 +2011,11 @@ export default function Admin() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+                  </div>
+                )}
 
-          <TabsContent value="about" className="space-y-6">
+                {activeTab === 'about' && (
+                  <div className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Hero Section</CardTitle>
@@ -1651,9 +2263,11 @@ export default function Admin() {
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
+                  </div>
+                )}
 
-          <TabsContent value="contact" className="space-y-6">
+                {activeTab === 'contact' && (
+                  <div className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Hero Section</CardTitle>
@@ -1780,8 +2394,12 @@ export default function Admin() {
                 ))}
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
+        </div>
       </div>
     </div>
   );
