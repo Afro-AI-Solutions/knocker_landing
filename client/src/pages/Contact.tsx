@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -42,6 +43,39 @@ const formSchema = z.object({
 
 export default function Contact() {
     const { toast } = useToast();
+    const [content, setContent] = useState({
+        hero: {
+            heading: "Get in Touch",
+            description: "Have a project in mind? We'd love to hear from you. Fill out the form below or reach out directly."
+        },
+        contactInfo: {
+            email: "contact@knockerai.com",
+            phone: "+1 (555) 123-4567",
+            address: "123 Tech Avenue,\nSilicon Valley, CA 94025",
+            hours: "Mon - Fri: 9:00 AM - 6:00 PM\nSat - Sun: Closed"
+        },
+        faq: [
+            {
+                question: "What is your typical project timeline?",
+                answer: "Project timelines vary depending on complexity. A simple website might take 2-4 weeks, while a complex web application or AI integration could take 2-6 months. We provide a detailed timeline during the proposal phase."
+            },
+            {
+                question: "Do you provide ongoing support?",
+                answer: "Yes! We offer various maintenance and support packages to ensure your software remains secure, up-to-date, and performs optimally after launch."
+            }
+        ]
+    });
+
+    useEffect(() => {
+        const savedContent = localStorage.getItem('contactContent');
+        if (savedContent) {
+            const parsed = JSON.parse(savedContent);
+            setContent({
+                ...content,
+                ...parsed
+            });
+        }
+    }, []);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -74,7 +108,7 @@ export default function Contact() {
                         className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
-                        Get in Touch
+                        {content.hero.heading}
                     </motion.h1>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
@@ -82,7 +116,7 @@ export default function Contact() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                     >
-                        Have a project in mind? We'd love to hear from you. Fill out the form below or reach out directly.
+                        {content.hero.description}
                     </motion.p>
                 </div>
             </section>
@@ -108,28 +142,28 @@ export default function Contact() {
                                             <Mail className="h-5 w-5 text-primary mt-1" />
                                             <div>
                                                 <div className="font-semibold text-foreground">Email</div>
-                                                <a href="mailto:contact@knockerai.com" className="hover:text-primary transition-colors">contact@knockerai.com</a>
+                                                <a href={`mailto:${content.contactInfo.email}`} className="hover:text-primary transition-colors">{content.contactInfo.email}</a>
                                             </div>
                                         </div>
                                         <div className="flex items-start space-x-3 text-muted-foreground">
                                             <Phone className="h-5 w-5 text-primary mt-1" />
                                             <div>
                                                 <div className="font-semibold text-foreground">Phone</div>
-                                                <a href="tel:+15551234567" className="hover:text-primary transition-colors">+1 (555) 123-4567</a>
+                                                <a href={`tel:${content.contactInfo.phone.replace(/[^+\d]/g, '')}`} className="hover:text-primary transition-colors">{content.contactInfo.phone}</a>
                                             </div>
                                         </div>
                                         <div className="flex items-start space-x-3 text-muted-foreground">
                                             <MapPin className="h-5 w-5 text-primary mt-1" />
                                             <div>
                                                 <div className="font-semibold text-foreground">Office</div>
-                                                <span>123 Tech Avenue,<br />Silicon Valley, CA 94025</span>
+                                                <span dangerouslySetInnerHTML={{ __html: content.contactInfo.address.replace(/\n/g, '<br />') }} />
                                             </div>
                                         </div>
                                         <div className="flex items-start space-x-3 text-muted-foreground">
                                             <Clock className="h-5 w-5 text-primary mt-1" />
                                             <div>
                                                 <div className="font-semibold text-foreground">Business Hours</div>
-                                                <span>Mon - Fri: 9:00 AM - 6:00 PM<br />Sat - Sun: Closed</span>
+                                                <span dangerouslySetInnerHTML={{ __html: content.contactInfo.hours.replace(/\n/g, '<br />') }} />
                                             </div>
                                         </div>
                                     </CardContent>
@@ -261,30 +295,14 @@ export default function Contact() {
                     </motion.div>
 
                     <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger>What is your typical project timeline?</AccordionTrigger>
-                            <AccordionContent>
-                                Project timelines vary depending on complexity. A simple website might take 2-4 weeks, while a complex web application or AI integration could take 2-6 months. We provide a detailed timeline during the proposal phase.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-2">
-                            <AccordionTrigger>Do you provide ongoing support?</AccordionTrigger>
-                            <AccordionContent>
-                                Yes! We offer various maintenance and support packages to ensure your software remains secure, up-to-date, and performs optimally after launch.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-3">
-                            <AccordionTrigger>What technologies do you specialize in?</AccordionTrigger>
-                            <AccordionContent>
-                                We specialize in the JavaScript ecosystem (React, Node.js, Next.js), Python for AI/ML tasks, and cloud platforms like AWS and Azure. We choose the best tool for the job.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-4">
-                            <AccordionTrigger>How do you handle project pricing?</AccordionTrigger>
-                            <AccordionContent>
-                                We offer both fixed-price contracts for well-defined projects and time-and-materials contracts for projects with evolving requirements. We're transparent about costs from day one.
-                            </AccordionContent>
-                        </AccordionItem>
+                        {content.faq.map((faq, index) => (
+                            <AccordionItem key={index} value={`item-${index + 1}`}>
+                                <AccordionTrigger>{faq.question}</AccordionTrigger>
+                                <AccordionContent>
+                                    {faq.answer}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
                     </Accordion>
                 </div>
             </section>

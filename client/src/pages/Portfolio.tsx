@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,30 @@ export const projects = [
 ];
 
 export default function Portfolio() {
+    const [content, setContent] = useState({
+        hero: {
+            heading: "Our Portfolio",
+            description: "Explore our latest projects and see how we've helped businesses transform their ideas into reality."
+        },
+        projects: projects,
+        cta: {
+            title: "Have a Project in Mind?",
+            description: "We can help you build something similar or completely unique. Let's discuss your requirements.",
+            buttonText: "Start Your Project"
+        }
+    });
+
+    useEffect(() => {
+        const savedContent = localStorage.getItem('portfolioContent');
+        if (savedContent) {
+            const parsed = JSON.parse(savedContent);
+            setContent({
+                ...content,
+                ...parsed
+            });
+        }
+    }, []);
+
     return (
         <div className="flex flex-col min-h-screen">
             {/* Header */}
@@ -79,7 +104,7 @@ export default function Portfolio() {
                         className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
-                        Our Portfolio
+                        {content.hero.heading}
                     </motion.h1>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
@@ -87,7 +112,7 @@ export default function Portfolio() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                     >
-                        Explore our latest projects and see how we've helped businesses transform their ideas into reality.
+                        {content.hero.description}
                     </motion.p>
                 </div>
             </section>
@@ -97,7 +122,7 @@ export default function Portfolio() {
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {projects.map((project, index) => (
+                        {content.projects.map((project, index) => (
                             <motion.div
                                 key={project.id}
                                 initial={{ opacity: 0, y: 30 }}
@@ -166,7 +191,7 @@ export default function Portfolio() {
                         className="text-3xl md:text-4xl font-bold mb-6" 
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
-                        Have a Project in Mind?
+                        {content.cta.title}
                     </motion.h2>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
@@ -175,12 +200,12 @@ export default function Portfolio() {
                         transition={{ delay: 0.1 }}
                         className="text-primary-foreground/80 mb-8 max-w-2xl mx-auto text-lg leading-relaxed"
                     >
-                        We can help you build something similar or completely unique. Let's discuss your requirements.
+                        {content.cta.description}
                     </motion.p>
                     <Link href="/contact">
                         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Button size="lg" variant="secondary" className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                                Start Your Project
+                                {content.cta.buttonText}
                             </Button>
                         </motion.div>
                     </Link>
