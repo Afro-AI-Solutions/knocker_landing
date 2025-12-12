@@ -172,6 +172,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                             <a href="#" className="hover:text-primary transition-colors">Terms</a>
                             <a href="#" className="hover:text-primary transition-colors">Privacy</a>
                             <a href="#" className="hover:text-primary transition-colors">Cookies</a>
+                            <Link href="/admin/contacts"><a className="hover:text-primary transition-colors">Messages</a></Link>
                         </div>
                     </div>
                 </div>

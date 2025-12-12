@@ -12,10 +12,14 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Portfolio from "@/pages/Portfolio";
 import Admin from "@/pages/Admin";
+import ContactAdmin from "@/pages/ContactAdmin";
 
 function Router() {
   return (
     <Switch>
+      <Route path="/admin/contacts">
+        <ContactAdmin />
+      </Route>
       <Route path="/admin">
         <Admin />
       </Route>
