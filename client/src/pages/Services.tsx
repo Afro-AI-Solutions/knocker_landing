@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Code2, Database, Globe, Cpu, Layers, Smartphone, BarChart, ArrowRight, Sparkles, Heart, DollarSign, ShoppingCart, GraduationCap, Building2, Truck } from "lucide-react";
@@ -8,6 +9,30 @@ import { InteractiveParticles } from "@/components/InteractiveParticles";
 import { GridBackground } from "@/components/GridBackground";
 
 export default function Services() {
+    const [content, setContent] = useState({
+        hero: {
+            tagline: "Premium Services",
+            heading: "Our Services",
+            description: "Comprehensive technical solutions tailored to meet your unique business challenges. From concept to deployment, we handle it all."
+        },
+        cta: {
+            title: "Not sure what you need?",
+            description: "Schedule a free consultation with our experts. We'll analyze your requirements and propose the best solution for your budget.",
+            buttonText: "Book Free Consultation"
+        }
+    });
+
+    useEffect(() => {
+        const savedContent = localStorage.getItem('servicesContent');
+        if (savedContent) {
+            const parsed = JSON.parse(savedContent);
+            setContent({
+                ...content,
+                ...parsed
+            });
+        }
+    }, []);
+
     const services = [
         {
             icon: <Globe className="h-8 w-8" />,
@@ -124,7 +149,7 @@ export default function Services() {
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
                     >
                         <Sparkles className="h-4 w-4 text-primary" />
-                        <span className="text-sm font-semibold text-primary">Premium Services</span>
+                        <span className="text-sm font-semibold text-primary">{content.hero.tagline}</span>
                     </motion.div>
                     <motion.h1 
                         initial={{ opacity: 0, y: 20 }}
@@ -133,7 +158,7 @@ export default function Services() {
                         className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
-                        Our Services
+                        {content.hero.heading}
                     </motion.h1>
                     <motion.p 
                         initial={{ opacity: 0, y: 20 }}
@@ -141,8 +166,7 @@ export default function Services() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
                     >
-                        Comprehensive technical solutions tailored to meet your unique business challenges.
-                        From concept to deployment, we handle it all.
+                        {content.hero.description}
                     </motion.p>
                 </div>
             </section>
@@ -335,10 +359,10 @@ export default function Services() {
                         className="max-w-4xl mx-auto glass-card rounded-3xl p-12 border-2 border-primary/20 hover:border-primary/40 transition-all duration-500 shadow-2xl"
                     >
                         <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: 'Orbitron, sans-serif' }}>
-                            Not sure what you need?
+                            {content.cta.title}
                         </h2>
                         <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
-                            Schedule a free consultation with our experts. We'll analyze your requirements and propose the best solution for your budget.
+                            {content.cta.description}
                         </p>
                         <Link href="/contact">
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -346,7 +370,7 @@ export default function Services() {
                                     size="lg" 
                                     className="text-lg px-10 py-6 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300"
                                 >
-                                    Book Free Consultation
+                                    {content.cta.buttonText}
                                     <ArrowRight className="ml-2 h-5 w-5" />
                                 </Button>
                             </motion.div>
