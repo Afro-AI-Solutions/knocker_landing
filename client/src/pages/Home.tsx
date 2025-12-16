@@ -15,10 +15,18 @@ export default function Home() {
     const [content, setContent] = useState(null);
 
     useEffect(() => {
-        const savedContent = localStorage.getItem('homeContent');
-        if (savedContent) {
-            setContent(JSON.parse(savedContent));
-        } else {
+        const loadContent = async () => {
+            try {
+                const response = await fetch('/api/content/home');
+                if (response.ok) {
+                    const data = await response.json();
+                    setContent(data);
+                    return;
+                }
+            } catch (error) {
+                console.error('Failed to load home content:', error);
+            }
+
             setContent({
                 hero: {
                     tagline: "Revolutionizing Digital Solutions",
@@ -134,7 +142,8 @@ export default function Home() {
                     buttonText: "Subscribe"
                 }
             });
-        }
+        };
+        loadContent();
     }, []);
 
     if (!content) return <div>Loading...</div>;
@@ -224,7 +233,7 @@ export default function Home() {
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         {content.stats.map((stat, index) => (
-                            <motion.div 
+                            <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -244,7 +253,7 @@ export default function Home() {
             <section className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -269,7 +278,7 @@ export default function Home() {
                                     className={`relative flex flex-col lg:flex-row items-center gap-12 ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
                                 >
                                     <div className="absolute hidden lg:block top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-                                        <motion.div 
+                                        <motion.div
                                             initial={{ scaleX: 0 }}
                                             whileInView={{ scaleX: 1 }}
                                             transition={{ duration: 0.8, delay: index * 0.1 + 0.3 }}
@@ -280,7 +289,7 @@ export default function Home() {
                                             <div className="absolute -top-1 -left-1 w-3 h-3 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                                         </motion.div>
                                     </div>
-                                    
+
                                     <div className="flex-1 glass-card p-8 rounded-3xl hover-lift border border-border/50 hover:border-primary/30 transition-all duration-500 group relative">
                                         <div className="mb-6 p-4 rounded-2xl bg-primary w-fit text-white group-hover:scale-110 transition-transform duration-300">
                                             {icons[index] || <Code className="h-12 w-12" />}
@@ -288,11 +297,11 @@ export default function Home() {
                                         <h3 className="text-3xl font-bold mb-4 group-hover:text-primary transition-colors duration-300" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{feature.title}</h3>
                                         <p className="text-lg text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-300">{feature.description}</p>
                                     </div>
-                                    
+
                                     <div className="flex-1 flex justify-center relative">
                                         <div className="w-80 h-60 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 border-2 border-primary/20 hover:border-primary/40">
-                                            <img 
-                                                src={feature.image} 
+                                            <img
+                                                src={feature.image}
                                                 alt={feature.title}
                                                 className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                             />
@@ -379,27 +388,27 @@ export default function Home() {
                 <div className="absolute inset-0">
                     <div className="absolute inset-0 bg-primary/5 animate-pulse"></div>
                     {[...Array(20)].map((_, i) => (
-                        <div key={i} className="absolute w-1 h-1 bg-primary rounded-full animate-float opacity-30" 
-                             style={{ 
-                                 left: `${Math.random() * 100}%`, 
-                                 top: `${Math.random() * 100}%`,
-                                 animationDelay: `${Math.random() * 5}s`,
-                                 animationDuration: `${3 + Math.random() * 4}s`
-                             }} />
+                        <div key={i} className="absolute w-1 h-1 bg-primary rounded-full animate-float opacity-30"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                top: `${Math.random() * 100}%`,
+                                animationDelay: `${Math.random() * 5}s`,
+                                animationDuration: `${3 + Math.random() * 4}s`
+                            }} />
                     ))}
                     <div className="absolute top-0 left-1/4 w-px h-full bg-primary/20 animate-pulse"></div>
                     <div className="absolute top-0 right-1/3 w-px h-full bg-primary/20 animate-pulse" style={{ animationDelay: '1.5s' }}></div>
                 </div>
-                
+
                 <div className="container mx-auto px-4 relative z-10">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
                         <motion.div className="relative mb-8">
-                            <motion.h2 
+                            <motion.h2
                                 className="text-6xl md:text-8xl font-bold text-primary relative z-10"
                                 style={{ fontFamily: 'Orbitron, sans-serif' }}
                             >
@@ -430,7 +439,7 @@ export default function Home() {
                                 animate={{ r: [4, 8, 4], opacity: [0.6, 0.2, 0.6] }}
                                 transition={{ duration: 2, repeat: Infinity, delay: 1 }} />
                         </svg>
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                             {content.process.steps.map((step, i) => {
                                 const icons = [
@@ -446,8 +455,8 @@ export default function Home() {
                                         whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
                                         transition={{ delay: i * 0.4, duration: 1, type: "spring", stiffness: 100 }}
                                         viewport={{ once: true }}
-                                        whileHover={{ 
-                                            y: -25, 
+                                        whileHover={{
+                                            y: -25,
                                             scale: 1.08,
                                             rotateY: 8,
                                             transition: { duration: 0.4, type: "spring" }
@@ -456,22 +465,22 @@ export default function Home() {
                                         style={{ transformStyle: 'preserve-3d' }}
                                     >
                                         <div className="absolute -inset-1 bg-primary/20 rounded-3xl opacity-0 group-hover:opacity-100 blur-sm transition-all duration-500"></div>
-                                        
+
                                         <div className="absolute -top-6 right-4 z-30">
                                             <span className="text-xs font-mono text-primary bg-background px-2 py-1 rounded border border-primary/30">
                                                 {step.hex}
                                             </span>
                                         </div>
-                                        
+
                                         <div className="relative bg-background/80 backdrop-blur-xl rounded-3xl p-8 border border-primary/20 group-hover:border-primary/60 transition-all duration-500 overflow-hidden shadow-lg group-hover:shadow-xl">
                                             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                                                 <div className="absolute top-0 left-0 w-full h-0.5 bg-primary animate-pulse"></div>
                                                 <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                                             </div>
-                                            
-                                            <motion.div 
+
+                                            <motion.div
                                                 className="relative text-6xl mb-6 flex justify-center"
-                                                whileHover={{ 
+                                                whileHover={{
                                                     scale: 1.2,
                                                     rotate: [0, 360],
                                                     transition: { duration: 0.8 }
@@ -480,16 +489,16 @@ export default function Home() {
                                                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:bg-primary/40 transition-all duration-500"></div>
                                                 <img src={icons[i] || icons[0]} alt={step.title} className="relative z-10 w-16 h-16 filter brightness-0 invert" />
                                             </motion.div>
-                                            
+
                                             <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors duration-300" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
                                                 {step.title}
                                             </h3>
                                             <p className="text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-300">
                                                 {step.desc}
                                             </p>
-                                            
+
                                             <div className="absolute bottom-0 left-0 w-full h-1 bg-primary/20 overflow-hidden">
-                                                <motion.div 
+                                                <motion.div
                                                     className="h-full bg-primary"
                                                     initial={{ width: '0%' }}
                                                     whileInView={{ width: '100%' }}
@@ -510,7 +519,7 @@ export default function Home() {
             <section className="py-24 relative overflow-hidden bg-gradient-to-b from-muted/20 to-background">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -538,7 +547,7 @@ export default function Home() {
                                         <div className="absolute top-4 right-4 text-6xl text-primary/10 group-hover:text-primary/20 transition-colors duration-500">
                                             "
                                         </div>
-                                        
+
                                         <div className="mb-6 flex gap-1">
                                             {[...Array(5)].map((_, starIndex) => (
                                                 <span key={starIndex} className="text-yellow-400 text-lg">★</span>
@@ -565,8 +574,8 @@ export default function Home() {
                             </motion.div>
                         ))}
                     </div>
-                    
-                    <motion.div 
+
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -596,7 +605,7 @@ export default function Home() {
             <section className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-primary/10"></div>
                 <div className="container mx-auto px-4 relative z-10">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -605,7 +614,7 @@ export default function Home() {
                         <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="absolute top-0 left-0 w-full h-full bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none" />
                         <div className="relative z-10">
-                            <motion.h2 
+                            <motion.h2
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2 }}
@@ -615,7 +624,7 @@ export default function Home() {
                             >
                                 {content.cta.title}
                             </motion.h2>
-                            <motion.p 
+                            <motion.p
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.4 }}
@@ -624,7 +633,7 @@ export default function Home() {
                             >
                                 {content.cta.description}
                             </motion.p>
-                            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.6 }}
@@ -654,7 +663,7 @@ export default function Home() {
             {/* Newsletter Section */}
             <section className="py-24 bg-gradient-to-b from-background to-muted/20 border-t border-border/30">
                 <div className="container mx-auto px-4">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
