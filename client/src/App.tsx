@@ -13,6 +13,8 @@ import Contact from "@/pages/Contact";
 import Portfolio from "@/pages/Portfolio";
 import Admin from "@/pages/Admin";
 import ContactAdmin from "@/pages/ContactAdmin";
+import { LoadScreen } from "@/components/LoadScreen";
+import { useState } from "react";
 
 function Router() {
   return (
@@ -40,6 +42,12 @@ function Router() {
 }
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  if (isLoading) {
+    return <LoadScreen onLoadComplete={() => setIsLoading(false)} />;
+  }
+
   return (
     <ThemeProvider defaultTheme="light">
       <QueryClientProvider client={queryClient}>
