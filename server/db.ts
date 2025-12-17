@@ -1,28 +1,27 @@
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
-import { migrate } from "drizzle-orm/better-sqlite3/migrator";
+import mysql from "mysql2/promise";
+import { drizzle } from "drizzle-orm/mysql2";
+import { migrate } from "drizzle-orm/mysql2/migrator";
 import * as schema from "@shared/schema";
-import { existsSync, mkdirSync } from "fs";
-import { dirname } from "path";
 
-const dbPath = "./data/knocker.db";
+// MySQL connection configuration
+const connectionConfig = {
+  host: process.env.DB_HOST || "localhost",
+  port: parseInt(process.env.DB_PORT || "3306"),
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "knocker_db",
+  multipleStatements: true,
+};
 
-// Ensure the data directory exists
-const dir = dirname(dbPath);
-if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
-}
-
-// Create SQLite database connection
-const sqlite = new Database(dbPath);
-sqlite.pragma("journal_mode = WAL");
+// Create MySQL connection pool
+const connection = mysql.createPool(connectionConfig);
 
 // Create Drizzle instance
-export const db = drizzle(sqlite, { schema });
+export const db = drizzle(connection, { schema, mode: "default" });
 
 // Run migrations on startup
 try {
-    migrate(db, { migrationsFolder: "./migrations" });
+    await migrate(db, { migrationsFolder: "./migrations" });
     console.log("✅ Database migrations completed");
 } catch (error) {
     console.warn("⚠️ No migrations found or migration failed:", error);

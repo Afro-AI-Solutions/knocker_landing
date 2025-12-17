@@ -1,8 +1,8 @@
-# Admin Content Migration to SQLite - Complete! ✅
+# Admin Content Migration to MySQL - Complete! ✅
 
 ## Migration Summary
 
-Successfully migrated **ALL admin panel content** from browser localStorage to **persistent SQLite database**!
+Successfully migrated **ALL admin panel content** from browser localStorage to **persistent MySQL database**!
 
 ---
 
@@ -16,7 +16,7 @@ Successfully migrated **ALL admin panel content** from browser localStorage to *
 - ❌ Single-user only (browser-specific)
 
 ### **After Migration**
-- ✅ All content stored in SQLite database
+- ✅ All content stored in MySQL database
 - ✅ Persists permanently
 - ✅ Accessible via REST API
 - ✅ Ready for version control
@@ -175,7 +175,7 @@ All pages now stored in database with this structure:
 
 ## 💾 Data Persistence
 
-### ✅ **Now Persistent (in SQLite)**
+### ✅ **Now Persistent (in MySQL)**
 1. Home page content
 2. About page content
 3. Services page content
@@ -195,8 +195,8 @@ All pages now stored in database with this structure:
 ### **1. Fresh Start Test**
 ```bash
 # Stop server (Ctrl+C)
-# Delete database
-rm -rf data/knocker.db*
+# Drop and recreate database in MySQL
+mysql -u root -p -e "DROP DATABASE IF EXISTS knocker_db; CREATE DATABASE knocker_db;"
 
 # Restart server
 npm run dev
@@ -258,10 +258,10 @@ curl -X POST http://localhost:5001/api/content/home \
                │ Drizzle ORM query
                ▼
 ┌─────────────────────────────────────────┐
-│     SQLite Database                     │
-│  File: data/knocker.db                  │
+│     MySQL Database                      │
+│  Server: localhost:3306                 │
 │  - content table stores JSON            │
-│  - Persists to disk                     │
+│  - Persists to database server          │
 └─────────────────────────────────────────┘
 ```
 
@@ -316,13 +316,13 @@ Opens at `https://local.drizzle.studio`
 
 ### **Query Database Directly**
 ```bash
-sqlite3 data/knocker.db
+mysql -u root -p knocker_db
 
 # View all content
 SELECT page_key, updated_at FROM content;
 
 # View specific page (pretty print)
-SELECT json_pretty(data) FROM content WHERE page_key = 'home';
+SELECT JSON_PRETTY(data) FROM content WHERE page_key = 'home';
 
 # Get content size
 SELECT page_key, LENGTH(data) as size_bytes FROM content;
@@ -331,17 +331,17 @@ SELECT page_key, LENGTH(data) as size_bytes FROM content;
 ### **Backup Database**
 ```bash
 # Windows
-copy data\knocker.db data\knocker_backup.db
+mysqldump -u root -p knocker_db > knocker_backup.sql
 
 # Include timestamp
-copy data\knocker.db "data\knocker_backup_%date:~-4,4%%date:~-10,2%%date:~-7,2%.db"
+mysqldump -u root -p knocker_db > "knocker_backup_%date:~-4,4%%date:~-10,2%%date:~-7,2%.sql"
 ```
 
 ---
 
 ## 📊 Storage Comparison
 
-| Feature | localStorage | SQLite Database |
+| Feature | localStorage | MySQL Database |
 |---------|--------------|-----------------|
 | **Persistence** | Browser only | Permanent file |
 | **Size Limit** | ~5-10 MB | Unlimited |
@@ -358,8 +358,9 @@ copy data\knocker.db "data\knocker_backup_%date:~-4,4%%date:~-10,2%%date:~-7,2%.
 ## 🐛 Troubleshooting
 
 ### **"No content loaded"**
-1. Check if database file exists: `data/knocker.db`
-2. Check browser console for API errors
+1. Check if MySQL server is running: `mysql -u root -p`
+2. Check if database exists: `SHOW DATABASES;`
+3. Check browser console for API errors
 3. Try manually saving content from admin panel
 
 ### **"Save failed"**

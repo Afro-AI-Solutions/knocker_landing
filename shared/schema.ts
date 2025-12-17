@@ -1,29 +1,29 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { mysqlTable, varchar, text, int, boolean, timestamp } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = sqliteTable("users", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const users = mysqlTable("users", {
+  id: int("id").primaryKey().autoincrement(),
+  username: varchar("username", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
 });
 
-export const messages = sqliteTable("messages", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  subject: text("subject").notNull(),
+export const messages = mysqlTable("messages", {
+  id: int("id").primaryKey().autoincrement(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull(),
+  subject: varchar("subject", { length: 255 }).notNull(),
   message: text("message").notNull(),
-  isRead: integer("is_read", { mode: "boolean" }).default(false).notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  isRead: boolean("is_read").default(false).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const content = sqliteTable("content", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
-  pageKey: text("page_key").notNull().unique(), // 'home', 'about', 'services', 'portfolio', 'contact'
+export const content = mysqlTable("content", {
+  id: int("id").primaryKey().autoincrement(),
+  pageKey: varchar("page_key", { length: 50 }).notNull().unique(), // 'home', 'about', 'services', 'portfolio', 'contact'
   data: text("data").notNull(), // JSON string of page content
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+  updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
