@@ -265,12 +265,29 @@ export default function Admin() {
   const fetchMessages = async () => {
     setMessagesLoading(true);
     try {
-      const response = await fetch('/api/admin/contacts');
-      const data = await response.json();
-      setMessages(data.messages || []);
-      setMessageStats(data.stats || { total: 0, unread: 0, read: 0 });
+      // Try new API first, fallback to legacy
+      let response = await fetch('/api/messages');
+      if (response.ok) {
+        const messages = await response.json();
+        setMessages(messages || []);
+        const total = messages.length;
+        const unread = messages.filter(m => !m.isRead).length;
+        const read = messages.filter(m => m.isRead).length;
+        setMessageStats({ total, unread, read });
+      } else {
+        // Fallback to legacy API
+        response = await fetch('/api/admin/contacts');
+        const data = await response.json();
+        setMessages(data.messages || []);
+        setMessageStats(data.stats || { total: 0, unread: 0, read: 0 });
+      }
     } catch (error) {
       console.error('Failed to fetch messages:', error);
+      toast({
+        title: "Load failed",
+        description: "Failed to load messages from server",
+        variant: "destructive"
+      });
     } finally {
       setMessagesLoading(false);
     }
@@ -278,10 +295,28 @@ export default function Admin() {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`/api/admin/contacts/${id}/read`, { method: 'PATCH' });
-      fetchMessages();
+      // Try new API first, fallback to legacy
+      let response = await fetch(`/api/messages/${id}/read`, { method: 'PUT' });
+      if (!response.ok) {
+        // Fallback to legacy API
+        response = await fetch(`/api/admin/contacts/${id}/read`, { method: 'PATCH' });
+      }
+      if (response.ok) {
+        fetchMessages();
+        toast({
+          title: "Success",
+          description: "Message marked as read"
+        });
+      } else {
+        throw new Error('Failed to mark as read');
+      }
     } catch (error) {
       console.error('Failed to mark as read:', error);
+      toast({
+        title: "Error",
+        description: "Failed to mark message as read",
+        variant: "destructive"
+      });
     }
   };
 
@@ -381,25 +416,46 @@ export default function Admin() {
     return () => clearTimeout(autoSave);
   }, [homeContent, aboutContent, servicesContent, portfolioContent, contactContent, hasUnsavedChanges]);
 
-  // Load saved content on mount
+  // Load content from API on mount
   useEffect(() => {
-    const loadContent = () => {
-      const saved = {
-        home: localStorage.getItem('homeContent'),
-        about: localStorage.getItem('aboutContent'),
-        services: localStorage.getItem('servicesContent'),
-        portfolio: localStorage.getItem('portfolioContent'),
-        contact: localStorage.getItem('contactContent')
-      };
-      
-      if (saved.home) setHomeContent(JSON.parse(saved.home));
-      if (saved.about) setAboutContent(JSON.parse(saved.about));
-      if (saved.services) setServicesContent(JSON.parse(saved.services));
-      if (saved.portfolio) setPortfolioContent(JSON.parse(saved.portfolio));
-      if (saved.contact) setContactContent(JSON.parse(saved.contact));
-      
-      const lastSavedTime = localStorage.getItem('lastSaved');
-      if (lastSavedTime) setLastSaved(new Date(lastSavedTime));
+    const loadContent = async () => {
+      try {
+        // Try to load from API first
+        const response = await fetch('/api/content');
+        if (response.ok) {
+          const apiContent = await response.json();
+          if (apiContent.home) setHomeContent(apiContent.home);
+          if (apiContent.about) setAboutContent(apiContent.about);
+          if (apiContent.services) setServicesContent(apiContent.services);
+          if (apiContent.portfolio) setPortfolioContent(apiContent.portfolio);
+          if (apiContent.contact) setContactContent(apiContent.contact);
+        } else {
+          // Fallback to localStorage if API fails
+          const saved = {
+            home: localStorage.getItem('homeContent'),
+            about: localStorage.getItem('aboutContent'),
+            services: localStorage.getItem('servicesContent'),
+            portfolio: localStorage.getItem('portfolioContent'),
+            contact: localStorage.getItem('contactContent')
+          };
+          
+          if (saved.home) setHomeContent(JSON.parse(saved.home));
+          if (saved.about) setAboutContent(JSON.parse(saved.about));
+          if (saved.services) setServicesContent(JSON.parse(saved.services));
+          if (saved.portfolio) setPortfolioContent(JSON.parse(saved.portfolio));
+          if (saved.contact) setContactContent(JSON.parse(saved.contact));
+        }
+        
+        const lastSavedTime = localStorage.getItem('lastSaved');
+        if (lastSavedTime) setLastSaved(new Date(lastSavedTime));
+      } catch (error) {
+        console.error('Failed to load content:', error);
+        toast({
+          title: "Load failed",
+          description: "Failed to load content from server",
+          variant: "destructive"
+        });
+      }
     };
     
     if (isAuthenticated) loadContent();
@@ -433,6 +489,30 @@ export default function Admin() {
   const handleSave = async (isAutoSave = false) => {
     setIsSaving(true);
     try {
+      // Save to API first
+      const contentToSave = {
+        home: homeContent,
+        about: aboutContent,
+        services: servicesContent,
+        portfolio: portfolioContent,
+        contact: contactContent
+      };
+      
+      const savePromises = Object.entries(contentToSave).map(async ([pageKey, content]) => {
+        const response = await fetch(`/api/content/${pageKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(content)
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to save ${pageKey} content`);
+        }
+        return response.json();
+      });
+      
+      await Promise.all(savePromises);
+      
+      // Also save to localStorage as backup
       localStorage.setItem("homeContent", JSON.stringify(homeContent));
       localStorage.setItem("aboutContent", JSON.stringify(aboutContent));
       localStorage.setItem("servicesContent", JSON.stringify(servicesContent));
@@ -446,12 +526,13 @@ export default function Admin() {
       
       toast({
         title: isAutoSave ? "Auto-saved" : "Saved successfully!",
-        description: isAutoSave ? "Changes saved automatically" : "All content has been saved",
+        description: isAutoSave ? "Changes saved to server and locally" : "All content has been saved to server",
       });
     } catch (error) {
+      console.error('Save error:', error);
       toast({
         title: "Save failed",
-        description: "Failed to save content. Please try again.",
+        description: "Failed to save content to server. Please try again.",
         variant: "destructive"
       });
     } finally {
