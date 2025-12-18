@@ -52,7 +52,7 @@ export const PricingSection = (): JSX.Element => {
             Frequently Asked Questions
           </h2>
 
-          <div className="w-[60px] h-[3px] bg-[#12a16b] mt-5" />
+          <div className="w-[60px] h-[3px] bg-[#14201c] mt-5" />
         </div>
 
         <p className="flex items-center justify-center h-6 [font-family:'Roboto',Helvetica] font-normal text-[#14201c] text-base text-center tracking-[0] leading-6 whitespace-nowrap mx-auto">

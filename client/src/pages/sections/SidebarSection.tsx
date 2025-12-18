@@ -124,7 +124,7 @@ export const SidebarSection = (): JSX.Element => {
               <button
                 key={item.id}
                 onClick={() => setActiveItem(item.id)}
-                className={`flex items-center gap-4 p-5 rounded-xl overflow-hidden transition-colors ${activeItem === item.id ? "bg-[#12a16b]" : "bg-white hover:bg-gray-50"
+                className={`flex items-center gap-4 p-5 rounded-xl overflow-hidden transition-colors ${activeItem === item.id ? "bg-[#14201c]" : "bg-white hover:bg-gray-50"
                   }`}
               >
                 <img
@@ -158,7 +158,7 @@ export const SidebarSection = (): JSX.Element => {
                 <h2 className="[font-family:'Barlow',Helvetica] font-bold text-[#0a3223] text-[28px] tracking-[0] leading-[33.6px]">
                   {currentContent.title}
                 </h2>
-                <div className="w-[50px] h-[3px] bg-[#12a16b] rounded-[3px]" />
+                <div className="w-[50px] h-[3px] bg-[#14201c] rounded-[3px]" />
               </div>
 
               <p className="mt-[23px] [font-family:'Roboto',Helvetica] font-normal text-[#141f1ccc] text-base tracking-[0] leading-[25.6px]">

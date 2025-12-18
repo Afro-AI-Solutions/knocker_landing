@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Users, Zap, Trophy } from "lucide-react";
+import { ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Users, Zap, Trophy, FileText, Palette } from "lucide-react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { GridBackground } from "@/components/GridBackground";

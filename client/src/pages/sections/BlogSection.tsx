@@ -61,7 +61,7 @@ export const BlogSection = (): JSX.Element => {
             <h2 className="[font-family:'Barlow',Helvetica] font-bold text-[#0a3223] text-[32px] text-center tracking-[0] leading-[38.4px]">
               Portfolio
             </h2>
-            <div className="w-[60px] h-[3px] bg-[#12a16b]" />
+            <div className="w-[60px] h-[3px] bg-[#14201c]" />
           </div>
           <p className="[font-family:'Roboto',Helvetica] font-normal text-[#14201c] text-base text-center tracking-[0] leading-6">
             Necessitatibus eius consequatur ex aliquid fuga eum quidem sint
@@ -82,8 +82,8 @@ export const BlogSection = (): JSX.Element => {
                 value={category.id}
                 className={`h-[31px] px-4 rounded-[50px] [font-family:'Roboto',Helvetica] font-medium text-[15px] tracking-[0] leading-[15px] ${
                   selectedFilter === category.id
-                    ? "bg-[#12a16b] text-white data-[state=on]:bg-[#12a16b] data-[state=on]:text-white"
-                    : "bg-[#f2f4f4] text-[#0a3223] data-[state=on]:bg-[#12a16b] data-[state=on]:text-white"
+                    ? "bg-[#14201c] text-white data-[state=on]:bg-[#14201c] data-[state=on]:text-white"
+                    : "bg-[#f2f4f4] text-[#0a3223] data-[state=on]:bg-[#14201c] data-[state=on]:text-white"
                 }`}
               >
                 {category.label}

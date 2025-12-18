@@ -94,7 +94,7 @@ export const HeroSection = (): JSX.Element => {
                 </div>
 
                 <div className="mt-[73px] flex items-center gap-4">
-                  <Button className="h-[50px] px-[33px] bg-[#12a16b] hover:bg-[#12a16b]/90 rounded-lg border border-solid">
+                  <Button className="h-[50px] px-[33px] bg-[#14201c] hover:bg-[#14201c]/90 rounded-lg border border-solid">
                     <span className="[font-family:'Roboto',Helvetica] font-semibold text-white text-base text-center tracking-[0] leading-6">
                       Start Now
                     </span>

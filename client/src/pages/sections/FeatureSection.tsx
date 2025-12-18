@@ -87,7 +87,7 @@ export const FeatureSection = (): JSX.Element => {
               <h2 className="relative [font-family:'Barlow',Helvetica] font-bold text-[#0a3223] text-[32px] text-center tracking-[0] leading-[38.4px] whitespace-nowrap">
                 Services
               </h2>
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[60px] h-[3px] bg-[#12a16b]" />
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[60px] h-[3px] bg-[#14201c]" />
             </div>
             <p className="[font-family:'Roboto',Helvetica] font-normal text-[#14201c] text-base text-center tracking-[0] leading-6 whitespace-nowrap">
               CHECK OUR SERVICES
@@ -218,7 +218,7 @@ export const FeatureSection = (): JSX.Element => {
             <CarouselNext className="-right-12" />
           </Carousel>
 
-          <div className="relative mt-[190px] rounded-[25px] overflow-hidden bg-[#12a16b] py-[50px]">
+          <div className="relative mt-[190px] rounded-[25px] overflow-hidden bg-[#14201c] py-[50px]">
             <div className="absolute w-full h-full top-0 left-0 bg-[linear-gradient(171deg,rgba(18,161,107,0)_0%,rgba(18,161,107,0.1)_100%)]" />
             <div className="relative grid grid-cols-4 gap-8">
               {stats.map((stat, index) => (
