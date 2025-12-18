@@ -27,7 +27,6 @@ export default function Admin() {
       tagline: "Revolutionizing Digital Solutions",
       heading: "We Knock. You Win.",
       description: "Empowering your business with intelligent solutions that unlock growth, automate processes, and elevate performance—effortlessly.",
-      image: "",
       buttons: {
         primary: "Start Your Project",
         secondary: "View Our Work"
@@ -781,34 +780,6 @@ export default function Admin() {
                     onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, description: e.target.value } })}
                     rows={3}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label>Hero Image</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          handleImageUpload(file, (dataUrl) => {
-                            setHomeContent({ ...homeContent, hero: { ...homeContent.hero, image: dataUrl } });
-                          });
-                        }
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, image: "" } })}
-                    >
-                      Clear
-                    </Button>
-                  </div>
-                  {homeContent.hero.image && (
-                    <img src={homeContent.hero.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                  )}
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">

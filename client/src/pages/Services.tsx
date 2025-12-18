@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Code2, Database, Globe, Cpu, Layers, Smartphone, BarChart, ArrowRight, Sparkles, Heart, DollarSign, ShoppingCart, GraduationCap, Building2, Truck } from "lucide-react";

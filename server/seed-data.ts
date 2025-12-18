@@ -121,9 +121,10 @@ export async function seedDatabase() {
     const defaultContent = {
       home: JSON.stringify({
         hero: {
-          title: "We Knock. You Win.",
-          subtitle: "Revolutionizing Digital Solutions",
-          description: "We knock with next-generation digital innovation you win with results that matter."
+          tagline: "Revolutionizing Digital Solutions",
+          heading: "We Knock. You Win.",
+          description: "We knock with next-generation digital innovation you win with results that matter.",
+          buttons: { primary: "Start Your Project", secondary: "View Our Work" }
         },
         stats: [
           { label: "Projects Delivered", value: "100+" },
