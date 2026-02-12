@@ -456,7 +456,7 @@ export default function Admin() {
         });
       }
     };
-    
+
     if (isAuthenticated) loadContent();
   }, [isAuthenticated]);
 
@@ -476,7 +476,7 @@ export default function Admin() {
       });
       return;
     }
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
       callback(e.target?.result as string);
@@ -519,10 +519,9 @@ export default function Admin() {
       localStorage.setItem("contactContent", JSON.stringify(contactContent));
       
       const now = new Date();
-      localStorage.setItem("lastSaved", now.toISOString());
       setLastSaved(now);
       setHasUnsavedChanges(false);
-      
+
       toast({
         title: isAutoSave ? "Auto-saved" : "Saved successfully!",
         description: isAutoSave ? "Changes saved to server and locally" : "All content has been saved to server",
@@ -548,7 +547,7 @@ export default function Admin() {
       contactContent,
       exportDate: new Date().toISOString()
     };
-    
+
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -561,7 +560,7 @@ export default function Admin() {
   const importData = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -571,7 +570,7 @@ export default function Admin() {
         if (data.servicesContent) setServicesContent(data.servicesContent);
         if (data.portfolioContent) setPortfolioContent(data.portfolioContent);
         if (data.contactContent) setContactContent(data.contactContent);
-        
+
         setHasUnsavedChanges(true);
         toast({
           title: "Import successful",
@@ -650,7 +649,7 @@ export default function Admin() {
               </div>
             </div>
           </div>
-          
+
           <ScrollArea className="h-[calc(100vh-140px)]">
             <div className="p-4 space-y-2">
               {sidebarItems.map((item) => {
@@ -659,11 +658,10 @@ export default function Admin() {
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${
-                      activeTab === item.id
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${activeTab === item.id
                         ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
                         : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                    }`}
+                      }`}
                   >
                     <Icon className="h-5 w-5" />
                     <span className="font-medium">{item.label}</span>
@@ -672,7 +670,7 @@ export default function Admin() {
               })}
             </div>
           </ScrollArea>
-          
+
           <div className="p-4 border-t border-slate-200 dark:border-slate-700">
             <Button
               onClick={() => {
@@ -722,9 +720,9 @@ export default function Admin() {
                     Import
                   </Button>
                 </div>
-                <Button 
-                  onClick={() => handleSave()} 
-                  disabled={isSaving} 
+                <Button
+                  onClick={() => handleSave()}
+                  disabled={isSaving}
                   className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg"
                 >
                   {isSaving ? (
@@ -736,7 +734,7 @@ export default function Admin() {
                 </Button>
               </div>
             </div>
-            
+
             {hasUnsavedChanges && (
               <Alert className="mt-4 border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-900/20">
                 <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
@@ -927,1581 +925,1284 @@ export default function Admin() {
                           }}
                         />
                         <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
                           onClick={() => {
-                            const newFeatures = [...homeContent.features.items];
-                            newFeatures[index].image = "";
-                            setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                            const newFeature = {
+                              title: "New Feature",
+                              description: "Feature description",
+                              image: ""
+                            };
+                            setHomeContent({ ...homeContent, features: { ...homeContent.features, items: [...homeContent.features.items, newFeature] } });
+                            setHasUnsavedChanges(true);
                           }}
+                          size="sm"
+                          variant="outline"
                         >
-                          Clear
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Feature
                         </Button>
-                      </div>
-                      {feature.image && (
-                        <img src={feature.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={homeContent.features.title}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, features: { ...homeContent.features, title: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Subtitle</Label>
+                          <Textarea
+                            value={homeContent.features.subtitle}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, features: { ...homeContent.features, subtitle: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                            rows={2}
+                          />
+                        </div>
+                        {homeContent.features.items.map((feature, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-semibold">Feature {index + 1}</h4>
+                              <Button
+                                onClick={() => {
+                                  const newFeatures = homeContent.features.items.filter((_, i) => i !== index);
+                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                size="sm"
+                                variant="destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Title</Label>
+                              <Input
+                                value={feature.title}
+                                onChange={(e) => {
+                                  const newFeatures = [...homeContent.features.items];
+                                  newFeatures[index].title = e.target.value;
+                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Description</Label>
+                              <Textarea
+                                value={feature.description}
+                                onChange={(e) => {
+                                  const newFeatures = [...homeContent.features.items];
+                                  newFeatures[index].description = e.target.value;
+                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                rows={2}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Image</Label>
+                              <div className="flex gap-2">
+                                <Input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      handleImageUpload(file, (dataUrl) => {
+                                        const newFeatures = [...homeContent.features.items];
+                                        newFeatures[index].image = dataUrl;
+                                        setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                                      });
+                                    }
+                                  }}
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newFeatures = [...homeContent.features.items];
+                                    newFeatures[index].image = "";
+                                    setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                >
+                                  Clear
+                                </Button>
+                              </div>
+                              {feature.image && (
+                                <img src={feature.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Projects Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.projects.title}
-                    onChange={(e) => setHomeContent({ ...homeContent, projects: { ...homeContent.projects, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Textarea
-                    value={homeContent.projects.subtitle}
-                    onChange={(e) => setHomeContent({ ...homeContent, projects: { ...homeContent.projects, subtitle: e.target.value } })}
-                    rows={2}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Button Text</Label>
-                  <Input
-                    value={homeContent.projects.buttonText}
-                    onChange={(e) => setHomeContent({ ...homeContent, projects: { ...homeContent.projects, buttonText: e.target.value } })}
-                  />
-                </div>
-                {homeContent.projects.items.map((project, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <h4 className="font-semibold">Project {index + 1}</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Title</Label>
-                        <Input
-                          value={project.title}
-                          onChange={(e) => {
-                            const newProjects = [...homeContent.projects.items];
-                            newProjects[index].title = e.target.value;
-                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Tag</Label>
-                        <Input
-                          value={project.tag}
-                          onChange={(e) => {
-                            const newProjects = [...homeContent.projects.items];
-                            newProjects[index].tag = e.target.value;
-                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={project.desc}
-                        onChange={(e) => {
-                          const newProjects = [...homeContent.projects.items];
-                          newProjects[index].desc = e.target.value;
-                          setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Image</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              handleImageUpload(file, (dataUrl) => {
-                                const newProjects = [...homeContent.projects.items];
-                                newProjects[index].image = dataUrl;
-                                setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                              });
-                            }
-                          }}
-                        />
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>Projects Section</CardTitle>
                         <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
                           onClick={() => {
-                            const newProjects = [...homeContent.projects.items];
-                            newProjects[index].image = "";
-                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                            const newProject = {
+                              title: "New Project",
+                              desc: "Project description",
+                              image: "",
+                              tag: "Web Dev"
+                            };
+                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: [...homeContent.projects.items, newProject] } });
+                            setHasUnsavedChanges(true);
                           }}
+                          size="sm"
+                          variant="outline"
                         >
-                          Clear
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Project
                         </Button>
-                      </div>
-                      {project.image && (
-                        <img src={project.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={homeContent.projects.title}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, projects: { ...homeContent.projects, title: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Subtitle</Label>
+                          <Textarea
+                            value={homeContent.projects.subtitle}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, projects: { ...homeContent.projects, subtitle: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                            rows={2}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Button Text</Label>
+                          <Input
+                            value={homeContent.projects.buttonText}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, projects: { ...homeContent.projects, buttonText: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                        {homeContent.projects.items.map((project, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-semibold">Project {index + 1}</h4>
+                              <Button
+                                onClick={() => {
+                                  const newProjects = homeContent.projects.items.filter((_, i) => i !== index);
+                                  setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                size="sm"
+                                variant="destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-2">
+                                <Label>Title</Label>
+                                <Input
+                                  value={project.title}
+                                  onChange={(e) => {
+                                    const newProjects = [...homeContent.projects.items];
+                                    newProjects[index].title = e.target.value;
+                                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Tag</Label>
+                                <Input
+                                  value={project.tag}
+                                  onChange={(e) => {
+                                    const newProjects = [...homeContent.projects.items];
+                                    newProjects[index].tag = e.target.value;
+                                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Description</Label>
+                              <Textarea
+                                value={project.desc}
+                                onChange={(e) => {
+                                  const newProjects = [...homeContent.projects.items];
+                                  newProjects[index].desc = e.target.value;
+                                  setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                rows={2}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Image</Label>
+                              <div className="flex gap-2">
+                                <Input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      handleImageUpload(file, (dataUrl) => {
+                                        const newProjects = [...homeContent.projects.items];
+                                        newProjects[index].image = dataUrl;
+                                        setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                                      });
+                                    }
+                                  }}
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newProjects = [...homeContent.projects.items];
+                                    newProjects[index].image = "";
+                                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                >
+                                  Clear
+                                </Button>
+                              </div>
+                              {project.image && (
+                                <img src={project.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Process Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.process.title}
-                    onChange={(e) => setHomeContent({ ...homeContent, process: { ...homeContent.process, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Textarea
-                    value={homeContent.process.subtitle}
-                    onChange={(e) => setHomeContent({ ...homeContent, process: { ...homeContent.process, subtitle: e.target.value } })}
-                    rows={2}
-                  />
-                </div>
-                {homeContent.process.steps.map((step, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <h4 className="font-semibold">Step {index + 1}</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Title</Label>
-                        <Input
-                          value={step.title}
-                          onChange={(e) => {
-                            const newSteps = [...homeContent.process.steps];
-                            newSteps[index].title = e.target.value;
-                            setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Hex Code</Label>
-                        <Input
-                          value={step.hex}
-                          onChange={(e) => {
-                            const newSteps = [...homeContent.process.steps];
-                            newSteps[index].hex = e.target.value;
-                            setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={step.desc}
-                        onChange={(e) => {
-                          const newSteps = [...homeContent.process.steps];
-                          newSteps[index].desc = e.target.value;
-                          setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Testimonials Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.testimonials.title}
-                    onChange={(e) => setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Textarea
-                    value={homeContent.testimonials.subtitle}
-                    onChange={(e) => setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, subtitle: e.target.value } })}
-                    rows={2}
-                  />
-                </div>
-                {homeContent.testimonials.items.map((testimonial, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <h4 className="font-semibold">Testimonial {index + 1}</h4>
-                    <div className="space-y-2">
-                      <Label>Quote</Label>
-                      <Textarea
-                        value={testimonial.quote}
-                        onChange={(e) => {
-                          const newTestimonials = [...homeContent.testimonials.items];
-                          newTestimonials[index].quote = e.target.value;
-                          setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                        }}
-                        rows={3}
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Author</Label>
-                        <Input
-                          value={testimonial.author}
-                          onChange={(e) => {
-                            const newTestimonials = [...homeContent.testimonials.items];
-                            newTestimonials[index].author = e.target.value;
-                            setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Role</Label>
-                        <Input
-                          value={testimonial.role}
-                          onChange={(e) => {
-                            const newTestimonials = [...homeContent.testimonials.items];
-                            newTestimonials[index].role = e.target.value;
-                            setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>CTA Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.cta.title}
-                    onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={homeContent.cta.description}
-                    onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Primary Button</Label>
-                    <Input
-                      value={homeContent.cta.buttons.primary}
-                      onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, primary: e.target.value } } })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Secondary Button</Label>
-                    <Input
-                      value={homeContent.cta.buttons.secondary}
-                      onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, secondary: e.target.value } } })}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Features Section</CardTitle>
-                <Button
-                  onClick={() => {
-                    const newFeature = {
-                      title: "New Feature",
-                      description: "Feature description",
-                      image: ""
-                    };
-                    setHomeContent({ ...homeContent, features: { ...homeContent.features, items: [...homeContent.features.items, newFeature] } });
-                    setHasUnsavedChanges(true);
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Feature
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.features.title}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, features: { ...homeContent.features, title: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Textarea
-                    value={homeContent.features.subtitle}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, features: { ...homeContent.features, subtitle: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                    rows={2}
-                  />
-                </div>
-                {homeContent.features.items.map((feature, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">Feature {index + 1}</h4>
-                      <Button
-                        onClick={() => {
-                          const newFeatures = homeContent.features.items.filter((_, i) => i !== index);
-                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Title</Label>
-                      <Input
-                        value={feature.title}
-                        onChange={(e) => {
-                          const newFeatures = [...homeContent.features.items];
-                          newFeatures[index].title = e.target.value;
-                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                          setHasUnsavedChanges(true);
-                        }}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={feature.description}
-                        onChange={(e) => {
-                          const newFeatures = [...homeContent.features.items];
-                          newFeatures[index].description = e.target.value;
-                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Image</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              handleImageUpload(file, (dataUrl) => {
-                                const newFeatures = [...homeContent.features.items];
-                                newFeatures[index].image = dataUrl;
-                                setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                              });
-                            }
-                          }}
-                        />
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>Process Section</CardTitle>
                         <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
                           onClick={() => {
-                            const newFeatures = [...homeContent.features.items];
-                            newFeatures[index].image = "";
-                            setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                            const newStep = {
+                              title: "NEW STEP",
+                              desc: "Step description",
+                              hex: `0x0${homeContent.process.steps.length + 1}`
+                            };
+                            setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: [...homeContent.process.steps, newStep] } });
                             setHasUnsavedChanges(true);
                           }}
+                          size="sm"
+                          variant="outline"
                         >
-                          Clear
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Step
                         </Button>
-                      </div>
-                      {feature.image && (
-                        <img src={feature.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={homeContent.process.title}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, process: { ...homeContent.process, title: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Subtitle</Label>
+                          <Textarea
+                            value={homeContent.process.subtitle}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, process: { ...homeContent.process, subtitle: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                            rows={2}
+                          />
+                        </div>
+                        {homeContent.process.steps.map((step, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-semibold">Step {index + 1}</h4>
+                              <Button
+                                onClick={() => {
+                                  const newSteps = homeContent.process.steps.filter((_, i) => i !== index);
+                                  setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                size="sm"
+                                variant="destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-2">
+                                <Label>Title</Label>
+                                <Input
+                                  value={step.title}
+                                  onChange={(e) => {
+                                    const newSteps = [...homeContent.process.steps];
+                                    newSteps[index].title = e.target.value;
+                                    setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Hex Code</Label>
+                                <Input
+                                  value={step.hex}
+                                  onChange={(e) => {
+                                    const newSteps = [...homeContent.process.steps];
+                                    newSteps[index].hex = e.target.value;
+                                    setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Description</Label>
+                              <Textarea
+                                value={step.desc}
+                                onChange={(e) => {
+                                  const newSteps = [...homeContent.process.steps];
+                                  newSteps[index].desc = e.target.value;
+                                  setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                rows={2}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Projects Section</CardTitle>
-                <Button
-                  onClick={() => {
-                    const newProject = {
-                      title: "New Project",
-                      desc: "Project description",
-                      image: "",
-                      tag: "Web Dev"
-                    };
-                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: [...homeContent.projects.items, newProject] } });
-                    setHasUnsavedChanges(true);
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Project
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.projects.title}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, projects: { ...homeContent.projects, title: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Textarea
-                    value={homeContent.projects.subtitle}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, projects: { ...homeContent.projects, subtitle: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                    rows={2}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Button Text</Label>
-                  <Input
-                    value={homeContent.projects.buttonText}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, projects: { ...homeContent.projects, buttonText: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-                {homeContent.projects.items.map((project, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">Project {index + 1}</h4>
-                      <Button
-                        onClick={() => {
-                          const newProjects = homeContent.projects.items.filter((_, i) => i !== index);
-                          setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Title</Label>
-                        <Input
-                          value={project.title}
-                          onChange={(e) => {
-                            const newProjects = [...homeContent.projects.items];
-                            newProjects[index].title = e.target.value;
-                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                            setHasUnsavedChanges(true);
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Tag</Label>
-                        <Input
-                          value={project.tag}
-                          onChange={(e) => {
-                            const newProjects = [...homeContent.projects.items];
-                            newProjects[index].tag = e.target.value;
-                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                            setHasUnsavedChanges(true);
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={project.desc}
-                        onChange={(e) => {
-                          const newProjects = [...homeContent.projects.items];
-                          newProjects[index].desc = e.target.value;
-                          setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Image</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              handleImageUpload(file, (dataUrl) => {
-                                const newProjects = [...homeContent.projects.items];
-                                newProjects[index].image = dataUrl;
-                                setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                              });
-                            }
-                          }}
-                        />
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>Testimonials Section</CardTitle>
                         <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
                           onClick={() => {
-                            const newProjects = [...homeContent.projects.items];
-                            newProjects[index].image = "";
-                            setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
+                            const newTestimonial = {
+                              quote: "New testimonial quote",
+                              author: "Client Name",
+                              role: "Position, Company"
+                            };
+                            setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: [...homeContent.testimonials.items, newTestimonial] } });
                             setHasUnsavedChanges(true);
                           }}
+                          size="sm"
+                          variant="outline"
                         >
-                          Clear
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Testimonial
                         </Button>
-                      </div>
-                      {project.image && (
-                        <img src={project.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={homeContent.testimonials.title}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, title: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Subtitle</Label>
+                          <Textarea
+                            value={homeContent.testimonials.subtitle}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, subtitle: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                            rows={2}
+                          />
+                        </div>
+                        {homeContent.testimonials.items.map((testimonial, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-semibold">Testimonial {index + 1}</h4>
+                              <Button
+                                onClick={() => {
+                                  const newTestimonials = homeContent.testimonials.items.filter((_, i) => i !== index);
+                                  setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                size="sm"
+                                variant="destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Quote</Label>
+                              <Textarea
+                                value={testimonial.quote}
+                                onChange={(e) => {
+                                  const newTestimonials = [...homeContent.testimonials.items];
+                                  newTestimonials[index].quote = e.target.value;
+                                  setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                rows={3}
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-2">
+                                <Label>Author</Label>
+                                <Input
+                                  value={testimonial.author}
+                                  onChange={(e) => {
+                                    const newTestimonials = [...homeContent.testimonials.items];
+                                    newTestimonials[index].author = e.target.value;
+                                    setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Role</Label>
+                                <Input
+                                  value={testimonial.role}
+                                  onChange={(e) => {
+                                    const newTestimonials = [...homeContent.testimonials.items];
+                                    newTestimonials[index].role = e.target.value;
+                                    setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
+                                    setHasUnsavedChanges(true);
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Process Section</CardTitle>
-                <Button
-                  onClick={() => {
-                    const newStep = {
-                      title: "NEW STEP",
-                      desc: "Step description",
-                      hex: `0x0${homeContent.process.steps.length + 1}`
-                    };
-                    setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: [...homeContent.process.steps, newStep] } });
-                    setHasUnsavedChanges(true);
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Step
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.process.title}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, process: { ...homeContent.process, title: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Textarea
-                    value={homeContent.process.subtitle}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, process: { ...homeContent.process, subtitle: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                    rows={2}
-                  />
-                </div>
-                {homeContent.process.steps.map((step, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">Step {index + 1}</h4>
-                      <Button
-                        onClick={() => {
-                          const newSteps = homeContent.process.steps.filter((_, i) => i !== index);
-                          setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Title</Label>
-                        <Input
-                          value={step.title}
-                          onChange={(e) => {
-                            const newSteps = [...homeContent.process.steps];
-                            newSteps[index].title = e.target.value;
-                            setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                            setHasUnsavedChanges(true);
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Hex Code</Label>
-                        <Input
-                          value={step.hex}
-                          onChange={(e) => {
-                            const newSteps = [...homeContent.process.steps];
-                            newSteps[index].hex = e.target.value;
-                            setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                            setHasUnsavedChanges(true);
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={step.desc}
-                        onChange={(e) => {
-                          const newSteps = [...homeContent.process.steps];
-                          newSteps[index].desc = e.target.value;
-                          setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>CTA Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={homeContent.cta.title}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, cta: { ...homeContent.cta, title: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={homeContent.cta.description}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, cta: { ...homeContent.cta, description: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                            rows={3}
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Primary Button</Label>
+                            <Input
+                              value={homeContent.cta.buttons.primary}
+                              onChange={(e) => {
+                                setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, primary: e.target.value } } });
+                                setHasUnsavedChanges(true);
+                              }}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Secondary Button</Label>
+                            <Input
+                              value={homeContent.cta.buttons.secondary}
+                              onChange={(e) => {
+                                setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, secondary: e.target.value } } });
+                                setHasUnsavedChanges(true);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Testimonials Section</CardTitle>
-                <Button
-                  onClick={() => {
-                    const newTestimonial = {
-                      quote: "New testimonial quote",
-                      author: "Client Name",
-                      role: "Position, Company"
-                    };
-                    setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: [...homeContent.testimonials.items, newTestimonial] } });
-                    setHasUnsavedChanges(true);
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Testimonial
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.testimonials.title}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, title: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Textarea
-                    value={homeContent.testimonials.subtitle}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, subtitle: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                    rows={2}
-                  />
-                </div>
-                {homeContent.testimonials.items.map((testimonial, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">Testimonial {index + 1}</h4>
-                      <Button
-                        onClick={() => {
-                          const newTestimonials = homeContent.testimonials.items.filter((_, i) => i !== index);
-                          setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Quote</Label>
-                      <Textarea
-                        value={testimonial.quote}
-                        onChange={(e) => {
-                          const newTestimonials = [...homeContent.testimonials.items];
-                          newTestimonials[index].quote = e.target.value;
-                          setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                          setHasUnsavedChanges(true);
-                        }}
-                        rows={3}
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Author</Label>
-                        <Input
-                          value={testimonial.author}
-                          onChange={(e) => {
-                            const newTestimonials = [...homeContent.testimonials.items];
-                            newTestimonials[index].author = e.target.value;
-                            setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                            setHasUnsavedChanges(true);
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Role</Label>
-                        <Input
-                          value={testimonial.role}
-                          onChange={(e) => {
-                            const newTestimonials = [...homeContent.testimonials.items];
-                            newTestimonials[index].role = e.target.value;
-                            setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                            setHasUnsavedChanges(true);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>CTA Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.cta.title}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, cta: { ...homeContent.cta, title: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={homeContent.cta.description}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, cta: { ...homeContent.cta, description: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                    rows={3}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Primary Button</Label>
-                    <Input
-                      value={homeContent.cta.buttons.primary}
-                      onChange={(e) => {
-                        setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, primary: e.target.value } } });
-                        setHasUnsavedChanges(true);
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Secondary Button</Label>
-                    <Input
-                      value={homeContent.cta.buttons.secondary}
-                      onChange={(e) => {
-                        setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, secondary: e.target.value } } });
-                        setHasUnsavedChanges(true);
-                      }}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Newsletter Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={homeContent.newsletter.title}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, title: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={homeContent.newsletter.description}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, description: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                    rows={2}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Button Text</Label>
-                  <Input
-                    value={homeContent.newsletter.buttonText}
-                    onChange={(e) => {
-                      setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, buttonText: e.target.value } });
-                      setHasUnsavedChanges(true);
-                    }}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Newsletter Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={homeContent.newsletter.title}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, title: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={homeContent.newsletter.description}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, description: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                            rows={2}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Button Text</Label>
+                          <Input
+                            value={homeContent.newsletter.buttonText}
+                            onChange={(e) => {
+                              setHomeContent({ ...homeContent, newsletter: { ...homeContent.newsletter, buttonText: e.target.value } });
+                              setHasUnsavedChanges(true);
+                            }}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 )}
 
                 {activeTab === 'services' && (
                   <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Hero Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Tagline</Label>
-                  <Input
-                    value={servicesContent.hero.tagline}
-                    onChange={(e) => setServicesContent({ ...servicesContent, hero: { ...servicesContent.hero, tagline: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Heading</Label>
-                  <Input
-                    value={servicesContent.hero.heading}
-                    onChange={(e) => setServicesContent({ ...servicesContent, hero: { ...servicesContent.hero, heading: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={servicesContent.hero.description}
-                    onChange={(e) => setServicesContent({ ...servicesContent, hero: { ...servicesContent.hero, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Hero Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Tagline</Label>
+                          <Input
+                            value={servicesContent.hero.tagline}
+                            onChange={(e) => setServicesContent({ ...servicesContent, hero: { ...servicesContent.hero, tagline: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Heading</Label>
+                          <Input
+                            value={servicesContent.hero.heading}
+                            onChange={(e) => setServicesContent({ ...servicesContent, hero: { ...servicesContent.hero, heading: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={servicesContent.hero.description}
+                            onChange={(e) => setServicesContent({ ...servicesContent, hero: { ...servicesContent.hero, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Services</CardTitle>
-                <Button
-                  onClick={() => {
-                    const newService = {
-                      title: "New Service",
-                      description: "Service description",
-                      features: ["Feature 1", "Feature 2"]
-                    };
-                    setServicesContent({ ...servicesContent, services: [...servicesContent.services, newService] });
-                    setHasUnsavedChanges(true);
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Service
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {servicesContent.services.map((service, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">Service {index + 1}</h4>
-                      <Button
-                        onClick={() => {
-                          const newServices = servicesContent.services.filter((_, i) => i !== index);
-                          setServicesContent({ ...servicesContent, services: newServices });
-                          setHasUnsavedChanges(true);
-                        }}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Title</Label>
-                      <Input
-                        value={service.title}
-                        onChange={(e) => {
-                          const newServices = [...servicesContent.services];
-                          newServices[index].title = e.target.value;
-                          setServicesContent({ ...servicesContent, services: newServices });
-                        }}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={service.description}
-                        onChange={(e) => {
-                          const newServices = [...servicesContent.services];
-                          newServices[index].description = e.target.value;
-                          setServicesContent({ ...servicesContent, services: newServices });
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Features (one per line)</Label>
-                      <Textarea
-                        value={service.features.join('\n')}
-                        onChange={(e) => {
-                          const newServices = [...servicesContent.services];
-                          newServices[index].features = e.target.value.split('\n').filter(f => f.trim());
-                          setServicesContent({ ...servicesContent, services: newServices });
-                        }}
-                        rows={4}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>Services</CardTitle>
+                        <Button
+                          onClick={() => {
+                            const newService = {
+                              title: "New Service",
+                              description: "Service description",
+                              features: ["Feature 1", "Feature 2"]
+                            };
+                            setServicesContent({ ...servicesContent, services: [...servicesContent.services, newService] });
+                            setHasUnsavedChanges(true);
+                          }}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Service
+                        </Button>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {servicesContent.services.map((service, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-semibold">Service {index + 1}</h4>
+                              <Button
+                                onClick={() => {
+                                  const newServices = servicesContent.services.filter((_, i) => i !== index);
+                                  setServicesContent({ ...servicesContent, services: newServices });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                size="sm"
+                                variant="destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Title</Label>
+                              <Input
+                                value={service.title}
+                                onChange={(e) => {
+                                  const newServices = [...servicesContent.services];
+                                  newServices[index].title = e.target.value;
+                                  setServicesContent({ ...servicesContent, services: newServices });
+                                }}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Description</Label>
+                              <Textarea
+                                value={service.description}
+                                onChange={(e) => {
+                                  const newServices = [...servicesContent.services];
+                                  newServices[index].description = e.target.value;
+                                  setServicesContent({ ...servicesContent, services: newServices });
+                                }}
+                                rows={2}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Features (one per line)</Label>
+                              <Textarea
+                                value={service.features.join('\n')}
+                                onChange={(e) => {
+                                  const newServices = [...servicesContent.services];
+                                  newServices[index].features = e.target.value.split('\n').filter(f => f.trim());
+                                  setServicesContent({ ...servicesContent, services: newServices });
+                                }}
+                                rows={4}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>CTA Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={servicesContent.cta.title}
-                    onChange={(e) => setServicesContent({ ...servicesContent, cta: { ...servicesContent.cta, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={servicesContent.cta.description}
-                    onChange={(e) => setServicesContent({ ...servicesContent, cta: { ...servicesContent.cta, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Button Text</Label>
-                  <Input
-                    value={servicesContent.cta.buttonText}
-                    onChange={(e) => setServicesContent({ ...servicesContent, cta: { ...servicesContent.cta, buttonText: e.target.value } })}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>CTA Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={servicesContent.cta.title}
+                            onChange={(e) => setServicesContent({ ...servicesContent, cta: { ...servicesContent.cta, title: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={servicesContent.cta.description}
+                            onChange={(e) => setServicesContent({ ...servicesContent, cta: { ...servicesContent.cta, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Button Text</Label>
+                          <Input
+                            value={servicesContent.cta.buttonText}
+                            onChange={(e) => setServicesContent({ ...servicesContent, cta: { ...servicesContent.cta, buttonText: e.target.value } })}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 )}
 
                 {activeTab === 'portfolio' && (
                   <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Hero Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Heading</Label>
-                  <Input
-                    value={portfolioContent.hero.heading}
-                    onChange={(e) => setPortfolioContent({ ...portfolioContent, hero: { ...portfolioContent.hero, heading: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={portfolioContent.hero.description}
-                    onChange={(e) => setPortfolioContent({ ...portfolioContent, hero: { ...portfolioContent.hero, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Hero Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Heading</Label>
+                          <Input
+                            value={portfolioContent.hero.heading}
+                            onChange={(e) => setPortfolioContent({ ...portfolioContent, hero: { ...portfolioContent.hero, heading: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={portfolioContent.hero.description}
+                            onChange={(e) => setPortfolioContent({ ...portfolioContent, hero: { ...portfolioContent.hero, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Projects</CardTitle>
-                <Button
-                  onClick={() => {
-                    const newProject = {
-                      title: "New Project",
-                      description: "Project description",
-                      image: "",
-                      tags: ["Tag1", "Tag2"],
-                      category: "Web Development",
-                      link: "#"
-                    };
-                    setPortfolioContent({ ...portfolioContent, projects: [...portfolioContent.projects, newProject] });
-                    setHasUnsavedChanges(true);
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Project
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {portfolioContent.projects.map((project, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">Project {index + 1}</h4>
-                      <Button
-                        onClick={() => {
-                          const newProjects = portfolioContent.projects.filter((_, i) => i !== index);
-                          setPortfolioContent({ ...portfolioContent, projects: newProjects });
-                          setHasUnsavedChanges(true);
-                        }}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Title</Label>
-                        <Input
-                          value={project.title}
-                          onChange={(e) => {
-                            const newProjects = [...portfolioContent.projects];
-                            newProjects[index].title = e.target.value;
-                            setPortfolioContent({ ...portfolioContent, projects: newProjects });
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Category</Label>
-                        <Input
-                          value={project.category}
-                          onChange={(e) => {
-                            const newProjects = [...portfolioContent.projects];
-                            newProjects[index].category = e.target.value;
-                            setPortfolioContent({ ...portfolioContent, projects: newProjects });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={project.description}
-                        onChange={(e) => {
-                          const newProjects = [...portfolioContent.projects];
-                          newProjects[index].description = e.target.value;
-                          setPortfolioContent({ ...portfolioContent, projects: newProjects });
-                        }}
-                        rows={3}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Image</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              handleImageUpload(file, (dataUrl) => {
-                                const newProjects = [...portfolioContent.projects];
-                                newProjects[index].image = dataUrl;
-                                setPortfolioContent({ ...portfolioContent, projects: newProjects });
-                              });
-                            }
-                          }}
-                        />
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>Projects</CardTitle>
                         <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
                           onClick={() => {
-                            const newProjects = [...portfolioContent.projects];
-                            newProjects[index].image = "";
-                            setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                            const newProject = {
+                              title: "New Project",
+                              description: "Project description",
+                              image: "",
+                              tags: ["Tag1", "Tag2"],
+                              category: "Web Development",
+                              link: "#"
+                            };
+                            setPortfolioContent({ ...portfolioContent, projects: [...portfolioContent.projects, newProject] });
+                            setHasUnsavedChanges(true);
                           }}
+                          size="sm"
+                          variant="outline"
                         >
-                          Clear
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Project
                         </Button>
-                      </div>
-                      {project.image && (
-                        <img src={project.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Tags (comma separated)</Label>
-                      <Input
-                        value={project.tags.join(', ')}
-                        onChange={(e) => {
-                          const newProjects = [...portfolioContent.projects];
-                          newProjects[index].tags = e.target.value.split(',').map(t => t.trim());
-                          setPortfolioContent({ ...portfolioContent, projects: newProjects });
-                        }}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Link</Label>
-                      <Input
-                        value={project.link}
-                        onChange={(e) => {
-                          const newProjects = [...portfolioContent.projects];
-                          newProjects[index].link = e.target.value;
-                          setPortfolioContent({ ...portfolioContent, projects: newProjects });
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {portfolioContent.projects.map((project, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-semibold">Project {index + 1}</h4>
+                              <Button
+                                onClick={() => {
+                                  const newProjects = portfolioContent.projects.filter((_, i) => i !== index);
+                                  setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                size="sm"
+                                variant="destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-2">
+                                <Label>Title</Label>
+                                <Input
+                                  value={project.title}
+                                  onChange={(e) => {
+                                    const newProjects = [...portfolioContent.projects];
+                                    newProjects[index].title = e.target.value;
+                                    setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                  }}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Category</Label>
+                                <Input
+                                  value={project.category}
+                                  onChange={(e) => {
+                                    const newProjects = [...portfolioContent.projects];
+                                    newProjects[index].category = e.target.value;
+                                    setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Description</Label>
+                              <Textarea
+                                value={project.description}
+                                onChange={(e) => {
+                                  const newProjects = [...portfolioContent.projects];
+                                  newProjects[index].description = e.target.value;
+                                  setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                }}
+                                rows={3}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Image</Label>
+                              <div className="flex gap-2">
+                                <Input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      handleImageUpload(file, (dataUrl) => {
+                                        const newProjects = [...portfolioContent.projects];
+                                        newProjects[index].image = dataUrl;
+                                        setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                      });
+                                    }
+                                  }}
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newProjects = [...portfolioContent.projects];
+                                    newProjects[index].image = "";
+                                    setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                  }}
+                                >
+                                  Clear
+                                </Button>
+                              </div>
+                              {project.image && (
+                                <img src={project.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
+                              )}
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Tags (comma separated)</Label>
+                              <Input
+                                value={project.tags.join(', ')}
+                                onChange={(e) => {
+                                  const newProjects = [...portfolioContent.projects];
+                                  newProjects[index].tags = e.target.value.split(',').map(t => t.trim());
+                                  setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                }}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Link</Label>
+                              <Input
+                                value={project.link}
+                                onChange={(e) => {
+                                  const newProjects = [...portfolioContent.projects];
+                                  newProjects[index].link = e.target.value;
+                                  setPortfolioContent({ ...portfolioContent, projects: newProjects });
+                                }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>CTA Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={portfolioContent.cta.title}
-                    onChange={(e) => setPortfolioContent({ ...portfolioContent, cta: { ...portfolioContent.cta, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={portfolioContent.cta.description}
-                    onChange={(e) => setPortfolioContent({ ...portfolioContent, cta: { ...portfolioContent.cta, description: e.target.value } })}
-                    rows={2}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Button Text</Label>
-                  <Input
-                    value={portfolioContent.cta.buttonText}
-                    onChange={(e) => setPortfolioContent({ ...portfolioContent, cta: { ...portfolioContent.cta, buttonText: e.target.value } })}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>CTA Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={portfolioContent.cta.title}
+                            onChange={(e) => setPortfolioContent({ ...portfolioContent, cta: { ...portfolioContent.cta, title: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={portfolioContent.cta.description}
+                            onChange={(e) => setPortfolioContent({ ...portfolioContent, cta: { ...portfolioContent.cta, description: e.target.value } })}
+                            rows={2}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Button Text</Label>
+                          <Input
+                            value={portfolioContent.cta.buttonText}
+                            onChange={(e) => setPortfolioContent({ ...portfolioContent, cta: { ...portfolioContent.cta, buttonText: e.target.value } })}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 )}
 
                 {activeTab === 'about' && (
                   <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Hero Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Heading</Label>
-                  <Input
-                    value={aboutContent.hero.heading}
-                    onChange={(e) => setAboutContent({ ...aboutContent, hero: { ...aboutContent.hero, heading: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={aboutContent.hero.description}
-                    onChange={(e) => setAboutContent({ ...aboutContent, hero: { ...aboutContent.hero, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Hero Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Heading</Label>
+                          <Input
+                            value={aboutContent.hero.heading}
+                            onChange={(e) => setAboutContent({ ...aboutContent, hero: { ...aboutContent.hero, heading: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={aboutContent.hero.description}
+                            onChange={(e) => setAboutContent({ ...aboutContent, hero: { ...aboutContent.hero, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Story Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={aboutContent.story.title}
-                    onChange={(e) => setAboutContent({ ...aboutContent, story: { ...aboutContent.story, title: e.target.value } })}
-                  />
-                </div>
-                {aboutContent.story.paragraphs.map((paragraph, index) => (
-                  <div key={index} className="space-y-2">
-                    <Label>Paragraph {index + 1}</Label>
-                    <Textarea
-                      value={paragraph}
-                      onChange={(e) => {
-                        const newParagraphs = [...aboutContent.story.paragraphs];
-                        newParagraphs[index] = e.target.value;
-                        setAboutContent({ ...aboutContent, story: { ...aboutContent.story, paragraphs: newParagraphs } });
-                      }}
-                      rows={3}
-                    />
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Story Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={aboutContent.story.title}
+                            onChange={(e) => setAboutContent({ ...aboutContent, story: { ...aboutContent.story, title: e.target.value } })}
+                          />
+                        </div>
+                        {aboutContent.story.paragraphs.map((paragraph, index) => (
+                          <div key={index} className="space-y-2">
+                            <Label>Paragraph {index + 1}</Label>
+                            <Textarea
+                              value={paragraph}
+                              onChange={(e) => {
+                                const newParagraphs = [...aboutContent.story.paragraphs];
+                                newParagraphs[index] = e.target.value;
+                                setAboutContent({ ...aboutContent, story: { ...aboutContent.story, paragraphs: newParagraphs } });
+                              }}
+                              rows={3}
+                            />
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Mission & Vision</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Mission Title</Label>
-                  <Input
-                    value={aboutContent.mission.title}
-                    onChange={(e) => setAboutContent({ ...aboutContent, mission: { ...aboutContent.mission, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Mission Description</Label>
-                  <Textarea
-                    value={aboutContent.mission.description}
-                    onChange={(e) => setAboutContent({ ...aboutContent, mission: { ...aboutContent.mission, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Vision Title</Label>
-                  <Input
-                    value={aboutContent.vision.title}
-                    onChange={(e) => setAboutContent({ ...aboutContent, vision: { ...aboutContent.vision, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Vision Description</Label>
-                  <Textarea
-                    value={aboutContent.vision.description}
-                    onChange={(e) => setAboutContent({ ...aboutContent, vision: { ...aboutContent.vision, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Mission & Vision</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Mission Title</Label>
+                          <Input
+                            value={aboutContent.mission.title}
+                            onChange={(e) => setAboutContent({ ...aboutContent, mission: { ...aboutContent.mission, title: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Mission Description</Label>
+                          <Textarea
+                            value={aboutContent.mission.description}
+                            onChange={(e) => setAboutContent({ ...aboutContent, mission: { ...aboutContent.mission, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Vision Title</Label>
+                          <Input
+                            value={aboutContent.vision.title}
+                            onChange={(e) => setAboutContent({ ...aboutContent, vision: { ...aboutContent.vision, title: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Vision Description</Label>
+                          <Textarea
+                            value={aboutContent.vision.description}
+                            onChange={(e) => setAboutContent({ ...aboutContent, vision: { ...aboutContent.vision, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Values Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={aboutContent.values.title}
-                    onChange={(e) => setAboutContent({ ...aboutContent, values: { ...aboutContent.values, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Subtitle</Label>
-                  <Input
-                    value={aboutContent.values.subtitle}
-                    onChange={(e) => setAboutContent({ ...aboutContent, values: { ...aboutContent.values, subtitle: e.target.value } })}
-                  />
-                </div>
-                {aboutContent.values.items.map((value, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <h4 className="font-semibold">Value {index + 1}</h4>
-                    <div className="space-y-2">
-                      <Label>Title</Label>
-                      <Input
-                        value={value.title}
-                        onChange={(e) => {
-                          const newValues = [...aboutContent.values.items];
-                          newValues[index].title = e.target.value;
-                          setAboutContent({ ...aboutContent, values: { ...aboutContent.values, items: newValues } });
-                        }}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Description</Label>
-                      <Textarea
-                        value={value.description}
-                        onChange={(e) => {
-                          const newValues = [...aboutContent.values.items];
-                          newValues[index].description = e.target.value;
-                          setAboutContent({ ...aboutContent, values: { ...aboutContent.values, items: newValues } });
-                        }}
-                        rows={2}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Values Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={aboutContent.values.title}
+                            onChange={(e) => setAboutContent({ ...aboutContent, values: { ...aboutContent.values, title: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Subtitle</Label>
+                          <Input
+                            value={aboutContent.values.subtitle}
+                            onChange={(e) => setAboutContent({ ...aboutContent, values: { ...aboutContent.values, subtitle: e.target.value } })}
+                          />
+                        </div>
+                        {aboutContent.values.items.map((value, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <h4 className="font-semibold">Value {index + 1}</h4>
+                            <div className="space-y-2">
+                              <Label>Title</Label>
+                              <Input
+                                value={value.title}
+                                onChange={(e) => {
+                                  const newValues = [...aboutContent.values.items];
+                                  newValues[index].title = e.target.value;
+                                  setAboutContent({ ...aboutContent, values: { ...aboutContent.values, items: newValues } });
+                                }}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Description</Label>
+                              <Textarea
+                                value={value.description}
+                                onChange={(e) => {
+                                  const newValues = [...aboutContent.values.items];
+                                  newValues[index].description = e.target.value;
+                                  setAboutContent({ ...aboutContent, values: { ...aboutContent.values, items: newValues } });
+                                }}
+                                rows={2}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Team Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={aboutContent.team.title}
-                    onChange={(e) => setAboutContent({ ...aboutContent, team: { ...aboutContent.team, title: e.target.value } })}
-                  />
-                </div>
-                {aboutContent.team.members.map((member, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <h4 className="font-semibold">Team Member {index + 1}</h4>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <Label>Name</Label>
-                        <Input
-                          value={member.name}
-                          onChange={(e) => {
-                            const newMembers = [...aboutContent.team.members];
-                            newMembers[index].name = e.target.value;
-                            setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
-                          }}
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Position</Label>
-                        <Input
-                          value={member.position}
-                          onChange={(e) => {
-                            const newMembers = [...aboutContent.team.members];
-                            newMembers[index].position = e.target.value;
-                            setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
-                          }}
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Image</Label>
-                      <div className="flex gap-2">
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              handleImageUpload(file, (dataUrl) => {
-                                const newMembers = [...aboutContent.team.members];
-                                newMembers[index].image = dataUrl;
-                                setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
-                              });
-                            }
-                          }}
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const newMembers = [...aboutContent.team.members];
-                            newMembers[index].image = "";
-                            setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
-                          }}
-                        >
-                          Clear
-                        </Button>
-                      </div>
-                      {member.image && (
-                        <img src={member.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Team Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={aboutContent.team.title}
+                            onChange={(e) => setAboutContent({ ...aboutContent, team: { ...aboutContent.team, title: e.target.value } })}
+                          />
+                        </div>
+                        {aboutContent.team.members.map((member, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <h4 className="font-semibold">Team Member {index + 1}</h4>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="space-y-2">
+                                <Label>Name</Label>
+                                <Input
+                                  value={member.name}
+                                  onChange={(e) => {
+                                    const newMembers = [...aboutContent.team.members];
+                                    newMembers[index].name = e.target.value;
+                                    setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
+                                  }}
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label>Position</Label>
+                                <Input
+                                  value={member.position}
+                                  onChange={(e) => {
+                                    const newMembers = [...aboutContent.team.members];
+                                    newMembers[index].position = e.target.value;
+                                    setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Image</Label>
+                              <div className="flex gap-2">
+                                <Input
+                                  type="file"
+                                  accept="image/*"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      handleImageUpload(file, (dataUrl) => {
+                                        const newMembers = [...aboutContent.team.members];
+                                        newMembers[index].image = dataUrl;
+                                        setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
+                                      });
+                                    }
+                                  }}
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newMembers = [...aboutContent.team.members];
+                                    newMembers[index].image = "";
+                                    setAboutContent({ ...aboutContent, team: { ...aboutContent.team, members: newMembers } });
+                                  }}
+                                >
+                                  Clear
+                                </Button>
+                              </div>
+                              {member.image && (
+                                <img src={member.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>CTA Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Title</Label>
-                  <Input
-                    value={aboutContent.cta.title}
-                    onChange={(e) => setAboutContent({ ...aboutContent, cta: { ...aboutContent.cta, title: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={aboutContent.cta.description}
-                    onChange={(e) => setAboutContent({ ...aboutContent, cta: { ...aboutContent.cta, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Button Text</Label>
-                  <Input
-                    value={aboutContent.cta.buttonText}
-                    onChange={(e) => setAboutContent({ ...aboutContent, cta: { ...aboutContent.cta, buttonText: e.target.value } })}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>CTA Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Title</Label>
+                          <Input
+                            value={aboutContent.cta.title}
+                            onChange={(e) => setAboutContent({ ...aboutContent, cta: { ...aboutContent.cta, title: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={aboutContent.cta.description}
+                            onChange={(e) => setAboutContent({ ...aboutContent, cta: { ...aboutContent.cta, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Button Text</Label>
+                          <Input
+                            value={aboutContent.cta.buttonText}
+                            onChange={(e) => setAboutContent({ ...aboutContent, cta: { ...aboutContent.cta, buttonText: e.target.value } })}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
                   </div>
                 )}
 
                 {activeTab === 'contact' && (
                   <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Hero Section</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Heading</Label>
-                  <Input
-                    value={contactContent.hero.heading}
-                    onChange={(e) => setContactContent({ ...contactContent, hero: { ...contactContent.hero, heading: e.target.value } })}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Description</Label>
-                  <Textarea
-                    value={contactContent.hero.description}
-                    onChange={(e) => setContactContent({ ...contactContent, hero: { ...contactContent.hero, description: e.target.value } })}
-                    rows={3}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Hero Section</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Heading</Label>
+                          <Input
+                            value={contactContent.hero.heading}
+                            onChange={(e) => setContactContent({ ...contactContent, hero: { ...contactContent.hero, heading: e.target.value } })}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Description</Label>
+                          <Textarea
+                            value={contactContent.hero.description}
+                            onChange={(e) => setContactContent({ ...contactContent, hero: { ...contactContent.hero, description: e.target.value } })}
+                            rows={3}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input
-                      value={contactContent.contactInfo.email}
-                      onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, email: e.target.value } })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Phone</Label>
-                    <Input
-                      value={contactContent.contactInfo.phone}
-                      onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, phone: e.target.value } })}
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Address</Label>
-                  <Textarea
-                    value={contactContent.contactInfo.address}
-                    onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, address: e.target.value } })}
-                    rows={2}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Business Hours</Label>
-                  <Textarea
-                    value={contactContent.contactInfo.hours}
-                    onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, hours: e.target.value } })}
-                    rows={2}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Contact Information</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label>Email</Label>
+                            <Input
+                              value={contactContent.contactInfo.email}
+                              onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, email: e.target.value } })}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label>Phone</Label>
+                            <Input
+                              value={contactContent.contactInfo.phone}
+                              onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, phone: e.target.value } })}
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Address</Label>
+                          <Textarea
+                            value={contactContent.contactInfo.address}
+                            onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, address: e.target.value } })}
+                            rows={2}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Business Hours</Label>
+                          <Textarea
+                            value={contactContent.contactInfo.hours}
+                            onChange={(e) => setContactContent({ ...contactContent, contactInfo: { ...contactContent.contactInfo, hours: e.target.value } })}
+                            rows={2}
+                          />
+                        </div>
+                      </CardContent>
+                    </Card>
 
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>FAQ Section</CardTitle>
-                <Button
-                  onClick={() => {
-                    const newFaq = {
-                      question: "New Question?",
-                      answer: "Answer to the question."
-                    };
-                    setContactContent({ ...contactContent, faq: [...contactContent.faq, newFaq] });
-                    setHasUnsavedChanges(true);
-                  }}
-                  size="sm"
-                  variant="outline"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add FAQ
-                </Button>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {contactContent.faq.map((faq, index) => (
-                  <div key={index} className="border p-4 rounded-lg space-y-3">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">FAQ {index + 1}</h4>
-                      <Button
-                        onClick={() => {
-                          const newFaq = contactContent.faq.filter((_, i) => i !== index);
-                          setContactContent({ ...contactContent, faq: newFaq });
-                          setHasUnsavedChanges(true);
-                        }}
-                        size="sm"
-                        variant="destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Question</Label>
-                      <Input
-                        value={faq.question}
-                        onChange={(e) => {
-                          const newFaq = [...contactContent.faq];
-                          newFaq[index].question = e.target.value;
-                          setContactContent({ ...contactContent, faq: newFaq });
-                        }}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Answer</Label>
-                      <Textarea
-                        value={faq.answer}
-                        onChange={(e) => {
-                          const newFaq = [...contactContent.faq];
-                          newFaq[index].answer = e.target.value;
-                          setContactContent({ ...contactContent, faq: newFaq });
-                        }}
-                        rows={3}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+                    <Card>
+                      <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle>FAQ Section</CardTitle>
+                        <Button
+                          onClick={() => {
+                            const newFaq = {
+                              question: "New Question?",
+                              answer: "Answer to the question."
+                            };
+                            setContactContent({ ...contactContent, faq: [...contactContent.faq, newFaq] });
+                            setHasUnsavedChanges(true);
+                          }}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add FAQ
+                        </Button>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {contactContent.faq.map((faq, index) => (
+                          <div key={index} className="border p-4 rounded-lg space-y-3">
+                            <div className="flex justify-between items-center">
+                              <h4 className="font-semibold">FAQ {index + 1}</h4>
+                              <Button
+                                onClick={() => {
+                                  const newFaq = contactContent.faq.filter((_, i) => i !== index);
+                                  setContactContent({ ...contactContent, faq: newFaq });
+                                  setHasUnsavedChanges(true);
+                                }}
+                                size="sm"
+                                variant="destructive"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Question</Label>
+                              <Input
+                                value={faq.question}
+                                onChange={(e) => {
+                                  const newFaq = [...contactContent.faq];
+                                  newFaq[index].question = e.target.value;
+                                  setContactContent({ ...contactContent, faq: newFaq });
+                                }}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label>Answer</Label>
+                              <Textarea
+                                value={faq.answer}
+                                onChange={(e) => {
+                                  const newFaq = [...contactContent.faq];
+                                  newFaq[index].answer = e.target.value;
+                                  setContactContent({ ...contactContent, faq: newFaq });
+                                }}
+                                rows={3}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </CardContent>
+                    </Card>
                   </div>
                 )}
 
@@ -2592,8 +2293,8 @@ export default function Admin() {
                           <CardContent className="text-center py-8">
                             <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                             <p className="text-muted-foreground">
-                              {activeMessageFilter === 'all' ? 'No messages yet' : 
-                               activeMessageFilter === 'unread' ? 'No unread messages' : 'No read messages'}
+                              {activeMessageFilter === 'all' ? 'No messages yet' :
+                                activeMessageFilter === 'unread' ? 'No unread messages' : 'No read messages'}
                             </p>
                           </CardContent>
                         </Card>

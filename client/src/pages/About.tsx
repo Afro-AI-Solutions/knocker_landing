@@ -68,10 +68,18 @@ export default function About() {
     });
 
     useEffect(() => {
-        const savedContent = localStorage.getItem('aboutContent');
-        if (savedContent) {
-            setContent(JSON.parse(savedContent));
-        }
+        const loadContent = async () => {
+            try {
+                const response = await fetch('/api/content/about');
+                if (response.ok) {
+                    const data = await response.json();
+                    setContent({ ...content, ...data });
+                }
+            } catch (error) {
+                console.error('Failed to load about content:', error);
+            }
+        };
+        loadContent();
     }, []);
 
     return (
@@ -80,16 +88,16 @@ export default function About() {
             <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
                 <InteractiveParticles />
                 <div className="container mx-auto px-4 text-center relative z-10">
-                    <motion.h1 
+                    <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
+                        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
                         {content.hero.heading}
                     </motion.h1>
-                    <motion.p 
+                    <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
@@ -104,7 +112,7 @@ export default function About() {
             <section className="py-24 bg-gradient-to-b from-background to-muted/20">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6 }}
@@ -118,7 +126,7 @@ export default function About() {
                                 </p>
                             ))}
                         </motion.div>
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: 50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6 }}
@@ -137,7 +145,7 @@ export default function About() {
                 <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="grid md:grid-cols-2 gap-12">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
@@ -150,7 +158,7 @@ export default function About() {
                                 {content.mission.description}
                             </p>
                         </motion.div>
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
@@ -171,7 +179,7 @@ export default function About() {
             <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
@@ -184,31 +192,32 @@ export default function About() {
                         {content.values.items.map((value, i) => {
                             const icons = [<Heart className="h-10 w-10" />, <Shield className="h-10 w-10" />, <Zap className="h-10 w-10" />, <Users className="h-10 w-10" />];
                             return (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.15, duration: 0.7 }}
-                                viewport={{ once: true }}
-                                whileHover={{ y: -15, scale: 1.03 }}
-                                className="group"
-                            >
-                                <Card className="h-full text-center border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/30 relative overflow-hidden bg-gradient-to-br from-background to-muted/30">
-                                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                    <CardContent className="pt-8 pb-8 px-6 relative z-10">
-                                        <motion.div 
-                                            className="mb-6 inline-flex p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 text-primary group-hover:scale-110 transition-transform duration-500"
-                                            whileHover={{ rotate: [0, -10, 10, -10, 0] }}
-                                            transition={{ duration: 0.5 }}
-                                        >
-                                            {icons[i]}
-                                        </motion.div>
-                                        <h3 className="font-bold text-xl mb-3 group-hover:text-primary transition-colors duration-300" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{value.title}</h3>
-                                        <p className="text-muted-foreground leading-relaxed">{value.description}</p>
-                                    </CardContent>
-                                </Card>
-                            </motion.div>
-                        )})}
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 40 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: i * 0.15, duration: 0.7 }}
+                                    viewport={{ once: true }}
+                                    whileHover={{ y: -15, scale: 1.03 }}
+                                    className="group"
+                                >
+                                    <Card className="h-full text-center border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/30 relative overflow-hidden bg-gradient-to-br from-background to-muted/30">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                        <CardContent className="pt-8 pb-8 px-6 relative z-10">
+                                            <motion.div
+                                                className="mb-6 inline-flex p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10 border border-primary/20 text-primary group-hover:scale-110 transition-transform duration-500"
+                                                whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+                                                transition={{ duration: 0.5 }}
+                                            >
+                                                {icons[i]}
+                                            </motion.div>
+                                            <h3 className="font-bold text-xl mb-3 group-hover:text-primary transition-colors duration-300" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{value.title}</h3>
+                                            <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+                                        </CardContent>
+                                    </Card>
+                                </motion.div>
+                            )
+                        })}
                     </div>
                 </div>
             </section>
@@ -216,19 +225,19 @@ export default function About() {
             {/* Team */}
             <section className="py-24 bg-gradient-to-b from-background to-muted/20">
                 <div className="container mx-auto px-4 text-center">
-                    <motion.h2 
+                    <motion.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-3xl md:text-4xl font-bold mb-12 text-primary" 
+                        className="text-3xl md:text-4xl font-bold mb-12 text-primary"
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
                         {content.team.title}
                     </motion.h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                         {content.team.members.map((member, i) => (
-                            <motion.div 
-                                key={i} 
+                            <motion.div
+                                key={i}
                                 className="group"
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -238,8 +247,8 @@ export default function About() {
                             >
                                 <div className="bg-muted h-64 rounded-xl mb-4 overflow-hidden relative border-2 border-border/50 group-hover:border-primary/50 transition-all duration-500">
                                     {member.image ? (
-                                        <img 
-                                            src={member.image} 
+                                        <img
+                                            src={member.image}
                                             alt={member.name}
                                             className="w-full h-full object-cover"
                                         />

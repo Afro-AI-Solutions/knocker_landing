@@ -95,9 +95,9 @@ export default function Contact() {
                 },
                 body: JSON.stringify(values),
             });
-            
+
             const result = await response.json();
-            
+
             if (result.success) {
                 toast({
                     title: "Message Sent!",
@@ -122,16 +122,16 @@ export default function Contact() {
             <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
                 <InteractiveParticles />
                 <div className="container mx-auto px-4 text-center relative z-10">
-                    <motion.h1 
+                    <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
+                        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
                         {content.hero.heading}
                     </motion.h1>
-                    <motion.p 
+                    <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
@@ -215,7 +215,7 @@ export default function Contact() {
                         </div>
 
                         {/* Contact Form */}
-                        <motion.div 
+                        <motion.div
                             className="lg:col-span-2"
                             initial={{ opacity: 0, x: 30 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -305,7 +305,7 @@ export default function Contact() {
             <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 max-w-4xl relative z-10">
-                    <motion.div 
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
