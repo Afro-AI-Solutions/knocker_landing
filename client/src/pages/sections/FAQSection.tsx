@@ -55,7 +55,7 @@ export const FAQSection = (): JSX.Element => {
               </h2>
             </div>
 
-            <div className="absolute left-[calc(50.00%_-_30px)] bottom-0 w-[60px] h-[3px] bg-[#12a16b]" />
+            <div className="absolute left-[calc(50.00%_-_30px)] bottom-0 w-[60px] h-[3px] bg-[#14201c]" />
           </div>
 
           <p className="[font-family:'Roboto',Helvetica] font-normal text-[#14201c] text-base text-center tracking-[0] leading-6 whitespace-nowrap mx-auto">
@@ -100,7 +100,7 @@ export const FAQSection = (): JSX.Element => {
               <div
                 key={index}
                 className={`${dot.width} h-2.5 rounded-[5px] ${
-                  dot.active ? "bg-[#12a16b]" : "bg-[#11a16b4c]"
+                  dot.active ? "bg-[#14201c]" : "bg-[#14201c]/30"
                 }`}
               />
             ))}

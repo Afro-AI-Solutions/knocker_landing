@@ -1,11 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { DatabaseStorage } from "./db-storage";
+import { storage } from "./storage";
 import { insertMessageSchema } from "@shared/schema";
 import { z } from "zod";
-
-// Use database storage
-const dbStorage = new DatabaseStorage();
 
 // Validation schemas
 const messageSchema = z.object({
@@ -22,7 +19,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all content
   app.get("/api/content", async (req, res) => {
     try {
-      const content = await dbStorage.getAllContent();
+      const content = await storage.getAllContent();
       res.json(content);
     } catch (error) {
       res.status(500).json({ 
@@ -38,7 +35,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/content/:pageKey", async (req, res) => {
     try {
       const pageKey = pageKeySchema.parse(req.params.pageKey);
-      const content = await dbStorage.getContentByPage(pageKey);
+      const content = await storage.getContentByPage(pageKey);
       
       if (!content) {
         return res.status(404).json({
@@ -83,7 +80,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      await dbStorage.saveContent(pageKey, data);
+      await storage.saveContent(pageKey, data);
       
       res.json({
         success: true,
@@ -114,7 +111,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all messages
   app.get("/api/messages", async (req, res) => {
     try {
-      const messages = await dbStorage.getMessages();
+      const messages = await storage.getMessages();
       res.json(messages);
     } catch (error) {
       res.status(500).json({
@@ -130,7 +127,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/messages", async (req, res) => {
     try {
       const validatedData = messageSchema.parse(req.body);
-      const message = await dbStorage.createMessage({
+      const message = await storage.createMessage({
         ...validatedData,
         subject: validatedData.message.substring(0, 50) + "..." // Auto-generate subject
       });
@@ -167,7 +164,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Mark message as read
   app.put("/api/messages/:id/read", async (req, res) => {
     try {
-      await dbStorage.markMessageAsRead(req.params.id);
+      await storage.markMessageAsRead(req.params.id);
       res.json({
         success: true,
         message: "Message marked as read",
@@ -188,7 +185,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/contact", async (req, res) => {
     try {
       const validatedData = insertMessageSchema.parse(req.body);
-      const message = await dbStorage.createMessage(validatedData);
+      const message = await storage.createMessage(validatedData);
       res.json({ success: true, message: "Message sent successfully!" });
     } catch (error) {
       res.status(400).json({ success: false, message: "Invalid data" });
@@ -197,8 +194,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/admin/contacts", async (req, res) => {
     try {
-      const messages = await dbStorage.getMessages();
-      const stats = await dbStorage.getMessageStats();
+      const messages = await storage.getMessages();
+      const stats = await storage.getMessageStats();
       res.json({ messages, stats });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch messages" });
@@ -207,52 +204,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.patch("/api/admin/contacts/:id/read", async (req, res) => {
     try {
-      await dbStorage.markMessageAsRead(req.params.id);
+      await storage.markMessageAsRead(req.params.id);
       res.json({ success: true });
     } catch (error) {
       res.status(500).json({ error: "Failed to mark message as read" });
-    }
-  });
-
-  // Content management routes
-  app.get("/api/content", async (req, res) => {
-    try {
-      const allContent = await storage.getAllContent();
-      const contentMap: Record<string, any> = {};
-
-      allContent.forEach(item => {
-        try {
-          contentMap[item.pageKey] = JSON.parse(item.data);
-        } catch (e) {
-          contentMap[item.pageKey] = {};
-        }
-      });
-
-      res.json(contentMap);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch content" });
-    }
-  });
-
-  app.get("/api/content/:pageKey", async (req, res) => {
-    try {
-      const content = await storage.getContent(req.params.pageKey);
-      if (content) {
-        res.json(JSON.parse(content.data));
-      } else {
-        res.status(404).json({ error: "Content not found" });
-      }
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch content" });
-    }
-  });
-
-  app.post("/api/content/:pageKey", async (req, res) => {
-    try {
-      const result = await storage.setContent(req.params.pageKey, req.body);
-      res.json({ success: true, updatedAt: result.updatedAt });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to save content" });
     }
   });
 

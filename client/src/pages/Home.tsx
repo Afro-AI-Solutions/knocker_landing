@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Users, Zap, Trophy } from "lucide-react";
+import { ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Users, Zap, Trophy, FileText, Palette } from "lucide-react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { GridBackground } from "@/components/GridBackground";
@@ -10,143 +10,130 @@ import { GlitchText } from "@/components/GlitchText";
 import { HolographicCard } from "@/components/HolographicCard";
 import { NeonButton } from "@/components/NeonButton";
 import { InteractiveParticles } from "@/components/InteractiveParticles";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
-    const [content, setContent] = useState(null);
-
-    useEffect(() => {
-        const loadContent = async () => {
-            try {
-                const response = await fetch('/api/content/home');
-                if (response.ok) {
-                    const data = await response.json();
-                    setContent(data);
-                    return;
+    const defaultContent = {
+        hero: {
+            tagline: "Revolutionizing Digital Solutions",
+            heading: "We Knock. You Win.",
+            description: "We knock with next-generation digital innovation you win with results that matter.",
+            buttons: { primary: "Start Your Project", secondary: "View Our Work" }
+        },
+        stats: [
+            { label: "Projects Delivered", value: "100+" },
+            { label: "Happy Clients", value: "50+" },
+            { label: "Team Experts", value: "25+" },
+            { label: "Years Experience", value: "5+" }
+        ],
+        techStack: {
+            title: "Powered by Modern Tech",
+            technologies: ["React", "Next.js", "TypeScript", "Node.js", "Python", "TensorFlow", "AWS", "Docker", "Tailwind", "OpenAI"]
+        },
+        features: {
+            title: "Why Choose Knocker AI?",
+            subtitle: "We combine technical expertise with creative innovation to deliver exceptional results that drive real business value.",
+            items: [
+                {
+                    title: "Web Development",
+                    description: "Custom, responsive, and high-performance websites tailored to your brand using modern frameworks like React and Next.js.",
+                    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80"
+                },
+                {
+                    title: "AI Solutions",
+                    description: "Intelligent automation, predictive analytics, and custom LLM integrations to optimize your operations.",
+                    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80"
+                },
+                {
+                    title: "Cloud Systems",
+                    description: "Scalable, secure, and cost-effective cloud infrastructure design and management on AWS, Azure, or GCP.",
+                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80"
+                },
+                {
+                    title: "Digital Growth",
+                    description: "Strategic SEO, performance marketing, and conversion rate optimization to accelerate your market presence.",
+                    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80"
+                },
+                {
+                    title: "ERP Systems",
+                    description: "Complete enterprise resource planning solutions to streamline your business processes and improve operational efficiency.",
+                    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80"
                 }
-            } catch (error) {
-                console.error('Failed to load home content:', error);
-            }
-
-            setContent({
-                hero: {
-                    tagline: "Revolutionizing Digital Solutions",
-                    heading: "We Knock. You Win.",
-                    description: "We knock with next-generation digital innovation you win with results that matter.",
-                    buttons: { primary: "Start Your Project", secondary: "View Our Work" }
+            ]
+        },
+        projects: {
+            title: "Featured Projects",
+            subtitle: "A glimpse into our recent success stories.",
+            buttonText: "View All Projects",
+            items: [
+                {
+                    title: "AI-Powered Analytics",
+                    desc: "Predictive market trends for retail.",
+                    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+                    tag: "AI & ML"
                 },
-                stats: [
-                    { label: "Projects Delivered", value: "100+" },
-                    { label: "Happy Clients", value: "50+" },
-                    { label: "Team Experts", value: "25+" },
-                    { label: "Years Experience", value: "5+" }
-                ],
-                techStack: {
-                    title: "Powered by Modern Tech",
-                    technologies: ["React", "Next.js", "TypeScript", "Node.js", "Python", "TensorFlow", "AWS", "Docker", "Tailwind", "OpenAI"]
+                {
+                    title: "EduTech Platform",
+                    desc: "Interactive LMS with real-time video.",
+                    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80",
+                    tag: "Web Dev"
                 },
-                features: {
-                    title: "Why Choose Knocker AI?",
-                    subtitle: "We combine technical expertise with creative innovation to deliver exceptional results that drive real business value.",
-                    items: [
-                        {
-                            title: "Web Development",
-                            description: "Custom, responsive, and high-performance websites tailored to your brand using modern frameworks like React and Next.js.",
-                            image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80"
-                        },
-                        {
-                            title: "AI Solutions",
-                            description: "Intelligent automation, predictive analytics, and custom LLM integrations to optimize your operations.",
-                            image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80"
-                        },
-                        {
-                            title: "Cloud Systems",
-                            description: "Scalable, secure, and cost-effective cloud infrastructure design and management on AWS, Azure, or GCP.",
-                            image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80"
-                        },
-                        {
-                            title: "Digital Growth",
-                            description: "Strategic SEO, performance marketing, and conversion rate optimization to accelerate your market presence.",
-                            image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80"
-                        },
-                        {
-                            title: "ERP Systems",
-                            description: "Complete enterprise resource planning solutions to streamline your business processes and improve operational efficiency.",
-                            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80"
-                        }
-                    ]
-                },
-                projects: {
-                    title: "Featured Projects",
-                    subtitle: "A glimpse into our recent success stories.",
-                    buttonText: "View All Projects",
-                    items: [
-                        {
-                            title: "AI-Powered Analytics",
-                            desc: "Predictive market trends for retail.",
-                            image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
-                            tag: "AI & ML"
-                        },
-                        {
-                            title: "EduTech Platform",
-                            desc: "Interactive LMS with real-time video.",
-                            image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80",
-                            tag: "Web Dev"
-                        },
-                        {
-                            title: "FinTech Wallet",
-                            desc: "Secure mobile digital wallet.",
-                            image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
-                            tag: "Mobile App"
-                        }
-                    ]
-                },
-                process: {
-                    title: "DEVELOPMENT PROCESS",
-                    subtitle: "Agile software development methodology that delivers high-quality solutions",
-                    steps: [
-                        { title: "PLANNING", desc: "Requirements analysis, user stories, and project roadmap creation", hex: "0x01" },
-                        { title: "DESIGN", desc: "UI/UX design, system architecture, and database modeling", hex: "0x02" },
-                        { title: "DEVELOPMENT", desc: "Agile coding sprints with continuous integration and testing", hex: "0x03" },
-                        { title: "DEPLOYMENT", desc: "Production launch with monitoring and ongoing maintenance", hex: "0x04" }
-                    ]
-                },
-                testimonials: {
-                    title: "What Our Clients Say",
-                    subtitle: "Real feedback from companies who trusted us with their digital transformation",
-                    items: [
-                        {
-                            quote: "Knocker AI transformed our outdated system into a modern, efficient platform. The AI integration saved us hours of manual work every day.",
-                            author: "Sarah J.",
-                            role: "CTO, TechFlow"
-                        },
-                        {
-                            quote: "The team's attention to detail and design aesthetics is unmatched. Our new landing page conversion rate doubled within a month.",
-                            author: "Michael R.",
-                            role: "Marketing Director, GrowthCo"
-                        },
-                        {
-                            quote: "Professional, timely, and incredibly skilled. They didn't just build what we asked for; they improved upon our initial ideas.",
-                            author: "Emily T.",
-                            role: "Founder, StartUp X"
-                        }
-                    ]
-                },
-                cta: {
-                    title: "Ready to Transform Your Business?",
-                    description: "Let's collaborate to build something extraordinary. Whether you need a simple website or a complex AI system, we have the expertise to help.",
-                    buttons: { primary: "Get in Touch", secondary: "Learn About Us" }
-                },
-                newsletter: {
-                    title: "Stay Ahead of the Curve",
-                    description: "Subscribe to our newsletter for the latest insights on AI, Tech trends, and Knocker AI updates.",
-                    buttonText: "Subscribe"
+                {
+                    title: "FinTech Wallet",
+                    desc: "Secure mobile digital wallet.",
+                    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
+                    tag: "Mobile App"
                 }
-            });
-        };
-        loadContent();
-    }, []);
-
-    if (!content) return <div>Loading...</div>;
+            ]
+        },
+        process: {
+            title: "DEVELOPMENT PROCESS",
+            subtitle: "Agile software development methodology that delivers high-quality solutions",
+            steps: [
+                { title: "PLANNING", desc: "Requirements analysis, user stories, and project roadmap creation", hex: "0x01" },
+                { title: "DESIGN", desc: "UI/UX design, system architecture, and database modeling", hex: "0x02" },
+                { title: "DEVELOPMENT", desc: "Agile coding sprints with continuous integration and testing", hex: "0x03" },
+                { title: "DEPLOYMENT", desc: "Production launch with monitoring and ongoing maintenance", hex: "0x04" }
+            ]
+        },
+        testimonials: {
+            title: "What Our Clients Say",
+            subtitle: "Real feedback from companies who trusted us with their digital transformation",
+            items: [
+                {
+                    quote: "Knocker AI transformed our outdated system into a modern, efficient platform. The AI integration saved us hours of manual work every day.",
+                    author: "Sarah J.",
+                    role: "CTO, TechFlow"
+                },
+                {
+                    quote: "The team's attention to detail and design aesthetics is unmatched. Our new landing page conversion rate doubled within a month.",
+                    author: "Michael R.",
+                    role: "Marketing Director, GrowthCo"
+                },
+                {
+                    quote: "Professional, timely, and incredibly skilled. They didn't just build what we asked for; they improved upon our initial ideas.",
+                    author: "Emily T.",
+                    role: "Founder, StartUp X"
+                }
+            ]
+        },
+        cta: {
+            title: "Ready to Transform Your Business?",
+            description: "Let's collaborate to build something extraordinary. Whether you need a simple website or a complex AI system, we have the expertise to help.",
+            buttons: { primary: "Get in Touch", secondary: "Learn About Us" }
+        },
+        newsletter: {
+            title: "Stay Ahead of the Curve",
+            description: "Subscribe to our newsletter for the latest insights on AI, Tech trends, and Knocker AI updates.",
+            buttonText: "Subscribe"
+        }
+    };
+    const { data: apiContent, isLoading } = useQuery({
+        queryKey: ['homeContent'],
+        queryFn: () => fetch('/api/content/home').then(res => res.json()),
+    });
+    const content = apiContent || defaultContent;
+    if (isLoading) return <div>Loading...</div>;
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -170,7 +157,7 @@ export default function Home() {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.2 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-center"
+                        className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-center bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
                         style={{ fontFamily: 'Orbitron, sans-serif' }}
                     >
                         {content.hero.heading}
@@ -218,10 +205,10 @@ export default function Home() {
                 <div className="relative flex overflow-x-hidden group">
                     <div className="animate-marquee whitespace-nowrap flex gap-16 items-center">
                         {content.techStack.technologies.map((tech, i) => (
-                            <span key={i} className="text-2xl font-bold text-muted-foreground/50 mx-4">{tech}</span>
+                            <span key={i} className="text-2xl font-bold text-muted-foreground/50 mx-4">{typeof tech === 'string' ? tech : tech.name}</span>
                         ))}
                         {content.techStack.technologies.map((tech, i) => (
-                            <span key={`dup-${i}`} className="text-2xl font-bold text-muted-foreground/50 mx-4">{tech}</span>
+                            <span key={`dup-${i}`} className="text-2xl font-bold text-muted-foreground/50 mx-4">{typeof tech === 'string' ? tech : tech.name}</span>
                         ))}
                     </div>
                 </div>

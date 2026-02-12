@@ -1,29 +1,29 @@
 import { sql } from "drizzle-orm";
-import { mysqlTable, varchar, text, int, boolean, timestamp } from "drizzle-orm/mysql-core";
+import { mysqlTable, text, varchar, boolean, timestamp, json, int } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const users = mysqlTable("users", {
   id: int("id").primaryKey().autoincrement(),
   username: varchar("username", { length: 255 }).notNull().unique(),
-  password: varchar("password", { length: 255 }).notNull(),
+  password: text("password").notNull(),
 });
 
 export const messages = mysqlTable("messages", {
   id: int("id").primaryKey().autoincrement(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
-  subject: varchar("subject", { length: 255 }).notNull(),
+  subject: text("subject").notNull(),
   message: text("message").notNull(),
   isRead: boolean("is_read").default(false).notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
 });
 
 export const content = mysqlTable("content", {
   id: int("id").primaryKey().autoincrement(),
-  pageKey: varchar("page_key", { length: 50 }).notNull().unique(), // 'home', 'about', 'services', 'portfolio', 'contact'
-  data: text("data").notNull(), // JSON string of page content
-  updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
+  pageKey: varchar("page_key", { length: 50 }).notNull().unique(),
+  data: json("data").notNull(),
+  updatedAt: timestamp("updated_at").default(sql`CURRENT_TIMESTAMP`).onUpdateNow().notNull(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({

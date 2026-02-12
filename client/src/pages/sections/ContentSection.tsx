@@ -48,7 +48,7 @@ export const ContentSection = (): JSX.Element => {
               <h2 className="[font-family:'Barlow',Helvetica] font-bold text-[#0a3223] text-[32px] text-center tracking-[0] leading-[38.4px] whitespace-nowrap">
                 How We Work
               </h2>
-              <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[60px] h-[3px] bg-[#12a16b]" />
+              <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[60px] h-[3px] bg-[#14201c]" />
             </div>
           </div>
           <p className="[font-family:'Roboto',Helvetica] font-normal text-[#14201c] text-base text-center tracking-[0] leading-6 whitespace-nowrap">

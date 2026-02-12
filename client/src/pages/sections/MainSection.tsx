@@ -69,7 +69,7 @@ export const MainSection = (): JSX.Element => {
         </p>
 
         <div className="absolute top-[calc(50.00%_+_113px)] left-[315px] flex items-center gap-4">
-          <Button className="h-14 px-8 bg-[#12a16b] hover:bg-[#0f8a5a] rounded-lg">
+          <Button className="h-14 px-8 bg-[#14201c] hover:bg-[#14201c]/90 rounded-lg">
             <span className="[font-family:'Roboto',Helvetica] font-semibold text-white text-base tracking-[0] leading-6">
               Explore Services
             </span>

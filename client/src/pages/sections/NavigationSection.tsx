@@ -88,7 +88,7 @@ export const NavigationSection = (): JSX.Element => {
               key={index}
               className={`w-3 h-3 rounded-md border border-solid ${
                 dot.active
-                  ? "bg-[#12a16b] border-[#12a16b]"
+                  ? "bg-[#14201c] border-[#14201c]"
                   : "bg-white border-[#12a16b]"
               }`}
             />

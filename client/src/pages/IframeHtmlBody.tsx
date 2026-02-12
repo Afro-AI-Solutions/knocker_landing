@@ -140,7 +140,7 @@ export const IframeHtmlBody = (): JSX.Element => {
                   onClick={() => item.target && scrollToSection(item.target)}
                 >
                   {item.target && activeSection === item.target && (
-                    <div className="absolute left-0 -bottom-1.5 w-full h-0.5 bg-[#12a16b]" />
+                    <div className="absolute left-0 -bottom-1.5 w-full h-0.5 bg-[#14201c]" />
                   )}
                   <div className={`flex items-center justify-center ml-0.5 [font-family:'Inter',Helvetica] font-medium text-sm tracking-[0] leading-[21px] whitespace-nowrap transition-colors duration-300 ${isScrolled ? 'text-gray-800' : 'text-white'
                     }`}>

@@ -27,7 +27,6 @@ export default function Admin() {
       tagline: "Revolutionizing Digital Solutions",
       heading: "We Knock. You Win.",
       description: "Empowering your business with intelligent solutions that unlock growth, automate processes, and elevate performance—effortlessly.",
-      image: "",
       buttons: {
         primary: "Start Your Project",
         secondary: "View Our Work"
@@ -265,12 +264,29 @@ export default function Admin() {
   const fetchMessages = async () => {
     setMessagesLoading(true);
     try {
-      const response = await fetch('/api/admin/contacts');
-      const data = await response.json();
-      setMessages(data.messages || []);
-      setMessageStats(data.stats || { total: 0, unread: 0, read: 0 });
+      // Try new API first, fallback to legacy
+      let response = await fetch('/api/messages');
+      if (response.ok) {
+        const messages = await response.json();
+        setMessages(messages || []);
+        const total = messages.length;
+        const unread = messages.filter(m => !m.isRead).length;
+        const read = messages.filter(m => m.isRead).length;
+        setMessageStats({ total, unread, read });
+      } else {
+        // Fallback to legacy API
+        response = await fetch('/api/admin/contacts');
+        const data = await response.json();
+        setMessages(data.messages || []);
+        setMessageStats(data.stats || { total: 0, unread: 0, read: 0 });
+      }
     } catch (error) {
       console.error('Failed to fetch messages:', error);
+      toast({
+        title: "Load failed",
+        description: "Failed to load messages from server",
+        variant: "destructive"
+      });
     } finally {
       setMessagesLoading(false);
     }
@@ -278,10 +294,28 @@ export default function Admin() {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`/api/admin/contacts/${id}/read`, { method: 'PATCH' });
-      fetchMessages();
+      // Try new API first, fallback to legacy
+      let response = await fetch(`/api/messages/${id}/read`, { method: 'PUT' });
+      if (!response.ok) {
+        // Fallback to legacy API
+        response = await fetch(`/api/admin/contacts/${id}/read`, { method: 'PATCH' });
+      }
+      if (response.ok) {
+        fetchMessages();
+        toast({
+          title: "Success",
+          description: "Message marked as read"
+        });
+      } else {
+        throw new Error('Failed to mark as read');
+      }
     } catch (error) {
       console.error('Failed to mark as read:', error);
+      toast({
+        title: "Error",
+        description: "Failed to mark message as read",
+        variant: "destructive"
+      });
     }
   };
 
@@ -381,21 +415,45 @@ export default function Admin() {
     return () => clearTimeout(autoSave);
   }, [homeContent, aboutContent, servicesContent, portfolioContent, contactContent, hasUnsavedChanges]);
 
-  // Load saved content on mount
+  // Load content from API on mount
   useEffect(() => {
     const loadContent = async () => {
       try {
+        // Try to load from API first
         const response = await fetch('/api/content');
         if (response.ok) {
-          const data = await response.json();
-          if (data.home) setHomeContent(data.home);
-          if (data.about) setAboutContent(data.about);
-          if (data.services) setServicesContent(data.services);
-          if (data.portfolio) setPortfolioContent(data.portfolio);
-          if (data.contact) setContactContent(data.contact);
+          const apiContent = await response.json();
+          if (apiContent.home) setHomeContent(apiContent.home);
+          if (apiContent.about) setAboutContent(apiContent.about);
+          if (apiContent.services) setServicesContent(apiContent.services);
+          if (apiContent.portfolio) setPortfolioContent(apiContent.portfolio);
+          if (apiContent.contact) setContactContent(apiContent.contact);
+        } else {
+          // Fallback to localStorage if API fails
+          const saved = {
+            home: localStorage.getItem('homeContent'),
+            about: localStorage.getItem('aboutContent'),
+            services: localStorage.getItem('servicesContent'),
+            portfolio: localStorage.getItem('portfolioContent'),
+            contact: localStorage.getItem('contactContent')
+          };
+          
+          if (saved.home) setHomeContent(JSON.parse(saved.home));
+          if (saved.about) setAboutContent(JSON.parse(saved.about));
+          if (saved.services) setServicesContent(JSON.parse(saved.services));
+          if (saved.portfolio) setPortfolioContent(JSON.parse(saved.portfolio));
+          if (saved.contact) setContactContent(JSON.parse(saved.contact));
         }
+        
+        const lastSavedTime = localStorage.getItem('lastSaved');
+        if (lastSavedTime) setLastSaved(new Date(lastSavedTime));
       } catch (error) {
         console.error('Failed to load content:', error);
+        toast({
+          title: "Load failed",
+          description: "Failed to load content from server",
+          variant: "destructive"
+        });
       }
     };
 
@@ -430,47 +488,49 @@ export default function Admin() {
   const handleSave = async (isAutoSave = false) => {
     setIsSaving(true);
     try {
-      // Save each page content to database
-      await Promise.all([
-        fetch('/api/content/home', {
+      // Save to API first
+      const contentToSave = {
+        home: homeContent,
+        about: aboutContent,
+        services: servicesContent,
+        portfolio: portfolioContent,
+        contact: contactContent
+      };
+      
+      const savePromises = Object.entries(contentToSave).map(async ([pageKey, content]) => {
+        const response = await fetch(`/api/content/${pageKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(homeContent)
-        }),
-        fetch('/api/content/about', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(aboutContent)
-        }),
-        fetch('/api/content/services', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(servicesContent)
-        }),
-        fetch('/api/content/portfolio', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(portfolioContent)
-        }),
-        fetch('/api/content/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(contactContent)
-        })
-      ]);
-
+          body: JSON.stringify(content)
+        });
+        if (!response.ok) {
+          throw new Error(`Failed to save ${pageKey} content`);
+        }
+        return response.json();
+      });
+      
+      await Promise.all(savePromises);
+      
+      // Also save to localStorage as backup
+      localStorage.setItem("homeContent", JSON.stringify(homeContent));
+      localStorage.setItem("aboutContent", JSON.stringify(aboutContent));
+      localStorage.setItem("servicesContent", JSON.stringify(servicesContent));
+      localStorage.setItem("portfolioContent", JSON.stringify(portfolioContent));
+      localStorage.setItem("contactContent", JSON.stringify(contactContent));
+      
       const now = new Date();
       setLastSaved(now);
       setHasUnsavedChanges(false);
 
       toast({
         title: isAutoSave ? "Auto-saved" : "Saved successfully!",
-        description: isAutoSave ? "Changes saved to database" : "All content saved to database",
+        description: isAutoSave ? "Changes saved to server and locally" : "All content has been saved to server",
       });
     } catch (error) {
+      console.error('Save error:', error);
       toast({
         title: "Save failed",
-        description: "Failed to save content. Please try again.",
+        description: "Failed to save content to server. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -692,503 +752,178 @@ export default function Admin() {
 
                 {activeTab === 'home' && (
                   <div className="space-y-6">
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Hero Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Tagline</Label>
-                          <Input
-                            value={homeContent.hero.tagline}
-                            onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, tagline: e.target.value } })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Heading</Label>
-                          <Input
-                            value={homeContent.hero.heading}
-                            onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, heading: e.target.value } })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Description</Label>
-                          <Textarea
-                            value={homeContent.hero.description}
-                            onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, description: e.target.value } })}
-                            rows={3}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Hero Image</Label>
-                          <div className="flex gap-2">
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) {
-                                  handleImageUpload(file, (dataUrl) => {
-                                    setHomeContent({ ...homeContent, hero: { ...homeContent.hero, image: dataUrl } });
-                                  });
-                                }
-                              }}
-                            />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="sm"
-                              onClick={() => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, image: "" } })}
-                            >
-                              Clear
-                            </Button>
-                          </div>
-                          {homeContent.hero.image && (
-                            <img src={homeContent.hero.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                          )}
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label>Primary Button</Label>
-                            <Input
-                              value={homeContent.hero.buttons.primary}
-                              onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, buttons: { ...homeContent.hero.buttons, primary: e.target.value } } })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Secondary Button</Label>
-                            <Input
-                              value={homeContent.hero.buttons.secondary}
-                              onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, buttons: { ...homeContent.hero.buttons, secondary: e.target.value } } })}
-                            />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Hero Section</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Tagline</Label>
+                  <Input
+                    value={homeContent.hero.tagline}
+                    onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, tagline: e.target.value } })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Heading</Label>
+                  <Input
+                    value={homeContent.hero.heading}
+                    onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, heading: e.target.value } })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Description</Label>
+                  <Textarea
+                    value={homeContent.hero.description}
+                    onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, description: e.target.value } })}
+                    rows={3}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Primary Button</Label>
+                    <Input
+                      value={homeContent.hero.buttons.primary}
+                      onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, buttons: { ...homeContent.hero.buttons, primary: e.target.value } } })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Secondary Button</Label>
+                    <Input
+                      value={homeContent.hero.buttons.secondary}
+                      onChange={(e) => setHomeContent({ ...homeContent, hero: { ...homeContent.hero, buttons: { ...homeContent.hero.buttons, secondary: e.target.value } } })}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Stats Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        {homeContent.stats.map((stat, index) => (
-                          <div key={index} className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                              <Label>Value</Label>
-                              <Input
-                                value={stat.value}
-                                onChange={(e) => {
-                                  const newStats = [...homeContent.stats];
-                                  newStats[index].value = e.target.value;
-                                  setHomeContent({ ...homeContent, stats: newStats });
-                                }}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Label</Label>
-                              <Input
-                                value={stat.label}
-                                onChange={(e) => {
-                                  const newStats = [...homeContent.stats];
-                                  newStats[index].label = e.target.value;
-                                  setHomeContent({ ...homeContent, stats: newStats });
-                                }}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Stats Section</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {homeContent.stats.map((stat, index) => (
+                  <div key={index} className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Value</Label>
+                      <Input
+                        value={stat.value}
+                        onChange={(e) => {
+                          const newStats = [...homeContent.stats];
+                          newStats[index].value = e.target.value;
+                          setHomeContent({ ...homeContent, stats: newStats });
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Label</Label>
+                      <Input
+                        value={stat.label}
+                        onChange={(e) => {
+                          const newStats = [...homeContent.stats];
+                          newStats[index].label = e.target.value;
+                          setHomeContent({ ...homeContent, stats: newStats });
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Tech Stack Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Title</Label>
-                          <Input
-                            value={homeContent.techStack.title}
-                            onChange={(e) => {
-                              setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, title: e.target.value } });
-                              setHasUnsavedChanges(true);
-                            }}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Technologies (comma separated)</Label>
-                          <Textarea
-                            value={homeContent.techStack.technologies.join(", ")}
-                            onChange={(e) => {
-                              setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, technologies: e.target.value.split(", ").map(t => t.trim()) } });
-                              setHasUnsavedChanges(true);
-                            }}
-                            rows={2}
-                          />
-                        </div>
-                      </CardContent>
-                    </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Tech Stack Section</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Title</Label>
+                  <Input
+                    value={homeContent.techStack.title}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, title: e.target.value } });
+                      setHasUnsavedChanges(true);
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Technologies (comma separated)</Label>
+                  <Textarea
+                    value={homeContent.techStack.technologies.join(", ")}
+                    onChange={(e) => {
+                      setHomeContent({ ...homeContent, techStack: { ...homeContent.techStack, technologies: e.target.value.split(", ").map(t => t.trim()) } });
+                      setHasUnsavedChanges(true);
+                    }}
+                    rows={2}
+                  />
+                </div>
+              </CardContent>
+            </Card>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Features Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Title</Label>
-                          <Input
-                            value={homeContent.features.title}
-                            onChange={(e) => setHomeContent({ ...homeContent, features: { ...homeContent.features, title: e.target.value } })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Subtitle</Label>
-                          <Textarea
-                            value={homeContent.features.subtitle}
-                            onChange={(e) => setHomeContent({ ...homeContent, features: { ...homeContent.features, subtitle: e.target.value } })}
-                            rows={2}
-                          />
-                        </div>
-                        {homeContent.features.items.map((feature, index) => (
-                          <div key={index} className="border p-4 rounded-lg space-y-3">
-                            <h4 className="font-semibold">Feature {index + 1}</h4>
-                            <div className="space-y-2">
-                              <Label>Title</Label>
-                              <Input
-                                value={feature.title}
-                                onChange={(e) => {
-                                  const newFeatures = [...homeContent.features.items];
-                                  newFeatures[index].title = e.target.value;
-                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                }}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Description</Label>
-                              <Textarea
-                                value={feature.description}
-                                onChange={(e) => {
-                                  const newFeatures = [...homeContent.features.items];
-                                  newFeatures[index].description = e.target.value;
-                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                }}
-                                rows={2}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Image</Label>
-                              <div className="flex gap-2">
-                                <Input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      handleImageUpload(file, (dataUrl) => {
-                                        const newFeatures = [...homeContent.features.items];
-                                        newFeatures[index].image = dataUrl;
-                                        setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                      });
-                                    }
-                                  }}
-                                />
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    const newFeatures = [...homeContent.features.items];
-                                    newFeatures[index].image = "";
-                                    setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                  }}
-                                >
-                                  Clear
-                                </Button>
-                              </div>
-                              {feature.image && (
-                                <img src={feature.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Projects Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Title</Label>
-                          <Input
-                            value={homeContent.projects.title}
-                            onChange={(e) => setHomeContent({ ...homeContent, projects: { ...homeContent.projects, title: e.target.value } })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Subtitle</Label>
-                          <Textarea
-                            value={homeContent.projects.subtitle}
-                            onChange={(e) => setHomeContent({ ...homeContent, projects: { ...homeContent.projects, subtitle: e.target.value } })}
-                            rows={2}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Button Text</Label>
-                          <Input
-                            value={homeContent.projects.buttonText}
-                            onChange={(e) => setHomeContent({ ...homeContent, projects: { ...homeContent.projects, buttonText: e.target.value } })}
-                          />
-                        </div>
-                        {homeContent.projects.items.map((project, index) => (
-                          <div key={index} className="border p-4 rounded-lg space-y-3">
-                            <h4 className="font-semibold">Project {index + 1}</h4>
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="space-y-2">
-                                <Label>Title</Label>
-                                <Input
-                                  value={project.title}
-                                  onChange={(e) => {
-                                    const newProjects = [...homeContent.projects.items];
-                                    newProjects[index].title = e.target.value;
-                                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                                  }}
-                                />
-                              </div>
-                              <div className="space-y-2">
-                                <Label>Tag</Label>
-                                <Input
-                                  value={project.tag}
-                                  onChange={(e) => {
-                                    const newProjects = [...homeContent.projects.items];
-                                    newProjects[index].tag = e.target.value;
-                                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                                  }}
-                                />
-                              </div>
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Description</Label>
-                              <Textarea
-                                value={project.desc}
-                                onChange={(e) => {
-                                  const newProjects = [...homeContent.projects.items];
-                                  newProjects[index].desc = e.target.value;
-                                  setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                                }}
-                                rows={2}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Image</Label>
-                              <div className="flex gap-2">
-                                <Input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      handleImageUpload(file, (dataUrl) => {
-                                        const newProjects = [...homeContent.projects.items];
-                                        newProjects[index].image = dataUrl;
-                                        setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                                      });
-                                    }
-                                  }}
-                                />
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    const newProjects = [...homeContent.projects.items];
-                                    newProjects[index].image = "";
-                                    setHomeContent({ ...homeContent, projects: { ...homeContent.projects, items: newProjects } });
-                                  }}
-                                >
-                                  Clear
-                                </Button>
-                              </div>
-                              {project.image && (
-                                <img src={project.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Process Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Title</Label>
-                          <Input
-                            value={homeContent.process.title}
-                            onChange={(e) => setHomeContent({ ...homeContent, process: { ...homeContent.process, title: e.target.value } })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Subtitle</Label>
-                          <Textarea
-                            value={homeContent.process.subtitle}
-                            onChange={(e) => setHomeContent({ ...homeContent, process: { ...homeContent.process, subtitle: e.target.value } })}
-                            rows={2}
-                          />
-                        </div>
-                        {homeContent.process.steps.map((step, index) => (
-                          <div key={index} className="border p-4 rounded-lg space-y-3">
-                            <h4 className="font-semibold">Step {index + 1}</h4>
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="space-y-2">
-                                <Label>Title</Label>
-                                <Input
-                                  value={step.title}
-                                  onChange={(e) => {
-                                    const newSteps = [...homeContent.process.steps];
-                                    newSteps[index].title = e.target.value;
-                                    setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                                  }}
-                                />
-                              </div>
-                              <div className="space-y-2">
-                                <Label>Hex Code</Label>
-                                <Input
-                                  value={step.hex}
-                                  onChange={(e) => {
-                                    const newSteps = [...homeContent.process.steps];
-                                    newSteps[index].hex = e.target.value;
-                                    setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                                  }}
-                                />
-                              </div>
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Description</Label>
-                              <Textarea
-                                value={step.desc}
-                                onChange={(e) => {
-                                  const newSteps = [...homeContent.process.steps];
-                                  newSteps[index].desc = e.target.value;
-                                  setHomeContent({ ...homeContent, process: { ...homeContent.process, steps: newSteps } });
-                                }}
-                                rows={2}
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Testimonials Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Title</Label>
-                          <Input
-                            value={homeContent.testimonials.title}
-                            onChange={(e) => setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, title: e.target.value } })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Subtitle</Label>
-                          <Textarea
-                            value={homeContent.testimonials.subtitle}
-                            onChange={(e) => setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, subtitle: e.target.value } })}
-                            rows={2}
-                          />
-                        </div>
-                        {homeContent.testimonials.items.map((testimonial, index) => (
-                          <div key={index} className="border p-4 rounded-lg space-y-3">
-                            <h4 className="font-semibold">Testimonial {index + 1}</h4>
-                            <div className="space-y-2">
-                              <Label>Quote</Label>
-                              <Textarea
-                                value={testimonial.quote}
-                                onChange={(e) => {
-                                  const newTestimonials = [...homeContent.testimonials.items];
-                                  newTestimonials[index].quote = e.target.value;
-                                  setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                                }}
-                                rows={3}
-                              />
-                            </div>
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="space-y-2">
-                                <Label>Author</Label>
-                                <Input
-                                  value={testimonial.author}
-                                  onChange={(e) => {
-                                    const newTestimonials = [...homeContent.testimonials.items];
-                                    newTestimonials[index].author = e.target.value;
-                                    setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                                  }}
-                                />
-                              </div>
-                              <div className="space-y-2">
-                                <Label>Role</Label>
-                                <Input
-                                  value={testimonial.role}
-                                  onChange={(e) => {
-                                    const newTestimonials = [...homeContent.testimonials.items];
-                                    newTestimonials[index].role = e.target.value;
-                                    setHomeContent({ ...homeContent, testimonials: { ...homeContent.testimonials, items: newTestimonials } });
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>CTA Section</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Title</Label>
-                          <Input
-                            value={homeContent.cta.title}
-                            onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, title: e.target.value } })}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Description</Label>
-                          <Textarea
-                            value={homeContent.cta.description}
-                            onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, description: e.target.value } })}
-                            rows={3}
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label>Primary Button</Label>
-                            <Input
-                              value={homeContent.cta.buttons.primary}
-                              onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, primary: e.target.value } } })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Secondary Button</Label>
-                            <Input
-                              value={homeContent.cta.buttons.secondary}
-                              onChange={(e) => setHomeContent({ ...homeContent, cta: { ...homeContent.cta, buttons: { ...homeContent.cta.buttons, secondary: e.target.value } } })}
-                            />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between">
-                        <CardTitle>Features Section</CardTitle>
+            <Card>
+              <CardHeader>
+                <CardTitle>Features Section</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Title</Label>
+                  <Input
+                    value={homeContent.features.title}
+                    onChange={(e) => setHomeContent({ ...homeContent, features: { ...homeContent.features, title: e.target.value } })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Subtitle</Label>
+                  <Textarea
+                    value={homeContent.features.subtitle}
+                    onChange={(e) => setHomeContent({ ...homeContent, features: { ...homeContent.features, subtitle: e.target.value } })}
+                    rows={2}
+                  />
+                </div>
+                {homeContent.features.items.map((feature, index) => (
+                  <div key={index} className="border p-4 rounded-lg space-y-3">
+                    <h4 className="font-semibold">Feature {index + 1}</h4>
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Input
+                        value={feature.title}
+                        onChange={(e) => {
+                          const newFeatures = [...homeContent.features.items];
+                          newFeatures[index].title = e.target.value;
+                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                        }}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea
+                        value={feature.description}
+                        onChange={(e) => {
+                          const newFeatures = [...homeContent.features.items];
+                          newFeatures[index].description = e.target.value;
+                          setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                        }}
+                        rows={2}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Image</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              handleImageUpload(file, (dataUrl) => {
+                                const newFeatures = [...homeContent.features.items];
+                                newFeatures[index].image = dataUrl;
+                                setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
+                              });
+                            }
+                          }}
+                        />
                         <Button
                           onClick={() => {
                             const newFeature = {

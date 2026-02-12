@@ -62,7 +62,7 @@ export const CardSection = (): JSX.Element => {
             <h2 className="[font-family:'Barlow',Helvetica] font-bold text-[#0a3223] text-[32px] leading-[38.4px] text-center tracking-[0] whitespace-nowrap">
               Featured Services
             </h2>
-            <div className="w-[60px] h-[3px] bg-[#12a16b] mt-[17.39px]" />
+            <div className="w-[60px] h-[3px] bg-[#14201c] mt-[17.39px]" />
           </div>
           <p className="[font-family:'Roboto',Helvetica] font-normal text-[#14201c] text-base leading-6 text-center tracking-[0] whitespace-nowrap">
             Featured Srvices
@@ -94,7 +94,7 @@ export const CardSection = (): JSX.Element => {
                 suscipit tortor malesuada.
               </p>
 
-              <Button className="w-fit bg-[#12a16b] hover:bg-[#12a16b]/90 h-12 px-6 rounded gap-[7.7px] h-auto">
+              <Button className="w-fit bg-[#14201c] hover:bg-[#14201c]/90 h-12 px-6 rounded gap-[7.7px] h-auto">
                 <span className="[font-family:'Roboto',Helvetica] font-medium text-white text-base tracking-[0] leading-6">
                   Request a Consultation
                 </span>
@@ -139,7 +139,7 @@ export const CardSection = (): JSX.Element => {
                       </p>
 
                       <div className="flex items-center gap-2">
-                        <div className="w-[70px] h-px bg-[#12a16b]" />
+                        <div className="w-[70px] h-px bg-[#14201c]" />
                         <span className="[font-family:'Roboto',Helvetica] font-medium text-[#12a16b] text-lg leading-[27px] tracking-[0]">
                           {service.number}
                         </span>

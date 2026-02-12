@@ -74,14 +74,14 @@ export const LayoutSection = (): JSX.Element => {
             </div>
 
             <div className="flex gap-4 mt-6">
-              <Button className="h-[52px] bg-[#12a16b] hover:bg-[#0f8a5a] rounded-[50px] border-2 border-[#12a16b] px-8">
+              <Button className="h-[52px] bg-[#14201c] hover:bg-[#14201c]/90 rounded-[50px] border-2 border-[#14201c] px-8">
                 <span className="[font-family:'Roboto',Helvetica] font-semibold text-white text-base tracking-[0.50px] leading-6">
                   DISCOVER OUR WORK
                 </span>
               </Button>
               <Button
                 variant="outline"
-                className="h-[52px] bg-transparent hover:bg-[#12a16b]/10 rounded-[50px] border-2 border-[#12a16b] px-8"
+                className="h-[52px] bg-transparent hover:bg-[#14201c]/10 rounded-[50px] border-2 border-[#14201c] px-8"
               >
                 <span className="[font-family:'Roboto',Helvetica] font-semibold text-[#12a16b] text-base tracking-[0.50px] leading-6">
                   MEET OUR TEAM

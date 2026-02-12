@@ -56,7 +56,7 @@ export const TestimonialSection = (): JSX.Element => {
             <h2 className="[font-family:'Barlow',Helvetica] font-bold text-[#0a3223] text-[32px] text-center tracking-[0] leading-[38.4px] whitespace-nowrap">
               Pricing
             </h2>
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[60px] h-[3px] bg-[#12a16b]" />
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[60px] h-[3px] bg-[#14201c]" />
           </div>
           <p className="[font-family:'Roboto',Helvetica] font-normal text-[#14201c] text-base text-center tracking-[0] leading-6 whitespace-nowrap mx-auto">
             Necessitatibus eius consequatur ex aliquid fuga eum quidem sint
@@ -75,7 +75,7 @@ export const TestimonialSection = (): JSX.Element => {
               }`}
             >
               {plan.isRecommended && (
-                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#12a16b] hover:bg-[#12a16b] rounded-[50px] h-[33px] px-6">
+                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#14201c] hover:bg-[#14201c] rounded-[50px] h-[33px] px-6">
                   <span className="[font-family:'Roboto',Helvetica] font-medium text-white text-sm text-center tracking-[0] leading-[21px] whitespace-nowrap">
                     Recommended
                   </span>
@@ -130,7 +130,7 @@ export const TestimonialSection = (): JSX.Element => {
                 <Button
                   className={`h-[46px] px-8 rounded-[50px] ${
                     plan.isRecommended
-                      ? "bg-[#12a16b] hover:bg-[#0f8a5a] text-white"
+                      ? "bg-[#14201c] hover:bg-[#14201c]/90 text-white"
                       : "bg-[#11a16b1a] hover:bg-[#11a16b2a] text-[#12a16b]"
                   }`}
                   variant={plan.buttonVariant}
