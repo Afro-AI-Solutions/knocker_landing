@@ -1,4 +1,3 @@
-<oc
 import { type User, type InsertUser, type Message, type InsertMessage, type Content, type InsertContent } from "@shared/schema";
 import { randomUUID } from "crypto";
 
@@ -190,5 +189,5 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new DbStorage();
+export const storage = new MemStorage();
 

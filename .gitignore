@@ -10,3 +10,8 @@ data/
 *.db
 *.db-shm
 *.db-wal
+
+# Environment variables
+.env
+.env.local
+client/.env.local
