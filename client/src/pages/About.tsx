@@ -72,8 +72,9 @@ export default function About() {
             try {
                 const response = await fetch('/api/content/about');
                 if (response.ok) {
-                    const data = await response.json();
-                    setContent({ ...content, ...data });
+                    const json = await response.json();
+                    const data = json?.data ?? json;
+                    if (data?.hero) setContent(prev => ({ ...prev, ...data }));
                 }
             } catch (error) {
                 console.error('Failed to load about content:', error);

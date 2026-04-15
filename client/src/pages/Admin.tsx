@@ -940,109 +940,12 @@ export default function Admin() {
                           <Plus className="h-4 w-4 mr-2" />
                           Add Feature
                         </Button>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          <Label>Title</Label>
-                          <Input
-                            value={homeContent.features.title}
-                            onChange={(e) => {
-                              setHomeContent({ ...homeContent, features: { ...homeContent.features, title: e.target.value } });
-                              setHasUnsavedChanges(true);
-                            }}
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label>Subtitle</Label>
-                          <Textarea
-                            value={homeContent.features.subtitle}
-                            onChange={(e) => {
-                              setHomeContent({ ...homeContent, features: { ...homeContent.features, subtitle: e.target.value } });
-                              setHasUnsavedChanges(true);
-                            }}
-                            rows={2}
-                          />
-                        </div>
-                        {homeContent.features.items.map((feature, index) => (
-                          <div key={index} className="border p-4 rounded-lg space-y-3">
-                            <div className="flex justify-between items-center">
-                              <h4 className="font-semibold">Feature {index + 1}</h4>
-                              <Button
-                                onClick={() => {
-                                  const newFeatures = homeContent.features.items.filter((_, i) => i !== index);
-                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                  setHasUnsavedChanges(true);
-                                }}
-                                size="sm"
-                                variant="destructive"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Title</Label>
-                              <Input
-                                value={feature.title}
-                                onChange={(e) => {
-                                  const newFeatures = [...homeContent.features.items];
-                                  newFeatures[index].title = e.target.value;
-                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                  setHasUnsavedChanges(true);
-                                }}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Description</Label>
-                              <Textarea
-                                value={feature.description}
-                                onChange={(e) => {
-                                  const newFeatures = [...homeContent.features.items];
-                                  newFeatures[index].description = e.target.value;
-                                  setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                  setHasUnsavedChanges(true);
-                                }}
-                                rows={2}
-                              />
-                            </div>
-                            <div className="space-y-2">
-                              <Label>Image</Label>
-                              <div className="flex gap-2">
-                                <Input
-                                  type="file"
-                                  accept="image/*"
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      handleImageUpload(file, (dataUrl) => {
-                                        const newFeatures = [...homeContent.features.items];
-                                        newFeatures[index].image = dataUrl;
-                                        setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                      });
-                                    }
-                                  }}
-                                />
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    const newFeatures = [...homeContent.features.items];
-                                    newFeatures[index].image = "";
-                                    setHomeContent({ ...homeContent, features: { ...homeContent.features, items: newFeatures } });
-                                    setHasUnsavedChanges(true);
-                                  }}
-                                >
-                                  Clear
-                                </Button>
-                              </div>
-                              {feature.image && (
-                                <img src={feature.image} alt="Preview" className="w-32 h-20 object-cover rounded border" />
-                              )}
-                            </div>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
 
                     <Card>
                       <CardHeader className="flex flex-row items-center justify-between">

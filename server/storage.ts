@@ -97,29 +97,70 @@ export class MemStorage implements IStorage {
     const defaultContent = {
       home: {
         hero: {
-          tagline: "Professional Web Solutions",
-          heading: "Build Amazing Websites",
-          description: "We create modern, responsive websites that drive results for your business.",
-          image: "/hero-image.jpg",
-          buttons: [
-            { text: "Get Started", href: "/contact", variant: "primary" },
-            { text: "View Portfolio", href: "/portfolio", variant: "secondary" }
-          ]
+          tagline: "Revolutionizing Digital Solutions",
+          heading: "We Knock. You Win.",
+          description: "Empowering your business with intelligent solutions that unlock growth, automate processes, and elevate performance—effortlessly.",
+          buttons: { primary: "Start Your Project", secondary: "View Our Work" }
         },
         stats: [
-          { label: "Projects Completed", value: "50+" },
-          { label: "Happy Clients", value: "30+" },
-          { label: "Years Experience", value: "5+" },
-          { label: "Team Members", value: "10+" }
+          { label: "Projects Delivered", value: "100+" },
+          { label: "Happy Clients", value: "50+" },
+          { label: "Team Experts", value: "25+" },
+          { label: "Years Experience", value: "5+" }
         ],
         techStack: {
-          title: "Technologies We Use",
-          technologies: [
-            { name: "React", icon: "react", color: "#61DAFB" },
-            { name: "TypeScript", icon: "typescript", color: "#3178C6" },
-            { name: "Node.js", icon: "nodejs", color: "#339933" },
-            { name: "MySQL", icon: "mysql", color: "#4479A1" }
+          title: "Powered by Modern Tech",
+          technologies: ["React", "Next.js", "TypeScript", "Node.js", "Python", "TensorFlow", "AWS", "Docker", "Tailwind", "OpenAI"]
+        },
+        features: {
+          title: "Why Choose Knocker AI?",
+          subtitle: "We combine technical expertise with creative innovation to deliver exceptional results.",
+          items: [
+            { title: "Web Development", description: "Custom, responsive websites using modern frameworks.", image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&q=80" },
+            { title: "AI Solutions", description: "Intelligent automation and custom LLM integrations.", image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&q=80" },
+            { title: "Cloud Systems", description: "Scalable cloud infrastructure on AWS, Azure, or GCP.", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80" },
+            { title: "Digital Growth", description: "SEO, performance marketing, and conversion optimization.", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" },
+            { title: "ERP Systems", description: "Enterprise resource planning to streamline operations.", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" }
           ]
+        },
+        projects: {
+          title: "Featured Projects",
+          subtitle: "A glimpse into our recent success stories.",
+          buttonText: "View All Projects",
+          items: [
+            { title: "AI-Powered Analytics", desc: "Predictive market trends for retail.", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80", tag: "AI & ML" },
+            { title: "EduTech Platform", desc: "Interactive LMS with real-time video.", image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80", tag: "Web Dev" },
+            { title: "FinTech Wallet", desc: "Secure mobile digital wallet.", image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80", tag: "Mobile App" }
+          ]
+        },
+        process: {
+          title: "DEVELOPMENT PROCESS",
+          subtitle: "Agile methodology that delivers high-quality solutions",
+          steps: [
+            { title: "PLANNING", desc: "Requirements analysis and project roadmap", hex: "0x01" },
+            { title: "DESIGN", desc: "UI/UX design and system architecture", hex: "0x02" },
+            { title: "DEVELOPMENT", desc: "Agile coding sprints with continuous integration", hex: "0x03" },
+            { title: "DEPLOYMENT", desc: "Production launch with monitoring", hex: "0x04" }
+          ]
+        },
+        testimonials: {
+          title: "What Our Clients Say",
+          subtitle: "Real feedback from companies who trusted us",
+          items: [
+            { quote: "Knocker AI transformed our outdated system into a modern platform.", author: "Sarah J.", role: "CTO, TechFlow" },
+            { quote: "Our new landing page conversion rate doubled within a month.", author: "Michael R.", role: "Marketing Director, GrowthCo" },
+            { quote: "Professional, timely, and incredibly skilled.", author: "Emily T.", role: "Founder, StartUp X" }
+          ]
+        },
+        cta: {
+          title: "Ready to Transform Your Business?",
+          description: "Let's collaborate to build something extraordinary.",
+          buttons: { primary: "Get in Touch", secondary: "Learn About Us" }
+        },
+        newsletter: {
+          title: "Stay Ahead of the Curve",
+          description: "Subscribe for the latest insights on AI and Tech trends.",
+          buttonText: "Subscribe"
         }
       },
       about: {

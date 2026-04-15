@@ -130,10 +130,22 @@ export default function Home() {
     };
     const { data: apiContent, isLoading } = useQuery({
         queryKey: ['homeContent'],
-        queryFn: () => fetch('/api/content/home').then(res => res.json()),
+        queryFn: async () => {
+            try {
+                const res = await fetch('/api/content/home');
+                if (!res.ok) return null;
+                const json = await res.json();
+                const data = json?.data ?? json;
+                // Only use API data if it has the expected shape
+                if (data?.hero?.buttons?.primary) return data;
+                return null;
+            } catch {
+                return null;
+            }
+        },
     });
-    const content = apiContent || defaultContent;
     if (isLoading) return <div>Loading...</div>;
+    const content = apiContent ?? defaultContent;
 
     return (
         <div className="flex flex-col min-h-screen">
