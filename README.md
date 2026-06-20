@@ -1,469 +1,178 @@
-# Knocker Landing - Full-Stack Web Application 🚀
+# Knocker Landing - Laravel + React Application
 
-## Project Overview
-
-A **modern, responsive landing page** with **admin panel** and **MySQL database integration** for dynamic content management!
+A modern landing page with admin panel and MySQL database, built with **React** (frontend) and **Laravel** (backend API).
 
 ---
 
-## ✨ Key Features
+## Tech Stack
 
-### **Frontend**
-- ✅ Modern React + TypeScript application
-- ✅ Responsive design with Tailwind CSS
-- ✅ Dynamic content loading from database
-- ✅ Multi-page navigation (Home, About, Services, Portfolio, Contact)
-- ✅ Contact form with database storage
-- ✅ Professional UI/UX design
-
-### **Admin Panel**
-- ✅ Secure admin interface (`/admin`)
-- ✅ Real-time content editing
-- ✅ Auto-save functionality (every 5 seconds)
-- ✅ Export/Import content as JSON
-- ✅ Message management system
-- ✅ Database-backed persistence
-
-### **Backend**
-- ✅ Express.js REST API
-- ✅ MySQL database with Drizzle ORM
-- ✅ Content management endpoints
-- ✅ Contact form submission handling
-- ✅ Database migrations system
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 18, TypeScript, Tailwind CSS, Vite |
+| Backend | Laravel 13, PHP 8.3+ |
+| Database | MySQL |
 
 ---
 
-## 🛠️ Tech Stack
-
-### **Frontend**
-| Technology | Purpose |
-|------------|----------|
-| **React 18** | UI Framework |
-| **TypeScript** | Type Safety |
-| **Tailwind CSS** | Styling |
-| **Vite** | Build Tool |
-| **React Router** | Navigation |
-| **Lucide Icons** | Icon Library |
-
-### **Backend**
-| Technology | Purpose |
-|------------|----------|
-| **Node.js** | Runtime |
-| **Express.js** | Web Framework |
-| **TypeScript** | Type Safety |
-| **MySQL** | Database |
-| **Drizzle ORM** | Database ORM |
-| **CORS** | Cross-Origin Requests |
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-Knocker1/
-├── client/                 # Frontend React App
-│   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── pages/         # Page components
-│   │   ├── lib/           # Utilities and helpers
-│   │   └── App.tsx        # Main app component
-│   ├── public/            # Static assets
-│   └── package.json       # Frontend dependencies
-│
-├── server/                # Backend Express API
-│   ├── routes.ts          # API route definitions
-│   ├── storage.ts         # Database operations
-│   └── index.ts           # Server entry point
-│
-├── shared/                # Shared TypeScript types
-│   └── schema.ts          # Database schema & types
-│
-├── migrations/            # Database migrations
-│   └── 0001_*.sql         # Initial database setup
-│
-├── data/                  # Database files (auto-created)
-│   └── knocker.db         # MySQL database
-│
-└── package.json           # Root dependencies
+knocker_landing/
+├── app/                    # Laravel application code
+│   ├── Http/Controllers/Api/
+│   └── Models/
+├── client/                 # React frontend source
+│   └── src/
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── public/                 # Web root (Laravel + built React assets)
+├── routes/
+│   ├── api.php             # REST API routes
+│   └── web.php             # SPA fallback route
+├── composer.json           # PHP dependencies
+└── package.json            # Frontend build dependencies
 ```
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
-### **Prerequisites**
-- Node.js 18+ installed
-- MySQL server running
-- Git installed
+### Prerequisites
 
-### **1. Clone Repository**
+- PHP 8.2+ with extensions: `mbstring`, `pdo_mysql`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`
+- Composer
+- Node.js 18+ (for building the frontend)
+- MySQL server
+
+### 1. Install dependencies
+
 ```bash
-git clone <repository-url>
-cd Knocker1
-```
-
-### **2. Install Dependencies**
-```bash
-# Install root dependencies
+composer install
 npm install
-
-# Install frontend dependencies
-cd client
-npm install
-cd ..
 ```
 
-### **3. Setup MySQL Database**
-```bash
-# Create database
-mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS knocker_db;"
+### 2. Configure environment
 
-# Update connection settings in server/index.ts if needed
+```bash
+cp .env.example .env
+php artisan key:generate
 ```
 
-### **4. Start Development Server**
+**Local PostgreSQL (Docker):** the default `.env.example` targets Postgres on port `5454`:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5454
+DB_DATABASE=nova_appdb
+DB_USERNAME=nova_admin
+DB_PASSWORD=ultra_secure_2025
+```
+
+Start your Postgres container first, then migrate:
+
 ```bash
-# Start both frontend and backend
+docker compose up -d postgres_db
+php artisan migrate
+php artisan db:seed
+```
+
+**MySQL (production hosting):** switch `DB_CONNECTION=mysql` and set your MySQL credentials.
+
+### 3. Set up the database
+
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+### 4. Build the frontend
+
+```bash
+npm run build
+```
+
+### 5. Start the server
+
+```bash
+php artisan serve
+```
+
+Open **http://localhost:8000** — the app serves both the React frontend and the API.
+
+### Development mode
+
+Run Laravel and Vite in separate terminals:
+
+```bash
+# Terminal 1 — Laravel API
+php artisan serve
+
+# Terminal 2 — React dev server with hot reload
 npm run dev
 ```
 
-### **5. Access Application**
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5001
-- **Admin Panel**: http://localhost:5173/admin
-  - Password: `admin123`
+Vite proxies `/api` requests to `http://localhost:8000`.
 
 ---
 
-## 📊 Database Schema
+## Deployment (shared hosting — no npm on server)
 
-### **Content Table**
-```sql
-CREATE TABLE content (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  page_key TEXT UNIQUE NOT NULL,
-  data TEXT NOT NULL,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+Build locally, upload to `public_html` + `knocker_landing`. Full guide: **[DEPLOY.md](DEPLOY.md)**
+
+```powershell
+.\scripts\deploy-build.ps1
 ```
 
-### **Messages Table**
-```sql
-CREATE TABLE messages (
-  id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  message TEXT NOT NULL,
-  is_read BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+This creates:
+- `deploy/output/knocker_landing/` → upload to `/home/youruser/knocker_landing/`
+- `deploy/output/public_html/` → upload to `/home/youruser/public_html/`
+
+Set on the server `.env`:
+```env
+APP_PUBLIC_PATH=/home/youruser/public_html
+APP_URL=https://yourdomain.com
+DB_CONNECTION=mysql
 ```
+
+No npm or composer needed on the server — everything is pre-built locally.
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
-### **Content Management**
+All endpoints are prefixed with `/api`.
+
+### Content Management
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/content` | Get all page content |
-| GET | `/api/content/:pageKey` | Get specific page content |
-| POST | `/api/content/:pageKey` | Save page content |
+| GET | `/api/content/{pageKey}` | Get page content (`home`, `about`, `services`, `portfolio`, `contact`) |
+| POST | `/api/content/{pageKey}` | Save page content |
 
-### **Contact Messages**
+### Contact Messages
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/messages` | Get all messages |
 | POST | `/api/messages` | Submit new message |
-| PUT | `/api/messages/:id/read` | Mark message as read |
-
-### **Example API Usage**
-```bash
-# Get home page content
-curl http://localhost:5001/api/content/home
-
-# Save content
-curl -X POST http://localhost:5001/api/content/home \
-  -H "Content-Type: application/json" \
-  -d '{"hero":{"heading":"New Heading"}}'
-
-# Submit contact form
-curl -X POST http://localhost:5001/api/messages \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John","email":"john@example.com","message":"Hello!"}'
-```
+| PUT | `/api/messages/{id}/read` | Mark message as read |
+| POST | `/api/contact` | Legacy contact form endpoint |
+| GET | `/api/admin/contacts` | Admin: messages + stats |
+| PATCH | `/api/admin/contacts/{id}/read` | Admin: mark as read |
 
 ---
 
-## 🎨 Page Structure
+## Admin Panel
 
-### **Home Page** (`/`)
-- Hero section with call-to-action
-- Statistics showcase
-- Technology stack display
-- Features overview
-- Project portfolio preview
-- Development process
-- Client testimonials
-- Newsletter signup
-
-### **About Page** (`/about`)
-- Company story
-- Mission & vision statements
-- Core values
-- Team members
-- Call-to-action section
-
-### **Services Page** (`/services`)
-- Service offerings
-- Feature descriptions
-- Pricing information
-- Contact call-to-action
-
-### **Portfolio Page** (`/portfolio`)
-- Project showcase
-- Category filtering
-- Project details
-- Live demo links
-
-### **Contact Page** (`/contact`)
-- Contact form
-- Company information
-- FAQ section
-- Location details
-
-### **Admin Panel** (`/admin`)
-- Content management interface
-- Message inbox
-- Real-time editing
-- Export/Import tools
+Visit `/admin` after starting the app. The admin panel loads and saves content via the Laravel API.
 
 ---
 
-## 🔧 Development Commands
+## Migration from Node.js
 
-### **Root Level**
-```bash
-npm run dev          # Start both frontend and backend
-npm run build        # Build for production
-npm run preview      # Preview production build
-```
+The previous Express.js backend (`server/`) has been replaced by Laravel. The React frontend is unchanged; all `/api/*` routes are now handled by Laravel controllers in `app/Http/Controllers/Api/`.
 
-### **Frontend Only**
-```bash
-cd client
-npm run dev          # Start frontend dev server
-npm run build        # Build frontend
-npm run preview      # Preview frontend build
-```
-
-### **Backend Only**
-```bash
-npm run server       # Start backend server
-npm run server:dev   # Start backend with nodemon
-```
-
-### **Database Management**
-```bash
-npx drizzle-kit studio              # Open database UI
-npx drizzle-kit generate:mysql      # Generate migrations
-npx drizzle-kit push:mysql          # Push schema changes
-```
-
----
-
-## 🔒 Security Features
-
-### **Admin Authentication**
-- Password-protected admin panel
-- Session-based authentication
-- Secure content management
-
-### **Data Validation**
-- Input sanitization
-- Type checking with TypeScript
-- SQL injection prevention via ORM
-
-### **CORS Configuration**
-- Configured for development
-- Customizable for production
-
----
-
-## 📱 Responsive Design
-
-### **Breakpoints**
-- **Mobile**: < 768px
-- **Tablet**: 768px - 1024px
-- **Desktop**: > 1024px
-
-### **Features**
-- Mobile-first approach
-- Touch-friendly interfaces
-- Optimized images
-- Flexible layouts
-
----
-
-## 🚀 Deployment
-
-### **Production Build**
-```bash
-# Build frontend
-cd client
-npm run build
-
-# Build backend (if using TypeScript compilation)
-npm run build
-```
-
-### **Environment Variables**
-Create `.env` file in root:
-```env
-DATABASE_URL=mysql://user:password@localhost:3306/knocker_db
-PORT=5001
-NODE_ENV=production
-```
-
-### **Deployment Options**
-- **Frontend**: Vercel, Netlify, AWS S3
-- **Backend**: Railway, Heroku, AWS EC2
-- **Database**: PlanetScale, AWS RDS, DigitalOcean
-
----
-
-## 🔍 Troubleshooting
-
-### **Common Issues**
-
-#### **"Cannot connect to database"**
-1. Ensure MySQL server is running
-2. Check database credentials
-3. Verify database exists
-4. Check firewall settings
-
-#### **"Admin panel not loading"**
-1. Check if backend server is running
-2. Verify API endpoints are accessible
-3. Check browser console for errors
-4. Clear browser cache
-
-#### **"Content not saving"**
-1. Check database permissions
-2. Verify API endpoints
-3. Check server logs
-4. Test database connection
-
-#### **"Frontend not loading"**
-1. Check if Vite dev server is running
-2. Verify port 5173 is available
-3. Check for build errors
-4. Clear node_modules and reinstall
-
----
-
-## 📈 Performance Optimization
-
-### **Frontend**
-- Code splitting with React.lazy()
-- Image optimization
-- CSS purging with Tailwind
-- Bundle size monitoring
-
-### **Backend**
-- Database query optimization
-- Response caching
-- Compression middleware
-- Connection pooling
-
-### **Database**
-- Proper indexing
-- Query optimization
-- Regular maintenance
-- Backup strategies
-
----
-
-## 🧪 Testing
-
-### **Manual Testing Checklist**
-- [ ] All pages load correctly
-- [ ] Admin panel authentication works
-- [ ] Content editing and saving
-- [ ] Contact form submission
-- [ ] Responsive design on mobile
-- [ ] Database persistence
-- [ ] API endpoints respond correctly
-
-### **API Testing**
-```bash
-# Test content API
-curl -X GET http://localhost:5001/api/content
-
-# Test message submission
-curl -X POST http://localhost:5001/api/messages \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test","email":"test@example.com","message":"Test message"}'
-```
-
----
-
-## 📚 Documentation
-
-### **Additional Resources**
-- [React Documentation](https://react.dev/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [Express.js Guide](https://expressjs.com/)
-- [Drizzle ORM Docs](https://orm.drizzle.team/)
-- [MySQL Documentation](https://dev.mysql.com/doc/)
-
-### **Project Files**
-- `CONTENT_MIGRATION.md` - Database migration details
-- `package.json` - Dependencies and scripts
-- `tsconfig.json` - TypeScript configuration
-- `tailwind.config.js` - Tailwind CSS settings
-
----
-
-## 🤝 Contributing
-
-### **Development Workflow**
-1. Fork the repository
-2. Create feature branch
-3. Make changes
-4. Test thoroughly
-5. Submit pull request
-
-### **Code Standards**
-- Use TypeScript for type safety
-- Follow ESLint configuration
-- Write descriptive commit messages
-- Add comments for complex logic
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-## 📞 Support
-
-For questions or issues:
-1. Check the troubleshooting section
-2. Review existing documentation
-3. Create an issue on GitHub
-4. Contact the development team
-
----
-
-## 🎉 **PROJECT STATUS: FULLY OPERATIONAL** ✅
-
-**Frontend**: 🟢 Running on http://localhost:5173  
-**Backend**: 🟢 Running on http://localhost:5001  
-**Database**: 🟢 MySQL Connected  
-**Admin Panel**: 🟢 Available at /admin  
-
-**Last Updated**: December 2024
+Legacy Node server files remain in `server/` for reference but are no longer used.

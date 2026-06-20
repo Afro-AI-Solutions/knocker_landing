@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Save, Eye, EyeOff, Upload, CheckCircle, AlertCircle, Plus, Trash2, Copy, Download, Upload as UploadIcon, Home, Briefcase, FolderOpen, User, Phone, Settings, LogOut, MessageSquare, Clock, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { deepMerge, normalizeHomeTechStack } from "@/lib/utils";
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("home");
@@ -423,11 +424,15 @@ export default function Admin() {
         const response = await fetch('/api/content');
         if (response.ok) {
           const apiContent = await response.json();
-          if (apiContent.home) setHomeContent(apiContent.home);
-          if (apiContent.about) setAboutContent(apiContent.about);
-          if (apiContent.services) setServicesContent(apiContent.services);
-          if (apiContent.portfolio) setPortfolioContent(apiContent.portfolio);
-          if (apiContent.contact) setContactContent(apiContent.contact);
+          if (apiContent.home) {
+            setHomeContent((prev) =>
+              normalizeHomeTechStack(deepMerge(prev, apiContent.home)),
+            );
+          }
+          if (apiContent.about) setAboutContent((prev) => deepMerge(prev, apiContent.about));
+          if (apiContent.services) setServicesContent((prev) => deepMerge(prev, apiContent.services));
+          if (apiContent.portfolio) setPortfolioContent((prev) => deepMerge(prev, apiContent.portfolio));
+          if (apiContent.contact) setContactContent((prev) => deepMerge(prev, apiContent.contact));
         } else {
           // Fallback to localStorage if API fails
           const saved = {
@@ -438,11 +443,15 @@ export default function Admin() {
             contact: localStorage.getItem('contactContent')
           };
           
-          if (saved.home) setHomeContent(JSON.parse(saved.home));
-          if (saved.about) setAboutContent(JSON.parse(saved.about));
-          if (saved.services) setServicesContent(JSON.parse(saved.services));
-          if (saved.portfolio) setPortfolioContent(JSON.parse(saved.portfolio));
-          if (saved.contact) setContactContent(JSON.parse(saved.contact));
+          if (saved.home) {
+            setHomeContent((prev) =>
+              normalizeHomeTechStack(deepMerge(prev, JSON.parse(saved.home))),
+            );
+          }
+          if (saved.about) setAboutContent((prev) => deepMerge(prev, JSON.parse(saved.about)));
+          if (saved.services) setServicesContent((prev) => deepMerge(prev, JSON.parse(saved.services)));
+          if (saved.portfolio) setPortfolioContent((prev) => deepMerge(prev, JSON.parse(saved.portfolio)));
+          if (saved.contact) setContactContent((prev) => deepMerge(prev, JSON.parse(saved.contact)));
         }
         
         const lastSavedTime = localStorage.getItem('lastSaved');
