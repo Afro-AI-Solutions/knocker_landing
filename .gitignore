@@ -1,19 +1,38 @@
-node_modules
-dist
-.DS_Store
-server/public
-vite.config.ts.*
-*.tar.gz
-
-# SQLite Database
-data/
+/node_modules
+/dist
+/data
 *.db
 *.db-shm
 *.db-wal
+.DS_Store
+Thumbs.db
 
-# Environment variables
+# Environment
 .env
 .env.local
+.env.backup
+.env.production
 client/.env.local
-temp_auto_push.bat
-temp_interactive_push.bat
+
+# Laravel
+/vendor
+.phpunit.result.cache
+/.phpunit.cache
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/bootstrap/cache/*.php
+
+# IDE
+/.idea
+/.vscode
+/.cursor
+/.nova
+/.zed
+
+# Legacy Node server (removed)
+server/public
+vite.config.ts.*
+*.tar.gz
+/deploy/output

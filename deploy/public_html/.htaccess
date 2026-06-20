@@ -1,0 +1,25 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # API routes → Laravel
+    RewriteRule ^api(/|$) index.php [L]
+
+    # Laravel health check
+    RewriteRule ^up$ index.php [L]
+
+    # Serve existing files and folders (assets, images, index.html, etc.)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # SPA fallback — React handles /admin, /about, etc.
+    RewriteRule ^ index.html [L]
+</IfModule>
