@@ -7,11 +7,17 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [location] = useLocation();
 
+    // Scroll to top on every route change
+    useEffect(() => {
+        document.documentElement.style.scrollBehavior = "auto";
+        window.scrollTo({ top: 0, left: 0 });
+        document.documentElement.style.scrollBehavior = "";
+    }, [location]);
+
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
         };
-
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
@@ -27,41 +33,57 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-primary-foreground">
             {/* Navigation */}
-            <nav
-                className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled 
-                        ? "bg-background/80 backdrop-blur-2xl border-b border-primary/20 shadow-2xl shadow-primary/10" 
-                        : "bg-[linear-gradient(176deg,rgba(244,249,247,1)_0%,rgba(233,245,240,1)_100%)]"
+            <div className="fixed top-4 left-0 w-full z-50 flex justify-center px-4 transition-all duration-500">
+                <nav
+                    className={`transition-all duration-500 ease-in-out rounded-full border border-white/30 shadow-lg shadow-primary/10 ${
+                        isScrolled
+                            ? "w-[75%] max-w-2xl py-2 px-6"
+                            : "w-[88%] max-w-4xl py-3 px-8"
                     }`}
-            >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-24">
+                    style={{
+                        background: "rgba(255,255,255,0.22)",
+                        backdropFilter: "blur(18px)",
+                        WebkitBackdropFilter: "blur(18px)",
+                        boxShadow: "0 8px 32px 0 rgba(31,38,135,0.10), inset 0 1px 0 rgba(255,255,255,0.4)",
+                        border: "1px solid rgba(255,255,255,0.35)",
+                    }}
+                >
+                    <div className="flex items-center justify-between">
                         {/* Logo */}
                         <Link href="/">
-                            <a className="flex items-center gap-3 hover:opacity-90 transition-all duration-300 group relative">
+                            <a className="flex items-center gap-2 hover:opacity-90 transition-all duration-300 group relative">
                                 <div className="relative">
                                     <img
                                         src="/figmaAssets/knocker logo.png"
                                         alt="Knocker AI"
-                                        className="h-14 w-auto object-contain transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3"
+                                        className={`w-auto object-contain transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${isScrolled ? "h-8" : "h-10"}`}
                                     />
-                                    <div className="absolute inset-0 bg-primary/30 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                    <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                 </div>
-                                <span className="text-2xl font-bold bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent group-hover:from-primary group-hover:to-primary transition-all duration-300" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+                                <span
+                                    className={`font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent transition-all duration-500 ${isScrolled ? "text-base" : "text-lg"}`}
+                                    style={{ fontFamily: 'Orbitron, sans-serif' }}
+                                >
                                     Knocker AI
                                 </span>
                             </a>
                         </Link>
 
                         {/* Desktop Menu */}
-                        <div className="hidden md:flex items-center space-x-1">
+                        <div className="hidden md:flex items-center gap-1">
                             {navItems.map((item) => (
                                 <Link key={item.path} href={item.path}>
                                     <a
-                                        className={`relative px-4 py-2 text-sm font-semibold transition-all duration-300 group ${location === item.path ? "text-primary" : "text-foreground hover:text-primary"
-                                            }`}
+                                        className={`relative px-4 py-1.5 text-sm font-semibold rounded-full transition-all duration-300 ${
+                                            location === item.path
+                                                ? "text-primary bg-primary/10"
+                                                : "text-foreground hover:text-primary hover:bg-primary/5"
+                                        }`}
                                     >
-                                        <span className="relative z-10">{item.label}</span>
-                                        {location === item.path && <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-primary rounded-full"></div>}
+                                        {item.label}
+                                        {location === item.path && (
+                                            <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"></div>
+                                        )}
                                     </a>
                                 </Link>
                             ))}
@@ -71,25 +93,34 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                         <div className="md:hidden">
                             <button
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                className="relative p-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary transition-all duration-300 hover:scale-110"
+                                className="p-2 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-all duration-300"
                             >
-                                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                                {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                             </button>
                         </div>
                     </div>
-                </div>
+                </nav>
 
-                {/* Mobile Menu */}
+                {/* Mobile Dropdown */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden bg-background border-b border-border/40">
-                        <div className="px-4 pt-2 pb-6 space-y-2">
+                    <div
+                        className="absolute top-[72px] left-1/2 -translate-x-1/2 w-[88%] max-w-sm rounded-3xl border border-white/30 p-4 md:hidden"
+                        style={{
+                            background: "rgba(255,255,255,0.28)",
+                            backdropFilter: "blur(20px)",
+                            WebkitBackdropFilter: "blur(20px)",
+                            boxShadow: "0 8px 32px 0 rgba(31,38,135,0.12)",
+                        }}
+                    >
+                        <div className="flex flex-col gap-1">
                             {navItems.map((item) => (
                                 <Link key={item.path} href={item.path}>
                                     <a
-                                        className={`block px-3 py-3 rounded-md text-base font-medium ${location === item.path
+                                        className={`block px-4 py-3 rounded-2xl text-base font-medium transition-all duration-200 ${
+                                            location === item.path
                                                 ? "bg-primary/10 text-primary"
-                                                : "text-foreground hover:bg-muted"
-                                            }`}
+                                                : "text-foreground hover:bg-primary/5 hover:text-primary"
+                                        }`}
                                         onClick={() => setIsMobileMenuOpen(false)}
                                     >
                                         {item.label}
@@ -99,10 +130,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                         </div>
                     </div>
                 )}
-            </nav>
+            </div>
 
             {/* Main Content */}
-            <main className="pt-20">
+            <main>
                 {children}
             </main>
 

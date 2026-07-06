@@ -24,6 +24,12 @@ client/.env.local
 /storage/pail
 /bootstrap/cache/*.php
 
+# Frontend build output
+client/node_modules
+client/dist
+/public/assets
+/public/index.html
+
 # IDE
 /.idea
 /.vscode

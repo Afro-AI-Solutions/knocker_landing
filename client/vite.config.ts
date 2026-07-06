@@ -12,8 +12,8 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist",
-    emptyOutDir: true,
+    outDir: "../public",
+    emptyOutDir: false,
   },
   server: {
     proxy: {

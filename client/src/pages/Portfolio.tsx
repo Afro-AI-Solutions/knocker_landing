@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { Card3D } from "@/components/Card3D";
 import { motion } from "framer-motion";
@@ -62,6 +62,42 @@ export const projects = [
         image: "https://images.unsplash.com/photo-1472851294608-41531b6574d4?w=800&q=80",
         tags: ["Python", "Scikit-learn", "FastAPI", "Redis"],
         category: "AI & ML",
+        link: "#",
+    },
+    {
+        id: 7,
+        title: "GYM Management System",
+        description: "A complete gym management solution featuring member management, workout tracking, payment processing, class scheduling, and trainer assignment. Includes comprehensive reporting, mobile-responsive design, and real-time notifications for enhanced member experience.",
+        image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+        tags: ["Laravel", "React.js", "REST API"],
+        category: "Web Development",
+        link: "#",
+    },
+    {
+        id: 8,
+        title: "Inventory Management System",
+        description: "A comprehensive inventory management system with real-time stock tracking, automated reorder alerts, barcode scanning, supplier management, and detailed reporting. Includes multi-location support, role-based access control, and integration with accounting systems.",
+        image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
+        tags: ["Laravel", "React", "MySQL", "REST API"],
+        category: "Web Development",
+        link: "#",
+    },
+    {
+        id: 9,
+        title: "Royal Candy & Chocolate",
+        description: "A modern, elegant landing page for Royal Candy & Chocolate company featuring product showcase, company information, contact forms, and responsive design optimized for mobile and desktop. Includes admin panel for content management and SEO optimization.",
+        image: "https://images.unsplash.com/photo-1549007953-2f2dc0b24019?w=800&q=80",
+        tags: ["Laravel", "React", "MySQL", "Bootstrap"],
+        category: "Web Development",
+        link: "#",
+    },
+    {
+        id: 10,
+        title: "Hailemariam Melese Import & Export",
+        description: "A professional business landing page showcasing Ethiopia's agricultural excellence and industrial potential to global markets. Features company services, product catalogs, contact information, and business inquiry forms designed to attract international clients and partners.",
+        image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+        tags: ["React", "Laravel", "MySQL", "Tailwind CSS"],
+        category: "Web Development",
         link: "#",
     },
 ];
@@ -164,11 +200,6 @@ export default function Portfolio() {
                                                 <Button variant="outline" size="sm" className="w-full hover:bg-primary hover:text-primary-foreground transition-all duration-300" asChild>
                                                     <a href={project.link} target="_blank" rel="noopener noreferrer">
                                                         <ExternalLink className="h-4 w-4 mr-2" /> Live Demo
-                                                    </a>
-                                                </Button>
-                                                <Button variant="ghost" size="sm" className="w-full hover:bg-muted transition-all duration-300" asChild>
-                                                    <a href="#" target="_blank" rel="noopener noreferrer">
-                                                        <Github className="h-4 w-4 mr-2" /> Code
                                                     </a>
                                                 </Button>
                                             </div>
