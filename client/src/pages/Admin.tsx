@@ -266,7 +266,9 @@ export default function Admin() {
     setMessagesLoading(true);
     try {
       // Try new API first, fallback to legacy
-      let response = await fetch('/api/messages');
+      let response = await fetch('/api/messages', {
+        headers: { 'Authorization': `Bearer ${sessionStorage.getItem('admin_token') ?? ''}` }
+      });
       if (response.ok) {
         const messages = await response.json();
         setMessages(messages || []);
@@ -276,7 +278,9 @@ export default function Admin() {
         setMessageStats({ total, unread, read });
       } else {
         // Fallback to legacy API
-        response = await fetch('/api/admin/contacts');
+        response = await fetch('/api/admin/contacts', {
+          headers: { 'Authorization': `Bearer ${sessionStorage.getItem('admin_token') ?? ''}` }
+        });
         const data = await response.json();
         setMessages(data.messages || []);
         setMessageStats(data.stats || { total: 0, unread: 0, read: 0 });
@@ -338,11 +342,23 @@ export default function Admin() {
     });
   };
 
-  const handleLogin = () => {
-    if (password === "admin123") {
-      setIsAuthenticated(true);
-    } else {
-      alert("Incorrect password");
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (response.ok) {
+        const { token } = await response.json();
+        sessionStorage.setItem('admin_token', token);
+        setIsAuthenticated(true);
+      } else {
+        toast({ title: "Access denied", description: "Incorrect password", variant: "destructive" });
+      }
+    } catch {
+      toast({ title: "Error", description: "Could not connect to server", variant: "destructive" });
     }
   };
 
@@ -509,7 +525,10 @@ export default function Admin() {
       const savePromises = Object.entries(contentToSave).map(async ([pageKey, content]) => {
         const response = await fetch(`/api/content/${pageKey}`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionStorage.getItem('admin_token') ?? ''}`,
+          },
           body: JSON.stringify(content)
         });
         if (!response.ok) {
@@ -682,7 +701,12 @@ export default function Admin() {
 
           <div className="p-4 border-t border-slate-200 dark:border-slate-700">
             <Button
-              onClick={() => {
+              onClick={async () => {
+                const token = sessionStorage.getItem('admin_token');
+                if (token) {
+                  await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': `Bearer ${token}` } });
+                  sessionStorage.removeItem('admin_token');
+                }
                 setIsAuthenticated(false);
                 setPassword('');
               }}
