@@ -201,14 +201,31 @@ export default function Contact() {
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2">
                                             <MessageSquare className="h-5 w-5" />
-                                            Live Chat
+                                            Quick Response
                                         </CardTitle>
                                     </CardHeader>
-                                    <CardContent>
-                                        <p className="mb-4 text-primary-foreground/90">
-                                            Need immediate assistance? Our support team is available for live chat during business hours.
-                                        </p>
-                                        <Button variant="secondary" className="w-full">Start Chat</Button>
+                                    <CardContent className="space-y-4">
+                                        <div className="text-primary-foreground/90 space-y-3">
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shrink-0"></span>
+                                                <span className="text-sm">We respond within <strong>24 hours</strong></span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-primary-foreground/60 shrink-0"></span>
+                                                <span className="text-sm">Free project consultation included</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-primary-foreground/60 shrink-0"></span>
+                                                <span className="text-sm">NDA available upon request</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="w-2 h-2 rounded-full bg-primary-foreground/60 shrink-0"></span>
+                                                <span className="text-sm">No commitment required</span>
+                                            </div>
+                                        </div>
+                                        <a href={`mailto:${content.contactInfo.email}`} className="block">
+                                            <Button variant="secondary" className="w-full">Email Us Directly</Button>
+                                        </a>
                                     </CardContent>
                                 </Card>
                             </motion.div>

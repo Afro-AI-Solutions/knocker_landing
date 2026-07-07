@@ -275,73 +275,27 @@ export default function Services() {
                     </motion.p>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                         {[
-                            { name: "Healthcare", icon: <Heart className="h-10 w-10" /> },
-                            { name: "Finance & Fintech", icon: <DollarSign className="h-10 w-10" /> },
-                            { name: "E-commerce", icon: <ShoppingCart className="h-10 w-10" /> },
-                            { name: "Education", icon: <GraduationCap className="h-10 w-10" /> },
-                            { name: "Real Estate", icon: <Building2 className="h-10 w-10" /> },
-                            { name: "Logistics", icon: <Truck className="h-10 w-10" /> }
+                            { name: "Healthcare", icon: <Heart className="h-10 w-10" />, desc: "Patient portals, clinic management & health data systems" },
+                            { name: "Finance & Fintech", icon: <DollarSign className="h-10 w-10" />, desc: "Wallets, payment gateways & financial dashboards" },
+                            { name: "E-commerce", icon: <ShoppingCart className="h-10 w-10" />, desc: "Online stores, inventory & recommendation engines" },
+                            { name: "Education", icon: <GraduationCap className="h-10 w-10" />, desc: "LMS platforms, e-learning & student tracking systems" },
+                            { name: "Real Estate", icon: <Building2 className="h-10 w-10" />, desc: "Property listings, CRM & management platforms" },
+                            { name: "Logistics", icon: <Truck className="h-10 w-10" />, desc: "Fleet tracking, supply chain & delivery management" }
                         ].map((industry, i) => (
                             <motion.div
                                 key={i}
-                                className="group relative p-8 rounded-2xl bg-gray-100 hover:bg-gray-200 transition-all duration-500 border-2 border-gray-200 hover:border-gray-300 cursor-pointer shadow-lg"
-                                whileHover={{
-                                    y: -12,
-                                    scale: 1.05,
-                                    transition: { duration: 0.3 }
-                                }}
+                                className="group relative p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-white/40 cursor-pointer transition-all duration-300 text-left"
+                                whileHover={{ y: -8, scale: 1.03, transition: { duration: 0.3 } }}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.1, duration: 0.6 }}
                                 viewport={{ once: true }}
                             >
-                                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-                                <div className="relative z-10">
-                                    <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-white flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 shadow-lg">{industry.icon}</div>
-                                    <div className="font-bold text-lg text-foreground group-hover:text-primary transition-colors duration-300">{industry.name}</div>
+                                <div className="w-14 h-14 mb-4 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-white group-hover:bg-white group-hover:text-primary transition-all duration-300 shadow-lg">
+                                    {industry.icon}
                                 </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Tech Stack Section */}
-            <section className="py-24 bg-gradient-to-b from-background to-muted/20">
-                <div className="container mx-auto px-4 text-center">
-                    <motion.h2 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-3xl md:text-4xl font-bold mb-4"
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
-                    >
-                        Our Technology Stack
-                    </motion.h2>
-                    <motion.p 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-muted-foreground mb-12 max-w-2xl mx-auto"
-                    >
-                        We use the best tools in the industry to build robust solutions
-                    </motion.p>
-
-                    <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-                        {["React", "TypeScript", "Node.js", "Python", "Laravel", "PostgreSQL", "AWS", "Docker", "Next.js", "Tailwind CSS", "TensorFlow"].map((tech, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: i * 0.05 }}
-                                viewport={{ once: true }}
-                                whileHover={{ scale: 1.1, y: -5 }}
-                                className="px-6 py-3 rounded-xl bg-gradient-to-br from-muted to-muted/50 border border-border hover:border-primary/50 transition-all duration-300 cursor-default shadow-md hover:shadow-lg hover:shadow-primary/10"
-                            >
-                                <span className="text-lg md:text-xl font-bold text-foreground hover:text-primary transition-colors">
-                                    {tech}
-                                </span>
+                                <div className="font-bold text-lg text-white mb-2">{industry.name}</div>
+                                <div className="text-sm text-white/70 group-hover:text-white/90 transition-colors leading-relaxed">{industry.desc}</div>
                             </motion.div>
                         ))}
                     </div>

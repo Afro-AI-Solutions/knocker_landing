@@ -210,27 +210,63 @@ export default function Home() {
             </section>
 
             {/* Tech Stack Marquee */}
-            <section className="py-10 border-y border-border/40 bg-muted/5 overflow-hidden">
+            <section className="py-10 overflow-hidden bg-gradient-to-b from-primary/5 via-background to-primary/20">
                 <div className="container mx-auto px-4 mb-6 text-center">
-                    <p className="text-sm font-medium text-muted-foreground uppercase tracking-widest">{content.techStack.title}</p>
+                    <p className="text-xs font-bold text-primary uppercase tracking-widest">{content.techStack.title}</p>
                 </div>
-                <div className="relative flex overflow-x-hidden group">
-                    <div className="animate-marquee whitespace-nowrap flex gap-16 items-center">
-                        {content.techStack.technologies.map((tech, i) => (
-                            <span key={i} className="text-2xl font-bold text-muted-foreground/50 mx-4">{typeof tech === 'string' ? tech : tech.name}</span>
-                        ))}
-                        {content.techStack.technologies.map((tech, i) => (
-                            <span key={`dup-${i}`} className="text-2xl font-bold text-muted-foreground/50 mx-4">{typeof tech === 'string' ? tech : tech.name}</span>
-                        ))}
-                    </div>
-                </div>
+                {(() => {
+                    const techColors: Record<string, { bg: string; text: string; border: string }> = {
+                        "React":       { bg: "rgba(97,218,251,0.15)",  text: "#149eca", border: "rgba(97,218,251,0.5)" },
+                        "Next.js":     { bg: "rgba(0,0,0,0.08)",       text: "#111",    border: "rgba(0,0,0,0.2)" },
+                        "TypeScript":  { bg: "rgba(49,120,198,0.15)",  text: "#3178c6", border: "rgba(49,120,198,0.4)" },
+                        "Node.js":     { bg: "rgba(83,158,67,0.15)",   text: "#539e43", border: "rgba(83,158,67,0.4)" },
+                        "Python":      { bg: "rgba(55,118,171,0.15)",  text: "#3776ab", border: "rgba(55,118,171,0.4)" },
+                        "TensorFlow":  { bg: "rgba(255,160,0,0.15)",   text: "#e37c00", border: "rgba(255,160,0,0.4)" },
+                        "AWS":         { bg: "rgba(255,153,0,0.15)",   text: "#e17b00", border: "rgba(255,153,0,0.4)" },
+                        "Docker":      { bg: "rgba(13,183,237,0.15)",  text: "#0db7ed", border: "rgba(13,183,237,0.4)" },
+                        "Tailwind":    { bg: "rgba(56,189,248,0.15)",  text: "#0ea5e9", border: "rgba(56,189,248,0.4)" },
+                        "OpenAI":      { bg: "rgba(16,163,127,0.15)",  text: "#10a37f", border: "rgba(16,163,127,0.4)" },
+                        "Laravel":     { bg: "rgba(255,45,32,0.12)",   text: "#f9322c", border: "rgba(255,45,32,0.3)" },
+                        "PostgreSQL":  { bg: "rgba(51,103,145,0.15)",  text: "#336791", border: "rgba(51,103,145,0.4)" },
+                        "Vue.js":      { bg: "rgba(65,184,131,0.15)",  text: "#41b883", border: "rgba(65,184,131,0.4)" },
+                        "MySQL":       { bg: "rgba(0,117,143,0.12)",   text: "#00758f", border: "rgba(0,117,143,0.35)" },
+                    };
+                    const getStyle = (name: string) =>
+                        techColors[name] ?? { bg: "rgba(99,102,241,0.12)", text: "#6366f1", border: "rgba(99,102,241,0.35)" };
+
+                    const techs = content.techStack.technologies.map((t: any) => typeof t === 'string' ? t : t.name);
+                    // Repeat enough times to guarantee no gap on any screen width
+                    const repeated = [...techs, ...techs, ...techs, ...techs];
+
+                    return (
+                        <div className="flex overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
+                            <div
+                                className="flex items-center gap-0 shrink-0"
+                                style={{ animation: "marquee-infinite 30s linear infinite" }}
+                            >
+                                {repeated.map((name, i) => {
+                                    const s = getStyle(name);
+                                    return (
+                                        <span
+                                            key={i}
+                                            className="inline-flex items-center px-5 py-2 rounded-full text-sm font-bold mx-2 cursor-default transition-transform duration-200 hover:scale-105 whitespace-nowrap shrink-0"
+                                            style={{ background: s.bg, color: s.text, border: `1.5px solid ${s.border}` }}
+                                        >
+                                            {name}
+                                        </span>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    );
+                })()}
             </section>
 
             {/* Stats Section */}
-            <section className="py-16 border-y border-border/30 bg-primary/5 relative overflow-hidden">
-                <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] pointer-events-none"></div>
+            <section className="pt-10 pb-16 relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80">
+                <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.5))] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {content.stats.map((stat, index) => (
                             <motion.div
                                 key={index}
@@ -238,10 +274,10 @@ export default function Home() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
                                 viewport={{ once: true }}
-                                className="glass-card p-6 rounded-2xl hover-lift group"
+                                className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 group"
                             >
-                                <div className="text-3xl md:text-4xl font-bold text-primary mb-2" style={{ fontFamily: 'Orbitron, sans-serif' }}>{stat.value}</div>
-                                <div className="text-muted-foreground text-sm font-medium">{stat.label}</div>
+                                <div className="text-3xl md:text-4xl font-bold text-white mb-2" style={{ fontFamily: 'Orbitron, sans-serif' }}>{stat.value}</div>
+                                <div className="text-white/70 text-sm font-medium">{stat.label}</div>
                             </motion.div>
                         ))}
                     </div>
@@ -659,29 +695,38 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Newsletter Section */}
-            <section className="py-24 bg-gradient-to-b from-background to-muted/20 border-t border-border/30">
-                <div className="container mx-auto px-4">
+            {/* Final CTA Section */}
+            <section className="py-24 relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
+                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+                <div className="container mx-auto px-4 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="max-w-4xl mx-auto glass-card rounded-3xl p-8 md:p-12 shadow-xl border border-border/30 text-center relative overflow-hidden group"
+                        className="max-w-4xl mx-auto glass-card rounded-3xl p-8 md:p-12 shadow-xl border-2 border-primary/20 text-center relative overflow-hidden group hover:border-primary/40 transition-all duration-500"
                     >
                         <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.newsletter.title}</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Have a Project in Mind?</h2>
                             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
-                                {content.newsletter.description}
+                                Tell us about your idea and we'll help you build it. Free consultation, no commitment required.
                             </p>
-                            <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className="flex-1 px-6 py-4 rounded-xl border border-border/50 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-300"
-                                />
-                                <Button type="submit" className="px-8 py-4 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/30">{content.newsletter.buttonText}</Button>
-                            </form>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <Link href="/contact">
+                                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                        <Button size="lg" className="px-10 py-4 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/30">
+                                            Start a Project <ArrowRight className="ml-2 h-5 w-5 inline" />
+                                        </Button>
+                                    </motion.div>
+                                </Link>
+                                <Link href="/portfolio">
+                                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                        <Button size="lg" variant="outline" className="px-10 py-4 border-primary/30 hover:border-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+                                            View Our Work
+                                        </Button>
+                                    </motion.div>
+                                </Link>
+                            </div>
                         </div>
                     </motion.div>
                 </div>

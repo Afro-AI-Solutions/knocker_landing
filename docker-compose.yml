@@ -1,0 +1,16 @@
+services:
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: knocker_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nova_appdb
+      POSTGRES_USER: nova_admin
+      POSTGRES_PASSWORD: ultra_secure_2025
+    ports:
+      - "5454:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

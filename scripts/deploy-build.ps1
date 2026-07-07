@@ -6,7 +6,7 @@ $PublicOut = Join-Path $Output "public_html"
 
 Write-Host "==> Building React frontend..." -ForegroundColor Cyan
 Set-Location $Root
-npm run build
+npm run build --prefix client
 
 Write-Host "==> Installing production PHP dependencies..." -ForegroundColor Cyan
 composer install --no-dev --optimize-autoloader --no-interaction
@@ -43,4 +43,9 @@ Write-Host "  Laravel app : deploy\output\knocker_landing\"
 Write-Host "  Web root    : deploy\output\public_html\"
 Write-Host ""
 Write-Host "Upload knocker_landing/ and public_html/ to your server." -ForegroundColor Yellow
+Write-Host "Before going live, set these in server .env:" -ForegroundColor Yellow
+Write-Host "  APP_KEY        -> php artisan key:generate --show" -ForegroundColor White
+Write-Host "  APP_URL        -> your domain" -ForegroundColor White
+Write-Host "  ADMIN_PASSWORD -> php artisan tinker --execute=""echo bcrypt('yourpassword');""" -ForegroundColor White
+Write-Host "  DB_*           -> your MySQL credentials" -ForegroundColor White
 Write-Host "See DEPLOY.md for full instructions."
