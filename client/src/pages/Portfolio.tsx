@@ -103,6 +103,7 @@ export const projects = [
 ];
 
 export default function Portfolio() {
+    const [activeFilter, setActiveFilter] = useState("All");
     const [content, setContent] = useState({
         hero: {
             heading: "Our Portfolio",
@@ -157,8 +158,27 @@ export default function Portfolio() {
             <section className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
+                    {/* Filter Buttons */}
+                    <div className="flex flex-wrap justify-center gap-3 mb-12">
+                        {["All", "Web Development", "AI & ML", "Mobile App", "IoT"].map((filter) => (
+                            <button
+                                key={filter}
+                                onClick={() => setActiveFilter(filter)}
+                                className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${
+                                    activeFilter === filter
+                                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30"
+                                        : "bg-background border-border/50 text-muted-foreground hover:border-primary/50 hover:text-primary"
+                                }`}
+                            >
+                                {filter}
+                            </button>
+                        ))}
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {content.projects.map((project, index) => (
+                        {content.projects
+                            .filter((p) => activeFilter === "All" || p.category === activeFilter)
+                            .map((project, index) => (
                             <motion.div
                                 key={project.id}
                                 initial={{ opacity: 0, y: 30 }}

@@ -223,53 +223,6 @@ export default function About() {
                 </div>
             </section>
 
-            {/* Team */}
-            <section className="py-24 bg-gradient-to-b from-background to-muted/20">
-                <div className="container mx-auto px-4 text-center">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-3xl md:text-4xl font-bold mb-12 text-primary"
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
-                    >
-                        {content.team.title}
-                    </motion.h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                        {content.team.members.map((member, i) => (
-                            <motion.div
-                                key={i}
-                                className="group"
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: i * 0.1 }}
-                                viewport={{ once: true }}
-                                whileHover={{ y: -10 }}
-                            >
-                                <div className="bg-muted h-64 rounded-xl mb-4 overflow-hidden relative border-2 border-border/50 group-hover:border-primary/50 transition-all duration-500">
-                                    {member.image ? (
-                                        <img
-                                            src={member.image}
-                                            alt={member.name}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    ) : (
-                                        <>
-                                            <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/20 transition-colors" />
-                                            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-                                                Member {i + 1}
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                                <h3 className="font-bold text-lg group-hover:text-primary transition-colors">{member.name}</h3>
-                                <p className="text-sm text-muted-foreground">{member.position}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* CTA */}
             <section className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5"></div>

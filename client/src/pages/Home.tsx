@@ -695,7 +695,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Newsletter Section */}
+            {/* Final CTA Section */}
             <section className="py-24 relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
@@ -707,18 +707,26 @@ export default function Home() {
                     >
                         <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.newsletter.title}</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Have a Project in Mind?</h2>
                             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
-                                {content.newsletter.description}
+                                Tell us about your idea and we'll help you build it. Free consultation, no commitment required.
                             </p>
-                            <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
-                                <input
-                                    type="email"
-                                    placeholder="Enter your email"
-                                    className="flex-1 px-6 py-4 rounded-xl border border-border/50 bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all duration-300"
-                                />
-                                <Button type="submit" className="px-8 py-4 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/30">{content.newsletter.buttonText}</Button>
-                            </form>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                                <Link href="/contact">
+                                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                        <Button size="lg" className="px-10 py-4 bg-primary hover:bg-primary/90 transition-all duration-300 shadow-lg shadow-primary/30">
+                                            Start a Project <ArrowRight className="ml-2 h-5 w-5 inline" />
+                                        </Button>
+                                    </motion.div>
+                                </Link>
+                                <Link href="/portfolio">
+                                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                                        <Button size="lg" variant="outline" className="px-10 py-4 border-primary/30 hover:border-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+                                            View Our Work
+                                        </Button>
+                                    </motion.div>
+                                </Link>
+                            </div>
                         </div>
                     </motion.div>
                 </div>
