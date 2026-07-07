@@ -14,6 +14,14 @@ export default defineConfig({
   build: {
     outDir: "../public",
     emptyOutDir: false,
+    rollupOptions: {
+      output: {
+        // Consistent filenames so old files don't accumulate
+        entryFileNames: "assets/index.js",
+        chunkFileNames: "assets/[name].js",
+        assetFileNames: "assets/[name].[ext]",
+      },
+    },
   },
   server: {
     proxy: {
