@@ -7,6 +7,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          ink: "#2C2C2A",
+          signal: "#378ADD",
+          deep: "#185FA5",
+          sand: "#F1EFE8",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -48,14 +54,13 @@ module.exports = {
       },
       fontFamily: {
         sans: [
-          "Outfit",
           "Inter",
           "ui-sans-serif",
           "system-ui",
           "sans-serif",
         ],
-        display: ["Orbitron", "ui-sans-serif", "system-ui"],
-        mono: ["Space Grotesk", "ui-monospace", "monospace"],
+        display: ["Roboto Slab", "Georgia", "serif"],
+        mono: ["ui-monospace", "monospace"],
       },
       keyframes: {
         "accordion-down": {
@@ -71,8 +76,8 @@ module.exports = {
           "50%": { transform: "translateY(-10px)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(138, 43, 226, 0.3)" },
-          "50%": { boxShadow: "0 0 40px rgba(138, 43, 226, 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(55, 138, 221, 0.3)" },
+          "50%": { boxShadow: "0 0 40px rgba(55, 138, 221, 0.5)" },
         },
         "gradient-x": {
           "0%, 100%": { backgroundPosition: "0% 50%" },

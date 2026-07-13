@@ -94,7 +94,7 @@ export default function ContactAdmin() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-4xl font-bold mb-8 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+        <h1 className="text-4xl font-bold mb-8 text-primary">
           Contact Messages Admin
         </h1>
 

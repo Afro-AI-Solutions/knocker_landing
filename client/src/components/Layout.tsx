@@ -51,21 +51,13 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                     <div className="flex items-center justify-between">
                         {/* Logo */}
                         <Link href="/">
-                            <a className="flex items-center gap-2 hover:opacity-90 transition-all duration-300 group relative">
-                                <div className="relative">
-                                    <img
-                                        src="/figmaAssets/knocker logo.png"
-                                        alt="Knocker AI"
-                                        className={`w-auto object-contain transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${isScrolled ? "h-8" : "h-10"}`}
-                                    />
-                                    <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                </div>
-                                <span
-                                    className={`font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent transition-all duration-500 ${isScrolled ? "text-base" : "text-lg"}`}
-                                    style={{ fontFamily: 'Orbitron, sans-serif' }}
-                                >
-                                    Knocker AI
-                                </span>
+                            <a className="flex items-center hover:opacity-90 transition-all duration-300 group relative">
+                                <img
+                                    src="/light_logo.png"
+                                    alt="Knocker AI"
+                                    width={isScrolled ? 120 : 140}
+                                    className="object-contain transition-all duration-500 group-hover:scale-105"
+                                />
                             </a>
                         </Link>
 
@@ -143,18 +135,13 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                         <div className="col-span-1 md:col-span-2">
-                            <div className="flex items-center gap-3 mb-6 group">
-                                <div className="relative">
-                                    <img
-                                        src="/figmaAssets/knocker logo.png"
-                                        alt="Knocker AI"
-                                        className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110"
-                                    />
-                                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                </div>
-                                <h3 className="text-2xl font-bold text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>
-                                    Knocker AI
-                                </h3>
+                            <div className="mb-6 group">
+                                <img
+                                    src="/light_logo.png"
+                                    alt="Knocker AI"
+                                    width={200}
+                                    className="object-contain transition-transform duration-300 group-hover:scale-105"
+                                />
                             </div>
                             <p className="text-muted-foreground max-w-sm mb-6 leading-relaxed">
                                 Empowering businesses with cutting-edge AI solutions, custom web development, and digital transformation strategies.

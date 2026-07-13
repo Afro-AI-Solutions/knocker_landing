@@ -139,7 +139,7 @@ export default function Portfolio() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                         className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                       
                     >
                         {content.hero.heading}
                     </motion.h1>
@@ -240,7 +240,7 @@ export default function Portfolio() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-3xl md:text-4xl font-bold mb-6" 
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                       
                     >
                         {content.cta.title}
                     </motion.h2>

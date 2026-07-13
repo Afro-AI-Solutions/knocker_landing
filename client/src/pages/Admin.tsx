@@ -619,7 +619,13 @@ export default function Admin() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-primary/5 to-background">
         <Card className="w-full max-w-md">
-          <CardHeader>
+          <CardHeader className="items-center">
+            <img
+              src="/light_logo.png"
+              alt="Knocker AI"
+              width={160}
+              className="mb-2 object-contain"
+            />
             <CardTitle className="text-2xl text-center">Admin Login</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -668,9 +674,12 @@ export default function Admin() {
         <div className="w-64 min-h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700 shadow-lg">
           <div className="p-6 border-b border-slate-200 dark:border-slate-700">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <Settings className="h-5 w-5 text-white" />
-              </div>
+              <img
+                src="/icon.png"
+                alt="Knocker AI"
+                width={40}
+                className="object-contain"
+              />
               <div>
                 <h1 className="text-xl font-bold text-slate-900 dark:text-white">Admin Panel</h1>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Content Management</p>
@@ -687,7 +696,7 @@ export default function Admin() {
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 ${activeTab === item.id
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                        ? 'bg-gradient-to-r from-brand-signal to-brand-deep text-white shadow-lg'
                         : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
                       }`}
                   >
@@ -756,7 +765,7 @@ export default function Admin() {
                 <Button
                   onClick={() => handleSave()}
                   disabled={isSaving}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg"
+                  className="bg-gradient-to-r from-brand-signal to-brand-deep hover:from-brand-deep hover:to-brand-signal text-white shadow-lg"
                 >
                   {isSaving ? (
                     <AlertCircle className="h-4 w-4 mr-2 animate-spin" />

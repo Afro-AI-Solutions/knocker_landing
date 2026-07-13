@@ -94,7 +94,7 @@ export default function About() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                         className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                       
                     >
                         {content.hero.heading}
                     </motion.h1>
@@ -120,7 +120,7 @@ export default function About() {
                             viewport={{ once: true }}
                             className="prose prose-lg dark:prose-invert"
                         >
-                            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.story.title}</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary">{content.story.title}</h2>
                             {content.story.paragraphs.map((paragraph, index) => (
                                 <p key={index} className="text-muted-foreground mb-4">
                                     {paragraph}
@@ -154,7 +154,7 @@ export default function About() {
                             className="bg-primary-foreground/10 p-8 rounded-2xl backdrop-blur-sm border border-primary-foreground/20 hover:border-primary-foreground/40 transition-all duration-500"
                         >
                             <Target className="h-12 w-12 mb-6 text-blue-300" />
-                            <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.mission.title}</h2>
+                            <h2 className="text-2xl md:text-3xl font-bold mb-4">{content.mission.title}</h2>
                             <p className="text-primary-foreground/80 leading-relaxed">
                                 {content.mission.description}
                             </p>
@@ -167,7 +167,7 @@ export default function About() {
                             className="bg-primary-foreground/10 p-8 rounded-2xl backdrop-blur-sm border border-primary-foreground/20 hover:border-primary-foreground/40 transition-all duration-500"
                         >
                             <Lightbulb className="h-12 w-12 mb-6 text-yellow-300" />
-                            <h2 className="text-2xl md:text-3xl font-bold mb-4" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.vision.title}</h2>
+                            <h2 className="text-2xl md:text-3xl font-bold mb-4">{content.vision.title}</h2>
                             <p className="text-primary-foreground/80 leading-relaxed">
                                 {content.vision.description}
                             </p>
@@ -186,7 +186,7 @@ export default function About() {
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.values.title}</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">{content.values.title}</h2>
                         <p className="text-muted-foreground text-xl max-w-2xl mx-auto leading-relaxed">{content.values.subtitle}</p>
                     </motion.div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -234,7 +234,7 @@ export default function About() {
                         viewport={{ once: true }}
                         className="glass-card rounded-3xl p-8 md:p-12 text-center border-2 border-primary/20 hover:border-primary/40 transition-all duration-500 shadow-2xl"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.cta.title}</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">{content.cta.title}</h2>
                         <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
                             {content.cta.description}
                         </p>

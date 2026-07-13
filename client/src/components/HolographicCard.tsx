@@ -23,10 +23,10 @@ export function HolographicCard({
             whileHover={{
                 scale: 1.02,
                 boxShadow: glowColor === 'cyan'
-                    ? '0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(0, 240, 255, 0.3)'
+                    ? '0 0 20px rgba(55, 138, 221, 0.5), 0 0 40px rgba(55, 138, 221, 0.3)'
                     : glowColor === 'magenta'
-                        ? '0 0 20px rgba(255, 0, 255, 0.5), 0 0 40px rgba(255, 0, 255, 0.3)'
-                        : '0 0 20px rgba(176, 38, 255, 0.5), 0 0 40px rgba(176, 38, 255, 0.3)',
+                        ? '0 0 20px rgba(24, 95, 165, 0.5), 0 0 40px rgba(24, 95, 165, 0.3)'
+                        : '0 0 20px rgba(24, 95, 165, 0.5), 0 0 40px rgba(24, 95, 165, 0.3)',
                 transition: { duration: 0.3 }
             }}
             initial={{ opacity: 0, y: 20 }}

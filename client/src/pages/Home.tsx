@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Users, Zap, Trophy, FileText, Palette } from "lucide-react";
+import { ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Users, Zap, Trophy, FileText, Palette, Star } from "lucide-react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { GridBackground } from "@/components/GridBackground";
@@ -160,6 +160,20 @@ export default function Home() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
+                        className="mb-8 flex justify-center"
+                    >
+                        <img
+                            src="/light_logo.png"
+                            alt="Knocker AI"
+                            width={280}
+                            className="object-contain max-w-[85vw]"
+                        />
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
                         className="mb-6 text-sm font-medium text-muted-foreground uppercase tracking-wider"
                     >
                         {content.hero.tagline}
@@ -170,7 +184,7 @@ export default function Home() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.2 }}
                         className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-center bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                       
                     >
                         {content.hero.heading}
                     </motion.h1>
@@ -266,6 +280,14 @@ export default function Home() {
             <section className="pt-10 pb-16 relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80">
                 <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.5))] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
+                    <div className="flex justify-center mb-10">
+                        <img
+                            src="/dark_logo.png"
+                            alt="Knocker AI"
+                            width={220}
+                            className="object-contain max-w-[80vw]"
+                        />
+                    </div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {content.stats.map((stat, index) => (
                             <motion.div
@@ -276,7 +298,7 @@ export default function Home() {
                                 viewport={{ once: true }}
                                 className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 group"
                             >
-                                <div className="text-3xl md:text-4xl font-bold text-white mb-2" style={{ fontFamily: 'Orbitron, sans-serif' }}>{stat.value}</div>
+                                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.value}</div>
                                 <div className="text-white/70 text-sm font-medium">{stat.label}</div>
                             </motion.div>
                         ))}
@@ -294,7 +316,7 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mb-20"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.features.title}</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">{content.features.title}</h2>
                         <p className="text-muted-foreground max-w-3xl mx-auto text-xl leading-relaxed">
                             {content.features.subtitle}
                         </p>
@@ -358,7 +380,7 @@ export default function Home() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                         >
-                            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.projects.title}</h2>
+                            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">{content.projects.title}</h2>
                             <p className="text-muted-foreground max-w-2xl text-xl leading-relaxed">
                                 {content.projects.subtitle}
                             </p>
@@ -445,7 +467,7 @@ export default function Home() {
                         <motion.div className="relative mb-8">
                             <motion.h2
                                 className="text-6xl md:text-8xl font-bold text-primary relative z-10"
-                                style={{ fontFamily: 'Orbitron, sans-serif' }}
+                               
                             >
                                 {content.process.title}
                             </motion.h2>
@@ -560,7 +582,7 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-center mb-16"
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>{content.testimonials.title}</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary">{content.testimonials.title}</h2>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                             {content.testimonials.subtitle}
                         </p>
@@ -585,7 +607,7 @@ export default function Home() {
 
                                         <div className="mb-6 flex gap-1">
                                             {[...Array(5)].map((_, starIndex) => (
-                                                <span key={starIndex} className="text-yellow-400 text-lg">★</span>
+                                                <Star key={starIndex} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                                             ))}
                                         </div>
                                         <blockquote className="text-lg text-foreground mb-8 leading-relaxed italic">
@@ -655,7 +677,7 @@ export default function Home() {
                                 transition={{ delay: 0.2 }}
                                 viewport={{ once: true }}
                                 className="text-4xl md:text-5xl font-bold mb-6 text-primary"
-                                style={{ fontFamily: 'Orbitron, sans-serif' }}
+                               
                             >
                                 {content.cta.title}
                             </motion.h2>
@@ -707,7 +729,7 @@ export default function Home() {
                     >
                         <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Have a Project in Mind?</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary">Have a Project in Mind?</h2>
                             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
                                 Tell us about your idea and we'll help you build it. Free consultation, no commitment required.
                             </p>

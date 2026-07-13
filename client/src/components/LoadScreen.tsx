@@ -39,15 +39,21 @@ export function LoadScreen({ onLoadComplete }: LoadScreenProps) {
               style={{ animationDuration: '2s', animationDirection: 'reverse' }}
             ></div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <img 
-                src="/figmaAssets/knocker logo.png" 
-                alt="Knocker" 
-                className="w-16 h-16 animate-pulse"
+              <img
+                src="/icon.png"
+                alt="Knocker"
+                width={64}
+                className="animate-pulse object-contain"
               />
             </div>
           </div>
           
-          <h1 className="text-4xl font-bold text-primary mb-2" style={{ fontFamily: 'Orbitron, sans-serif' }}>Knocker AI</h1>
+          <img
+            src="/light_logo.png"
+            alt="Knocker AI"
+            width={180}
+            className="mx-auto mb-2 object-contain"
+          />
           <p className="text-muted-foreground">Initializing systems...</p>
         </div>
         

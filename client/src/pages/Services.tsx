@@ -157,7 +157,7 @@ export default function Services() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}
                         className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                       
                     >
                         {content.hero.heading}
                     </motion.h1>
@@ -260,7 +260,7 @@ export default function Services() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-3xl md:text-5xl font-bold mb-6 text-primary-foreground"
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                       
                     >
                         Industries We Serve
                     </motion.h2>
@@ -313,7 +313,7 @@ export default function Services() {
                         viewport={{ once: true }}
                         className="max-w-4xl mx-auto glass-card rounded-3xl p-12 border-2 border-primary/20 hover:border-primary/40 transition-all duration-500 shadow-2xl"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent" style={{ fontFamily: 'Orbitron, sans-serif' }}>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
                             {content.cta.title}
                         </h2>
                         <p className="text-muted-foreground mb-8 max-w-2xl mx-auto text-lg leading-relaxed">

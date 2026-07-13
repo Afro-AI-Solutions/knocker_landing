@@ -127,7 +127,7 @@ export default function Contact() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                         className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
-                        style={{ fontFamily: 'Orbitron, sans-serif' }}
+                       
                     >
                         {content.hero.heading}
                     </motion.h1>
@@ -328,7 +328,7 @@ export default function Contact() {
                         viewport={{ once: true }}
                         className="text-center mb-12"
                     >
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary" style={{ fontFamily: 'Orbitron, sans-serif' }}>Frequently Asked Questions</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-primary">Frequently Asked Questions</h2>
                         <p className="text-muted-foreground text-lg">Common questions about working with us.</p>
                     </motion.div>
 

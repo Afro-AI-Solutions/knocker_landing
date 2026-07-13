@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;500;600;700;800;900&display=swap');
 @import './styles/3d-animations.css';
 @import './styles/futuristic-theme.css';
 
@@ -18,65 +18,66 @@
 
 @layer base {
   :root {
-    --background: 210 30% 97%;
-    --foreground: 222.2 84% 4.9%;
+    /* Knocker brand: Ink #2C2C2A, Signal #378ADD, Deep #185FA5, Sand #F1EFE8 */
+    --background: 45 25% 93%;
+    --foreground: 60 2% 17%;
 
-    --card: 210 25% 99%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 45 30% 97%;
+    --card-foreground: 60 2% 17%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 45 30% 97%;
+    --popover-foreground: 60 2% 17%;
 
-    --primary: 217 91% 55%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 210 71% 54%;
+    --primary-foreground: 45 30% 97%;
 
-    --secondary: 217 30% 92%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 45 20% 88%;
+    --secondary-foreground: 60 2% 17%;
 
-    --muted: 210 30% 93%;
-    --muted-foreground: 215.4 16.3% 40%;
+    --muted: 45 18% 90%;
+    --muted-foreground: 60 2% 35%;
 
-    --accent: 217 40% 90%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 45% 92%;
+    --accent-foreground: 210 75% 37%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 45 30% 97%;
 
-    --border: 214.3 31.8% 86%;
-    --input: 214.3 31.8% 88%;
-    --ring: 217 91% 55%;
+    --border: 45 15% 85%;
+    --input: 45 15% 88%;
+    --ring: 210 71% 54%;
 
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 220 27% 8%;
-    --foreground: 210 40% 98%;
+    --background: 60 2% 10%;
+    --foreground: 45 25% 93%;
 
-    --card: 220 27% 10%;
-    --card-foreground: 210 40% 98%;
+    --card: 60 2% 14%;
+    --card-foreground: 45 25% 93%;
 
-    --popover: 220 27% 10%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 60 2% 14%;
+    --popover-foreground: 45 25% 93%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 210 71% 54%;
+    --primary-foreground: 45 30% 97%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 60 2% 18%;
+    --secondary-foreground: 45 25% 93%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 60 2% 18%;
+    --muted-foreground: 45 15% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 210 75% 37%;
+    --accent-foreground: 45 25% 93%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 45 25% 93%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 217 91% 60%;
+    --border: 60 2% 22%;
+    --input: 60 2% 22%;
+    --ring: 210 71% 54%;
   }
 }
 
@@ -87,18 +88,23 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Outfit', 'Inter', sans-serif;
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image:
-      radial-gradient(ellipse at 20% 0%, hsl(217 91% 55% / 0.06) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 100%, hsl(217 91% 55% / 0.04) 0%, transparent 60%);
+      radial-gradient(ellipse at 20% 0%, hsl(210 71% 54% / 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, hsl(210 75% 37% / 0.06) 0%, transparent 60%);
   }
 
   html {
     scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto Slab', Georgia, serif;
+    font-weight: 700;
   }
 
   /* Enhanced scrollbar */
@@ -117,6 +123,20 @@
 
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--primary) / 0.8);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Roboto Slab', Georgia, serif;
+  }
+
+  .font-brand {
+    font-family: 'Roboto Slab', Georgia, serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: #2C2C2A;
   }
 }
 
@@ -174,10 +194,10 @@
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+    box-shadow: 0 0 20px rgba(55, 138, 221, 0.3);
   }
   50% {
-    box-shadow: 0 0 40px rgba(138, 43, 226, 0.6);
+    box-shadow: 0 0 40px rgba(55, 138, 221, 0.5);
   }
 }
 
@@ -187,10 +207,10 @@
 
 /* Glass morphism effect */
 .glass-card {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(241, 239, 232, 0.75);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 32px 0 rgba(41, 121, 255, 0.08), 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 32px 0 rgba(55, 138, 221, 0.08), 0 2px 8px rgba(44, 44, 42, 0.06);
 }
 
 /* Improved hover effects */

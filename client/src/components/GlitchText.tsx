@@ -30,12 +30,8 @@ export function GlitchText({
 
     return (
         <span
-            className={`relative inline-block ${isGlitching ? 'glitch' : ''} ${className}`}
+            className={`relative inline-block font-display font-bold ${isGlitching ? 'glitch' : ''} ${className}`}
             data-text={children}
-            style={{
-                fontFamily: 'Orbitron, sans-serif',
-                fontWeight: 700
-            }}
         >
             <span className="neon-text-cyan">{children}</span>
         </span>
