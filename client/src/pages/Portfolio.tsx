@@ -6,6 +6,7 @@ import { ExternalLink } from "lucide-react";
 import { Link } from "wouter";
 import { Card3D } from "@/components/Card3D";
 import { motion } from "framer-motion";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { InteractiveParticles } from "@/components/InteractiveParticles";
 
 // Shared project data
@@ -131,7 +132,7 @@ export default function Portfolio() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Header */}
-            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
+            <AnimatedSection disableAnimation className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
                 <InteractiveParticles />
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.h1 
@@ -152,10 +153,10 @@ export default function Portfolio() {
                         {content.hero.description}
                     </motion.p>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Projects Grid */}
-            <section className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+            <AnimatedSection className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     {/* Filter Buttons */}
@@ -229,10 +230,10 @@ export default function Portfolio() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* CTA */}
-            <section className="py-24 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground relative overflow-hidden">
+            <AnimatedSection className="py-24 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.h2 
@@ -261,7 +262,7 @@ export default function Portfolio() {
                         </motion.div>
                     </Link>
                 </div>
-            </section>
+            </AnimatedSection>
         </div>
     );
 }

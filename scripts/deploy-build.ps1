@@ -6,6 +6,9 @@ $PublicOut = Join-Path $Output "public_html"
 
 Write-Host "==> Building React frontend..." -ForegroundColor Cyan
 Set-Location $Root
+# Remove previous hashed bundles so public/assets doesn't grow forever
+$AssetsDir = Join-Path $Root "public\assets"
+if (Test-Path $AssetsDir) { Remove-Item -Recurse -Force $AssetsDir }
 npm run build --prefix client
 
 Write-Host "==> Installing production PHP dependencies..." -ForegroundColor Cyan

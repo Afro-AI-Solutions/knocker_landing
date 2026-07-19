@@ -6,6 +6,7 @@ import { Check, Code2, Database, Globe, Cpu, Layers, Smartphone, BarChart, Arrow
 import { Link } from "wouter";
 import { Card3D } from "@/components/Card3D";
 import { motion } from "framer-motion";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { InteractiveParticles } from "@/components/InteractiveParticles";
 import { GridBackground } from "@/components/GridBackground";
 
@@ -140,7 +141,7 @@ export default function Services() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Header */}
-            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
+            <AnimatedSection disableAnimation className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
                 <InteractiveParticles />
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.div
@@ -170,10 +171,10 @@ export default function Services() {
                         {content.hero.description}
                     </motion.p>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Services Grid */}
-            <section className="py-24 relative overflow-hidden bg-gradient-to-b from-background to-muted/20">
+            <AnimatedSection className="py-24 relative overflow-hidden bg-gradient-to-b from-background to-muted/20">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -249,10 +250,10 @@ export default function Services() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Industries Section */}
-            <section className="py-24 relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90">
+            <AnimatedSection className="py-24 relative overflow-hidden bg-gradient-to-br from-primary via-primary to-primary/90">
                 <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.h2 
@@ -300,10 +301,10 @@ export default function Services() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* CTA Section */}
-            <section className="py-24 relative overflow-hidden">
+            <AnimatedSection className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5"></div>
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
                 <div className="container mx-auto px-4 text-center relative z-10">
@@ -332,7 +333,7 @@ export default function Services() {
                         </Link>
                     </motion.div>
                 </div>
-            </section>
+            </AnimatedSection>
         </div>
     );
 }

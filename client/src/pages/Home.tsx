@@ -10,6 +10,7 @@ import { GlitchText } from "@/components/GlitchText";
 import { HolographicCard } from "@/components/HolographicCard";
 import { NeonButton } from "@/components/NeonButton";
 import { InteractiveParticles } from "@/components/InteractiveParticles";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
@@ -144,13 +145,23 @@ export default function Home() {
             }
         },
     });
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-background via-primary/5 to-background">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+                <div className="relative z-10 flex flex-col items-center gap-4">
+                    <div className="h-12 w-12 animate-spin rounded-full border-2 border-primary/20 border-t-primary" />
+                    <p className="text-sm text-muted-foreground">Loading...</p>
+                </div>
+            </div>
+        );
+    }
     const content = apiContent ?? defaultContent;
 
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero Section */}
-            <section className="relative py-24 lg:py-36 overflow-hidden flex items-center justify-center min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
+            <AnimatedSection disableAnimation className="relative py-24 lg:py-36 overflow-hidden flex items-center justify-center min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
                 <InteractiveParticles />
                 <GridBackground />
@@ -221,10 +232,10 @@ export default function Home() {
                         </Link>
                     </motion.div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Tech Stack Marquee */}
-            <section className="py-10 overflow-hidden bg-gradient-to-b from-primary/5 via-background to-primary/20">
+            <AnimatedSection className="py-10 overflow-hidden bg-gradient-to-b from-primary/5 via-background to-primary/20">
                 <div className="container mx-auto px-4 mb-6 text-center">
                     <p className="text-xs font-bold text-primary uppercase tracking-widest">{content.techStack.title}</p>
                 </div>
@@ -274,20 +285,26 @@ export default function Home() {
                         </div>
                     );
                 })()}
-            </section>
+            </AnimatedSection>
 
             {/* Stats Section */}
-            <section className="pt-10 pb-16 relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80">
+            <AnimatedSection className="pt-10 pb-16 relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80">
                 <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.5))] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
-                    <div className="flex justify-center mb-10">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.92 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        viewport={{ once: true }}
+                        className="flex justify-center mb-10"
+                    >
                         <img
                             src="/dark_logo.png"
                             alt="Knocker AI"
                             width={220}
                             className="object-contain max-w-[80vw]"
                         />
-                    </div>
+                    </motion.div>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {content.stats.map((stat, index) => (
                             <motion.div
@@ -304,10 +321,10 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Features Section */}
-            <section className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+            <AnimatedSection className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <motion.div
@@ -369,10 +386,10 @@ export default function Home() {
                         })}
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Featured Projects Section */}
-            <section className="py-24 bg-gradient-to-b from-muted/10 to-background">
+            <AnimatedSection className="py-24 bg-gradient-to-b from-muted/10 to-background">
                 <div className="container mx-auto px-4">
                     <div className="flex justify-between items-end mb-16">
                         <motion.div
@@ -403,6 +420,10 @@ export default function Home() {
                             <Link key={i} href="/portfolio">
                                 <motion.div
                                     className="group cursor-pointer"
+                                    initial={{ opacity: 0, y: 36 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.55, delay: i * 0.12 }}
+                                    viewport={{ once: true, amount: 0.2 }}
                                     whileHover={{
                                         y: -10,
                                         scale: 1.02,
@@ -438,10 +459,10 @@ export default function Home() {
                         </Link>
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Process Section */}
-            <section className="py-32 relative overflow-hidden bg-white">
+            <AnimatedSection className="py-32 relative overflow-hidden bg-white">
                 <div className="absolute inset-0">
                     <div className="absolute inset-0 bg-primary/5 animate-pulse"></div>
                     {[...Array(20)].map((_, i) => (
@@ -570,10 +591,10 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Testimonials Section */}
-            <section className="py-24 relative overflow-hidden bg-gradient-to-b from-muted/20 to-background">
+            <AnimatedSection className="py-24 relative overflow-hidden bg-gradient-to-b from-muted/20 to-background">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <motion.div
@@ -656,10 +677,10 @@ export default function Home() {
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* CTA Section */}
-            <section className="py-24 relative overflow-hidden">
+            <AnimatedSection className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-primary/10"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <motion.div
@@ -715,10 +736,10 @@ export default function Home() {
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Final CTA Section */}
-            <section className="py-24 relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
+            <AnimatedSection className="py-24 relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-primary/5">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <motion.div
@@ -752,7 +773,7 @@ export default function Home() {
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </AnimatedSection>
         </div>
     );
 }

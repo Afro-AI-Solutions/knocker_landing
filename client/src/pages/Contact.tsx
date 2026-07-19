@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/accordion";
 import { Card3D } from "@/components/Card3D";
 import { motion } from "framer-motion";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { InteractiveParticles } from "@/components/InteractiveParticles";
 
 const formSchema = z.object({
@@ -119,7 +120,7 @@ export default function Contact() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Header */}
-            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
+            <AnimatedSection disableAnimation className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
                 <InteractiveParticles />
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.h1
@@ -140,9 +141,9 @@ export default function Contact() {
                         {content.hero.description}
                     </motion.p>
                 </div>
-            </section>
+            </AnimatedSection>
 
-            <section className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+            <AnimatedSection className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -316,10 +317,10 @@ export default function Contact() {
                         </motion.div>
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* FAQ Section */}
-            <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+            <AnimatedSection className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 max-w-4xl relative z-10">
                     <motion.div
@@ -343,7 +344,7 @@ export default function Contact() {
                         ))}
                     </Accordion>
                 </div>
-            </section>
+            </AnimatedSection>
         </div>
     );
 }

@@ -13,13 +13,14 @@ export default defineConfig({
   },
   build: {
     outDir: "../public",
+    // Keep false — public/ also holds icons, figmaAssets, etc.
     emptyOutDir: false,
     rollupOptions: {
       output: {
-        // Consistent filenames so old files don't accumulate
-        entryFileNames: "assets/index.js",
-        chunkFileNames: "assets/[name].js",
-        assetFileNames: "assets/[name].[ext]",
+        // Content hashes bust browser/CDN cache on each deploy
+        entryFileNames: "assets/[name]-[hash].js",
+        chunkFileNames: "assets/[name]-[hash].js",
+        assetFileNames: "assets/[name]-[hash].[ext]",
       },
     },
   },

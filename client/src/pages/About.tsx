@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Target, Lightbulb, Users, Shield, Zap } from "lucide-react";
 import { Card3D } from "@/components/Card3D";
 import { motion } from "framer-motion";
+import { AnimatedSection } from "@/components/AnimatedSection";
 import { InteractiveParticles } from "@/components/InteractiveParticles";
 
 export default function About() {
@@ -86,7 +87,7 @@ export default function About() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero */}
-            <section className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
+            <AnimatedSection disableAnimation className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
                 <InteractiveParticles />
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <motion.h1
@@ -107,10 +108,10 @@ export default function About() {
                         {content.hero.description}
                     </motion.p>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Story Section */}
-            <section className="py-24 bg-gradient-to-b from-background to-muted/20">
+            <AnimatedSection className="py-24 bg-gradient-to-b from-background to-muted/20">
                 <div className="container mx-auto px-4">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <motion.div
@@ -139,10 +140,10 @@ export default function About() {
                         </motion.div>
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Mission & Vision */}
-            <section className="py-24 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground relative overflow-hidden">
+            <AnimatedSection className="py-24 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="grid md:grid-cols-2 gap-12">
@@ -174,10 +175,10 @@ export default function About() {
                         </motion.div>
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* Values */}
-            <section className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
+            <AnimatedSection className="py-24 bg-gradient-to-b from-muted/20 to-background relative overflow-hidden">
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <motion.div
@@ -221,10 +222,10 @@ export default function About() {
                         })}
                     </div>
                 </div>
-            </section>
+            </AnimatedSection>
 
             {/* CTA */}
-            <section className="py-24 relative overflow-hidden">
+            <AnimatedSection className="py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5"></div>
                 <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
                 <div className="container mx-auto px-4 relative z-10">
@@ -245,7 +246,7 @@ export default function About() {
                         </Link>
                     </motion.div>
                 </div>
-            </section>
+            </AnimatedSection>
         </div>
     );
 }
