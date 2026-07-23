@@ -1,25 +1,38 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Users, Zap, Trophy, FileText, Palette, Star } from "lucide-react";
+import {
+    ArrowRight, Code, Brain, Cloud, Rocket, CheckCircle2, Star, Sparkles, Play,
+    Shield, Headphones, Layers, Lock,
+} from "lucide-react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { GridBackground } from "@/components/GridBackground";
-import { Card3D } from "@/components/Card3D";
-import { GlitchText } from "@/components/GlitchText";
-import { HolographicCard } from "@/components/HolographicCard";
-import { NeonButton } from "@/components/NeonButton";
-import { InteractiveParticles } from "@/components/InteractiveParticles";
 import { AnimatedSection } from "@/components/AnimatedSection";
 import { useQuery } from "@tanstack/react-query";
+
+/** Dashboard mock shown in the hero — replace public/hero.png */
+const HERO_DASHBOARD_IMAGE = "/hero.png";
+
+/**
+ * Trusted-by company logos — add files under public/clients/
+ * With 4 or fewer logos the row stays static (no slide).
+ */
+const TRUSTED_LOGOS = [
+    { name: "Company 1", src: "/clients/company-1.png" },
+    { name: "Company 2", src: "/clients/company-2.png" },
+    { name: "Company 3", src: "/clients/company-3.png" },
+    { name: "Company 4", src: "/clients/company-4.png" },
+] as const;
+
+const TRUSTED_SLIDE_THRESHOLD = 5;
 
 export default function Home() {
     const defaultContent = {
         hero: {
-            tagline: "Revolutionizing Digital Solutions",
-            heading: "We Knock. You Win.",
-            description: "We knock with next-generation digital innovation you win with results that matter.",
-            buttons: { primary: "Start Your Project", secondary: "View Our Work" }
+            tagline: "Modern systems for complex businesses",
+            heading: "Systems that scale,",
+            headingAccent: "every day.",
+            description: "We design and build ERP platforms, websites, and custom software that streamline operations and help your business grow with confidence.",
+            buttons: { primary: "Start Your Project", secondary: "See Our Work" }
         },
         stats: [
             { label: "Projects Delivered", value: "100+" },
@@ -27,9 +40,8 @@ export default function Home() {
             { label: "Team Experts", value: "25+" },
             { label: "Years Experience", value: "5+" }
         ],
-        techStack: {
-            title: "Powered by Modern Tech",
-            technologies: ["React", "Next.js", "TypeScript", "Node.js", "Python", "TensorFlow", "AWS", "Docker", "Tailwind", "OpenAI"]
+        trustedBy: {
+            title: "Trusted by growing teams",
         },
         features: {
             title: "Why Choose Knocker AI?",
@@ -157,134 +169,277 @@ export default function Home() {
         );
     }
     const content = apiContent ?? defaultContent;
+    const heroStats = (content.stats ?? defaultContent.stats).slice(0, 3);
+    const heroFeatures = [
+        { icon: Layers, label: "ERP & Custom Systems" },
+        { icon: Code, label: "Modern Web Apps" },
+        { icon: Lock, label: "Secure Architecture" },
+        { icon: Headphones, label: "Ongoing Support" },
+    ];
+    const hasAccent = Boolean((content.hero as { headingAccent?: string }).headingAccent);
+    const headingMain = hasAccent ? content.hero.heading : defaultContent.hero.heading;
+    const headingAccent =
+        (content.hero as { headingAccent?: string }).headingAccent ?? defaultContent.hero.headingAccent;
 
     return (
         <div className="flex flex-col min-h-screen">
-            {/* Hero Section */}
-            <AnimatedSection disableAnimation className="relative py-24 lg:py-36 overflow-hidden flex items-center justify-center min-h-screen bg-gradient-to-br from-background via-primary/5 to-background">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background"></div>
-                <InteractiveParticles />
-                <GridBackground />
+            {/* Hero Section — split composition */}
+            <AnimatedSection
+                disableAnimation
+                className="relative overflow-x-hidden bg-[hsl(40_30%_96%)] pt-24 pb-12 sm:pt-28 sm:pb-16 lg:min-h-[min(100svh,920px)] lg:pt-28 lg:pb-16"
+            >
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_hsl(var(--primary)/0.08),_transparent_55%)]" />
 
-                <div className="container mx-auto px-4 text-center relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="mb-8 flex justify-center"
-                    >
-                        <img
-                            src="/light_logo.png"
-                            alt="Knocker AI"
-                            width={280}
-                            className="object-contain max-w-[85vw]"
-                        />
-                    </motion.div>
+                <div className="relative z-10 grid w-full items-center gap-4 px-4 sm:gap-5 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.2fr)] lg:gap-1 lg:px-0 lg:pl-8 xl:gap-0 xl:pl-12 2xl:pl-16">
+                    {/* Left column */}
+                    <div className="relative z-20 mx-auto flex w-full max-w-xl flex-col lg:mx-0 lg:max-w-none lg:pr-0 lg:py-6 xl:max-w-2xl">
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="mb-6"
+                        >
+                            <img
+                                src="/light_logo.png"
+                                alt="Knocker AI"
+                                width={220}
+                                className="object-contain max-w-[min(220px,70vw)]"
+                            />
+                        </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="mb-6 text-sm font-medium text-muted-foreground uppercase tracking-wider"
-                    >
-                        {content.hero.tagline}
-                    </motion.div>
+                        <motion.p
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.45, delay: 0.08 }}
+                            className="mb-4 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary"
+                        >
+                            <Sparkles className="h-3.5 w-3.5" />
+                            {content.hero.tagline}
+                        </motion.p>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.7, delay: 0.2 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 leading-[1.1] text-center bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
-                       
-                    >
-                        {content.hero.heading}
-                    </motion.h1>
+                        <motion.h1
+                            initial={{ opacity: 0, y: 24 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.65, delay: 0.15 }}
+                            className="mb-5 max-w-xl text-[clamp(2rem,4.5vw,3.5rem)] font-bold leading-[1.08] tracking-tight text-foreground"
+                        >
+                            <span className="font-display">{headingMain}</span>{" "}
+                            <span className="font-script text-primary">{headingAccent}</span>
+                        </motion.h1>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                        className="text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed text-center"
-                        style={{ fontFamily: 'Inter, sans-serif' }}
-                    >
-                        {content.hero.description}
-                    </motion.p>
+                        <motion.p
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.28 }}
+                            className="mb-8 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg"
+                        >
+                            {content.hero.description}
+                        </motion.p>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                        className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-                    >
-                        <Link href="/contact">
-                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <NeonButton variant="cyan">
-                                    {content.hero.buttons.primary} <ArrowRight className="ml-2 h-5 w-5 inline" />
-                                </NeonButton>
-                            </motion.div>
-                        </Link>
-                        <Link href="/portfolio">
-                            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <NeonButton variant="magenta">
+                        <motion.div
+                            initial={{ opacity: 0, y: 14 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.38 }}
+                            className="mb-10 flex flex-wrap items-center gap-4"
+                        >
+                            <Link href="/contact">
+                                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                                    <Button
+                                        size="lg"
+                                        className="rounded-full px-8 py-6 text-base shadow-lg shadow-primary/25"
+                                    >
+                                        {content.hero.buttons.primary}
+                                        <ArrowRight className="ml-2 h-5 w-5" />
+                                    </Button>
+                                </motion.div>
+                            </Link>
+                            <Link href="/portfolio">
+                                <motion.a
+                                    whileHover={{ scale: 1.03 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    className="inline-flex items-center gap-2 text-sm font-semibold text-foreground/80 transition-colors hover:text-primary"
+                                >
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/25 bg-white text-primary shadow-sm">
+                                        <Play className="h-4 w-4 fill-current" />
+                                    </span>
                                     {content.hero.buttons.secondary}
-                                </NeonButton>
+                                </motion.a>
+                            </Link>
+                        </motion.div>
+
+                        {/* Stats card */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.55, delay: 0.48 }}
+                            className="mb-5 grid grid-cols-3 gap-2 rounded-[1.75rem] border border-white/70 bg-white/80 p-4 shadow-[0_12px_40px_-16px_rgba(30,60,120,0.25)] backdrop-blur-sm sm:gap-4 sm:p-6"
+                        >
+                            {heroStats.map((stat, index) => (
+                                <div
+                                    key={stat.label}
+                                    className={`px-1 text-center sm:px-2 ${index > 0 ? "border-l border-border/60" : ""}`}
+                                >
+                                    <div className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary sm:h-9 sm:w-9">
+                                        {index === 0 ? <Rocket className="h-4 w-4" /> : index === 1 ? <Shield className="h-4 w-4" /> : <Star className="h-4 w-4" />}
+                                    </div>
+                                    <div className="text-xl font-bold text-foreground sm:text-2xl">{stat.value}</div>
+                                    <div className="mt-0.5 text-[10px] font-medium text-muted-foreground sm:text-xs">{stat.label}</div>
+                                </div>
+                            ))}
+                        </motion.div>
+
+                        {/* Feature bar */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 18 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.55, delay: 0.58 }}
+                            className="grid grid-cols-2 gap-3 rounded-[1.75rem] bg-[hsl(215_35%_22%)] px-4 py-4 text-white sm:grid-cols-4 sm:gap-2 sm:px-5 sm:py-5"
+                        >
+                            {heroFeatures.map(({ icon: Icon, label }) => (
+                                <div key={label} className="flex items-center gap-2.5 sm:justify-center sm:flex-col sm:text-center lg:flex-row lg:text-left">
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10">
+                                        <Icon className="h-3.5 w-3.5 text-primary" />
+                                    </span>
+                                    <span className="text-[11px] font-medium leading-tight sm:text-xs">{label}</span>
+                                </div>
+                            ))}
+                        </motion.div>
+                    </div>
+
+                    {/* Right — full-width tilted dashboard mock */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.8, delay: 0.15 }}
+                        className="relative z-10 w-full lg:h-full lg:min-h-[min(72svh,700px)] lg:self-stretch"
+                    >
+                        <div className="pointer-events-none absolute -right-8 top-1/2 h-[70%] w-[70%] -translate-y-1/2 rounded-full bg-primary/15 blur-3xl" />
+                        <div className="pointer-events-none absolute bottom-8 left-4 h-40 w-40 rounded-full bg-primary/10 blur-2xl" />
+
+                        <div
+                            className="relative flex h-full w-full items-center justify-center lg:justify-end"
+                            style={{ perspective: "min(1800px, 120vw)" }}
+                        >
+                            <motion.div
+                                initial={{ opacity: 0, y: 28 }}
+                                animate={{
+                                    opacity: 1,
+                                    y: [0, -14, 0],
+                                    rotateY: 12,
+                                    rotateX: 5,
+                                    rotateZ: 4,
+                                }}
+                                transition={{
+                                    opacity: { duration: 0.7, delay: 0.2 },
+                                    y: { duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.9 },
+                                    rotateY: { duration: 0.9, delay: 0.25 },
+                                    rotateX: { duration: 0.9, delay: 0.25 },
+                                    rotateZ: { duration: 0.9, delay: 0.25 },
+                                }}
+                                className="relative w-full origin-center sm:w-[94%] lg:origin-left lg:w-[110%] lg:-translate-x-[2%] xl:w-[114%]"
+                                style={{ transformStyle: "preserve-3d" }}
+                            >
+                                <div className="overflow-hidden rounded-xl border border-white/60 bg-white shadow-[0_30px_80px_-20px_rgba(30,60,120,0.45)] ring-1 ring-black/5 sm:rounded-2xl">
+                                    <img
+                                        src={HERO_DASHBOARD_IMAGE}
+                                        alt="Knocker AI system dashboard"
+                                        className="block h-auto w-full object-cover object-top aspect-[16/11] max-h-[min(58svh,520px)] sm:max-h-[min(62svh,600px)] lg:aspect-auto lg:max-h-[min(72svh,720px)] lg:min-h-[min(52svh,560px)]"
+                                        onError={(e) => {
+                                            e.currentTarget.src = "/hero-mock.jpg";
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Soft floating accent cards */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 16 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.75 }}
+                                    className="absolute -left-2 bottom-[12%] hidden rounded-2xl border border-white/80 bg-white/95 px-4 py-3 shadow-xl backdrop-blur sm:block"
+                                    style={{ transform: "translateZ(40px)" }}
+                                >
+                                    <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Analytics</p>
+                                    <p className="text-sm font-bold text-foreground">Live system metrics</p>
+                                </motion.div>
+                                <motion.div
+                                    initial={{ opacity: 0, y: -12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.85 }}
+                                    className="absolute -right-1 top-[10%] hidden rounded-2xl border border-white/80 bg-white/95 px-4 py-3 shadow-xl backdrop-blur md:block"
+                                    style={{ transform: "translateZ(48px)" }}
+                                >
+                                    <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Uptime</p>
+                                    <p className="text-lg font-bold text-primary">99.9%</p>
+                                </motion.div>
                             </motion.div>
-                        </Link>
+                        </div>
                     </motion.div>
                 </div>
             </AnimatedSection>
 
-            {/* Tech Stack Marquee */}
-            <AnimatedSection className="py-10 overflow-hidden bg-gradient-to-b from-primary/5 via-background to-primary/20">
-                <div className="container mx-auto px-4 mb-6 text-center">
-                    <p className="text-xs font-bold text-primary uppercase tracking-widest">{content.techStack.title}</p>
-                </div>
-                {(() => {
-                    const techColors: Record<string, { bg: string; text: string; border: string }> = {
-                        "React":       { bg: "rgba(97,218,251,0.15)",  text: "#149eca", border: "rgba(97,218,251,0.5)" },
-                        "Next.js":     { bg: "rgba(0,0,0,0.08)",       text: "#111",    border: "rgba(0,0,0,0.2)" },
-                        "TypeScript":  { bg: "rgba(49,120,198,0.15)",  text: "#3178c6", border: "rgba(49,120,198,0.4)" },
-                        "Node.js":     { bg: "rgba(83,158,67,0.15)",   text: "#539e43", border: "rgba(83,158,67,0.4)" },
-                        "Python":      { bg: "rgba(55,118,171,0.15)",  text: "#3776ab", border: "rgba(55,118,171,0.4)" },
-                        "TensorFlow":  { bg: "rgba(255,160,0,0.15)",   text: "#e37c00", border: "rgba(255,160,0,0.4)" },
-                        "AWS":         { bg: "rgba(255,153,0,0.15)",   text: "#e17b00", border: "rgba(255,153,0,0.4)" },
-                        "Docker":      { bg: "rgba(13,183,237,0.15)",  text: "#0db7ed", border: "rgba(13,183,237,0.4)" },
-                        "Tailwind":    { bg: "rgba(56,189,248,0.15)",  text: "#0ea5e9", border: "rgba(56,189,248,0.4)" },
-                        "OpenAI":      { bg: "rgba(16,163,127,0.15)",  text: "#10a37f", border: "rgba(16,163,127,0.4)" },
-                        "Laravel":     { bg: "rgba(255,45,32,0.12)",   text: "#f9322c", border: "rgba(255,45,32,0.3)" },
-                        "PostgreSQL":  { bg: "rgba(51,103,145,0.15)",  text: "#336791", border: "rgba(51,103,145,0.4)" },
-                        "Vue.js":      { bg: "rgba(65,184,131,0.15)",  text: "#41b883", border: "rgba(65,184,131,0.4)" },
-                        "MySQL":       { bg: "rgba(0,117,143,0.12)",   text: "#00758f", border: "rgba(0,117,143,0.35)" },
-                    };
-                    const getStyle = (name: string) =>
-                        techColors[name] ?? { bg: "rgba(99,102,241,0.12)", text: "#6366f1", border: "rgba(99,102,241,0.35)" };
-
-                    const techs = content.techStack.technologies.map((t: any) => typeof t === 'string' ? t : t.name);
-                    // Repeat enough times to guarantee no gap on any screen width
-                    const repeated = [...techs, ...techs, ...techs, ...techs];
-
-                    return (
-                        <div className="flex overflow-hidden" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
-                            <div
-                                className="flex items-center gap-0 shrink-0"
-                                style={{ animation: "marquee-infinite 30s linear infinite" }}
-                            >
-                                {repeated.map((name, i) => {
-                                    const s = getStyle(name);
-                                    return (
+            {/* Trusted-by company logos */}
+            <AnimatedSection className="border-y border-border/40 bg-background/80 py-10">
+                <div className="container mx-auto px-4">
+                    <p className="mb-8 text-center text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                        {(content as { trustedBy?: { title?: string } }).trustedBy?.title
+                            ?? defaultContent.trustedBy.title}
+                    </p>
+                    {(() => {
+                        const logos = [...TRUSTED_LOGOS];
+                        const shouldSlide = logos.length >= TRUSTED_SLIDE_THRESHOLD;
+                        const LogoRow = ({ items, keyPrefix }: { items: typeof logos; keyPrefix: string }) => (
+                            <>
+                                {items.map((logo, i) => (
+                                    <div
+                                        key={`${keyPrefix}-${logo.name}-${i}`}
+                                        className="mx-6 flex h-12 w-28 shrink-0 items-center justify-center sm:mx-8 sm:h-14 sm:w-32"
+                                    >
+                                        <img
+                                            src={logo.src}
+                                            alt={logo.name}
+                                            className="max-h-10 max-w-full object-contain opacity-60 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 sm:max-h-12"
+                                            onError={(e) => {
+                                                const el = e.currentTarget;
+                                                el.style.display = "none";
+                                                const fallback = el.nextElementSibling as HTMLElement | null;
+                                                if (fallback) fallback.style.display = "flex";
+                                            }}
+                                        />
                                         <span
-                                            key={i}
-                                            className="inline-flex items-center px-5 py-2 rounded-full text-sm font-bold mx-2 cursor-default transition-transform duration-200 hover:scale-105 whitespace-nowrap shrink-0"
-                                            style={{ background: s.bg, color: s.text, border: `1.5px solid ${s.border}` }}
+                                            className="hidden h-10 w-full items-center justify-center rounded-lg border border-dashed border-border/70 text-[11px] font-medium text-muted-foreground"
+                                            aria-hidden
                                         >
-                                            {name}
+                                            {logo.name}
                                         </span>
-                                    );
-                                })}
+                                    </div>
+                                ))}
+                            </>
+                        );
+
+                        if (!shouldSlide) {
+                            return (
+                                <div className="flex flex-wrap items-center justify-center gap-y-4">
+                                    <LogoRow items={logos} keyPrefix="static" />
+                                </div>
+                            );
+                        }
+
+                        const repeated = [...logos, ...logos, ...logos, ...logos];
+                        return (
+                            <div
+                                className="flex overflow-hidden"
+                                style={{ maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)" }}
+                            >
+                                <div
+                                    className="flex shrink-0 items-center"
+                                    style={{ animation: "marquee-infinite 28s linear infinite" }}
+                                >
+                                    <LogoRow items={repeated} keyPrefix="slide" />
+                                </div>
                             </div>
-                        </div>
-                    );
-                })()}
+                        );
+                    })()}
+                </div>
             </AnimatedSection>
 
             {/* Stats Section */}

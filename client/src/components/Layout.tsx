@@ -73,9 +73,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                                         }`}
                                     >
                                         {item.label}
-                                        {location === item.path && (
-                                            <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"></div>
-                                        )}
                                     </a>
                                 </Link>
                             ))}

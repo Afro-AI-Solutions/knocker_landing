@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
@@ -11,258 +17,301 @@ import { InteractiveParticles } from "@/components/InteractiveParticles";
 
 // Shared project data
 export const projects = [
-    {
-        id: 1,
-        title: "AI-Powered Analytics Dashboard",
-        description: "A comprehensive data visualization platform that uses machine learning to predict market trends and optimize inventory management for a large retail chain.",
-        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
-        tags: ["React", "Python", "TensorFlow", "AWS"],
-        category: "AI & ML",
-        link: "#",
-    },
-    {
-        id: 2,
-        title: "EduTech Learning Platform",
-        description: "An interactive Learning Management System (LMS) with real-time video conferencing, student progress tracking, and gamified assessments.",
-        image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80",
-        tags: ["Next.js", "Node.js", "WebRTC", "PostgreSQL"],
-        category: "Web Development",
-        link: "#",
-    },
-    {
-        id: 3,
-        title: "FinTech Secure Wallet",
-        description: "A secure mobile-first digital wallet application supporting multi-currency transactions, biometric authentication, and instant peer-to-peer transfers.",
-        image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
-        tags: ["React Native", "Node.js", "Blockchain", "Security"],
-        category: "Mobile App",
-        link: "#",
-    },
-    {
-        id: 4,
-        title: "Smart Home Automation Hub",
-        description: "IoT dashboard allowing users to control smart devices, set automation routines, and monitor energy consumption in real-time.",
-        image: "https://images.unsplash.com/photo-1558002038-109177381792?w=800&q=80",
-        tags: ["Vue.js", "IoT", "MQTT", "Firebase"],
-        category: "IoT",
-        link: "#",
-    },
-    {
-        id: 5,
-        title: "Healthcare Patient Portal",
-        description: "HIPAA-compliant patient management system for scheduling appointments, viewing medical records, and secure doctor-patient messaging.",
-        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
-        tags: ["React", "Django", "PostgreSQL", "Docker"],
-        category: "Web Development",
-        link: "#",
-    },
-    {
-        id: 6,
-        title: "E-commerce Recommendation Engine",
-        description: "Custom AI engine that analyzes user behavior to provide personalized product recommendations, increasing conversion rates by 40%.",
-        image: "https://images.unsplash.com/photo-1472851294608-41531b6574d4?w=800&q=80",
-        tags: ["Python", "Scikit-learn", "FastAPI", "Redis"],
-        category: "AI & ML",
-        link: "#",
-    },
-    {
-        id: 7,
-        title: "GYM Management System",
-        description: "A complete gym management solution featuring member management, workout tracking, payment processing, class scheduling, and trainer assignment. Includes comprehensive reporting, mobile-responsive design, and real-time notifications for enhanced member experience.",
-        image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
-        tags: ["Laravel", "React.js", "REST API"],
-        category: "Web Development",
-        link: "#",
-    },
-    {
-        id: 8,
-        title: "Inventory Management System",
-        description: "A comprehensive inventory management system with real-time stock tracking, automated reorder alerts, barcode scanning, supplier management, and detailed reporting. Includes multi-location support, role-based access control, and integration with accounting systems.",
-        image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
-        tags: ["Laravel", "React", "MySQL", "REST API"],
-        category: "Web Development",
-        link: "#",
-    },
-    {
-        id: 9,
-        title: "Royal Candy & Chocolate",
-        description: "A modern, elegant landing page for Royal Candy & Chocolate company featuring product showcase, company information, contact forms, and responsive design optimized for mobile and desktop. Includes admin panel for content management and SEO optimization.",
-        image: "https://images.unsplash.com/photo-1549007953-2f2dc0b24019?w=800&q=80",
-        tags: ["Laravel", "React", "MySQL", "Bootstrap"],
-        category: "Web Development",
-        link: "#",
-    },
-    {
-        id: 10,
-        title: "Hailemariam Melese Import & Export",
-        description: "A professional business landing page showcasing Ethiopia's agricultural excellence and industrial potential to global markets. Features company services, product catalogs, contact information, and business inquiry forms designed to attract international clients and partners.",
-        image: "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
-        tags: ["React", "Laravel", "MySQL", "Tailwind CSS"],
-        category: "Web Development",
-        link: "#",
-    },
+  //   {
+  //     id: 1,
+  //     title: "AI-Powered Analytics Dashboard",
+  //     description:
+  //       "A comprehensive data visualization platform that uses machine learning to predict market trends and optimize inventory management for a large retail chain.",
+  //     image:
+  //       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+  //     tags: ["React", "Python", "TensorFlow", "AWS"],
+  //     category: "AI & ML",
+  //     link: "#",
+  //   },
+  // {
+  //   id: 2,
+  //   title: "EduTech Learning Platform",
+  //   description:
+  //     "An interactive Learning Management System (LMS) with real-time video conferencing, student progress tracking, and gamified assessments.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80",
+  //   tags: ["Next.js", "Node.js", "WebRTC", "PostgreSQL"],
+  //   category: "Web Development",
+  //   link: "#",
+  // },
+  //   {
+  //     id: 3,
+  //     title: "FinTech Secure Wallet",
+  //     description:
+  //       "A secure mobile-first digital wallet application supporting multi-currency transactions, biometric authentication, and instant peer-to-peer transfers.",
+  //     image:
+  //       "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80",
+  //     tags: ["React Native", "Node.js", "Blockchain", "Security"],
+  //     category: "Mobile App",
+  //     link: "#",
+  //   },
+  // {
+  //     id: 4,
+  //     title: "Smart Home Automation Hub",
+  //     description: "IoT dashboard allowing users to control smart devices, set automation routines, and monitor energy consumption in real-time.",
+  //     image: "https://images.unsplash.com/photo-1558002038-109177381792?w=800&q=80",
+  //     tags: ["Vue.js", "IoT", "MQTT", "Firebase"],
+  //     category: "IoT",
+  //     link: "#",
+  // },
+  // {
+  //   id: 5,
+  //   title: "Healthcare Patient Portal",
+  //   description:
+  //     "HIPAA-compliant patient management system for scheduling appointments, viewing medical records, and secure doctor-patient messaging.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
+  //   tags: ["React", "Django", "PostgreSQL", "Docker"],
+  //   category: "Web Development",
+  //   link: "#",
+  // },
+  {
+    id: 6,
+    title: "DigiFarm AI",
+    description:
+      "An AI-powered platform for managing agricultural operations, including crop tracking, inventory management, and farmer support services. Features include real-time weather updates, crop disease detection, and personalized recommendations for optimal growth. AI-powered insights for decision-making and improved productivity.",
+    image:
+      "https://images.unsplash.com/photo-1472851294608-41531b6574d4?w=800&q=80",
+    tags: ["Python", "Scikit-learn", "FastAPI", "Redis"],
+    category: "AI & ML",
+    link: "#",
+  },
+  {
+    id: 7,
+    title: "GYM Management System",
+    description:
+      "A complete gym management solution featuring member management, workout tracking, payment processing, class scheduling, and trainer assignment. Includes comprehensive reporting, mobile-responsive design, and real-time notifications for enhanced member experience.",
+    image:
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80",
+    tags: ["Laravel", "React.js", "REST API"],
+    category: "Web Development",
+    link: "https://www.amigosgym.app/login",
+  },
+  {
+    id: 8,
+    title: "Akiba ERP",
+    description:
+      "A comprehensive inventory management system with real-time stock tracking, automated reorder alerts, barcode scanning, supplier management, and detailed reporting. Includes multi-location support, role-based access control, and integration with accounting systems.",
+    image:
+      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
+    tags: ["Laravel", "React", "MySQL", "REST API"],
+    category: "Web Development",
+    link: "https://test2.qudwaerp.com/",
+  },
+  {
+    id: 9,
+    title: "Royal Candy & Chocolate",
+    description:
+      "A modern, elegant landing page for Royal Candy & Chocolate company featuring product showcase, company information, contact forms, and responsive design optimized for mobile and desktop. Includes admin panel for content management and SEO optimization.",
+    image:
+      "https://images.unsplash.com/photo-1549007953-2f2dc0b24019?w=800&q=80",
+    tags: ["Laravel", "React", "MySQL", "Bootstrap"],
+    category: "Web Development",
+    link: "https://www.royalcandyandchocolate.com/",
+  },
+  {
+    id: 10,
+    title: "Hailemariam Melese Import & Export",
+    description:
+      "A professional business landing page showcasing Ethiopia's agricultural excellence and industrial potential to global markets. Features company services, product catalogs, contact information, and business inquiry forms designed to attract international clients and partners.",
+    image:
+      "https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80",
+    tags: ["React", "Laravel", "MySQL", "Tailwind CSS"],
+    category: "Web Development",
+    link: "https://hm.addisvision.com/hm-importexport",
+  },
 ];
 
 export default function Portfolio() {
-    const [activeFilter, setActiveFilter] = useState("All");
-    const [content, setContent] = useState({
-        hero: {
-            heading: "Our Portfolio",
-            description: "Explore our latest projects and see how we've helped businesses transform their ideas into reality."
-        },
-        projects: projects,
-        cta: {
-            title: "Have a Project in Mind?",
-            description: "We can help you build something similar or completely unique. Let's discuss your requirements.",
-            buttonText: "Start Your Project"
-        }
-    });
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [content, setContent] = useState({
+    hero: {
+      heading: "Our Portfolio",
+      description:
+        "Explore our latest projects and see how we've helped businesses transform their ideas into reality.",
+    },
+    projects: projects,
+    cta: {
+      title: "Have a Project in Mind?",
+      description:
+        "We can help you build something similar or completely unique. Let's discuss your requirements.",
+      buttonText: "Start Your Project",
+    },
+  });
 
-    useEffect(() => {
-        const savedContent = localStorage.getItem('portfolioContent');
-        if (savedContent) {
-            const parsed = JSON.parse(savedContent);
-            setContent({
-                ...content,
-                ...parsed
-            });
-        }
-    }, []);
+  useEffect(() => {
+    const savedContent = localStorage.getItem("portfolioContent");
+    if (savedContent) {
+      const parsed = JSON.parse(savedContent);
+      setContent({
+        ...content,
+        ...parsed,
+      });
+    }
+  }, []);
 
-    return (
-        <div className="flex flex-col min-h-screen">
-            {/* Header */}
-            <AnimatedSection disableAnimation className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background">
-                <InteractiveParticles />
-                <div className="container mx-auto px-4 text-center relative z-10">
-                    <motion.h1 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent" 
-                       
-                    >
-                        {content.hero.heading}
-                    </motion.h1>
-                    <motion.p 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
-                    >
-                        {content.hero.description}
-                    </motion.p>
-                </div>
-            </AnimatedSection>
-
-            {/* Projects Grid */}
-            <AnimatedSection className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
-                <div className="container mx-auto px-4 relative z-10">
-                    {/* Filter Buttons */}
-                    <div className="flex flex-wrap justify-center gap-3 mb-12">
-                        {["All", "Web Development", "AI & ML", "Mobile App", "IoT"].map((filter) => (
-                            <button
-                                key={filter}
-                                onClick={() => setActiveFilter(filter)}
-                                className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${
-                                    activeFilter === filter
-                                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30"
-                                        : "bg-background border-border/50 text-muted-foreground hover:border-primary/50 hover:text-primary"
-                                }`}
-                            >
-                                {filter}
-                            </button>
-                        ))}
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {content.projects
-                            .filter((p) => activeFilter === "All" || p.category === activeFilter)
-                            .map((project, index) => (
-                            <motion.div
-                                key={project.id}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1, duration: 0.6 }}
-                                viewport={{ once: true }}
-                                whileHover={{ y: -10, scale: 1.02 }}
-                                className="group"
-                            >
-                                <Card className="overflow-hidden flex flex-col border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/20 relative">
-                                        <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                                        <div className="relative h-48 overflow-hidden">
-                                            <img
-                                                src={project.image}
-                                                alt={project.title}
-                                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                            />
-                                            <div className="absolute top-4 right-4">
-                                                <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
-                                                    {project.category}
-                                                </Badge>
-                                            </div>
-                                        </div>
-                                        <CardHeader className="relative z-10">
-                                            <CardTitle className="text-xl group-hover:text-primary transition-colors duration-300">{project.title}</CardTitle>
-                                            <CardDescription className="line-clamp-2 mt-2 leading-relaxed">
-                                                {project.description}
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent className="mt-auto relative z-10">
-                                            <div className="flex flex-wrap gap-2 mb-6">
-                                                {project.tags.map((tag, i) => (
-                                                    <Badge key={i} variant="outline" className="text-xs">
-                                                        {tag}
-                                                    </Badge>
-                                                ))}
-                                            </div>
-                                            <div className="flex gap-4">
-                                                <Button variant="outline" size="sm" className="w-full hover:bg-primary hover:text-primary-foreground transition-all duration-300" asChild>
-                                                    <a href={project.link} target="_blank" rel="noopener noreferrer">
-                                                        <ExternalLink className="h-4 w-4 mr-2" /> Live Demo
-                                                    </a>
-                                                </Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </AnimatedSection>
-
-            {/* CTA */}
-            <AnimatedSection className="py-24 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground relative overflow-hidden">
-                <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
-                <div className="container mx-auto px-4 text-center relative z-10">
-                    <motion.h2 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-3xl md:text-4xl font-bold mb-6" 
-                       
-                    >
-                        {content.cta.title}
-                    </motion.h2>
-                    <motion.p 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="text-primary-foreground/80 mb-8 max-w-2xl mx-auto text-lg leading-relaxed"
-                    >
-                        {content.cta.description}
-                    </motion.p>
-                    <Link href="/contact">
-                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                            <Button size="lg" variant="secondary" className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300">
-                                {content.cta.buttonText}
-                            </Button>
-                        </motion.div>
-                    </Link>
-                </div>
-            </AnimatedSection>
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
+      <AnimatedSection
+        disableAnimation
+        className="relative py-24 lg:py-32 overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background"
+      >
+        <InteractiveParticles />
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
+          >
+            {content.hero.heading}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+          >
+            {content.hero.description}
+          </motion.p>
         </div>
-    );
+      </AnimatedSection>
+
+      {/* Projects Grid */}
+      <AnimatedSection className="py-24 bg-gradient-to-b from-background to-muted/20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            {["All", "Web Development", "AI & ML", "Mobile App", "IoT"].map(
+              (filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-5 py-2 rounded-full text-sm font-semibold border transition-all duration-300 ${
+                    activeFilter === filter
+                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/30"
+                      : "bg-background border-border/50 text-muted-foreground hover:border-primary/50 hover:text-primary"
+                  }`}
+                >
+                  {filter}
+                </button>
+              ),
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {content.projects
+              .filter(
+                (p) => activeFilter === "All" || p.category === activeFilter,
+              )
+              .map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  viewport={{ once: true }}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className="group"
+                >
+                  <Card className="overflow-hidden flex flex-col border-2 border-border/50 hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/20 relative">
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute top-4 right-4">
+                        <Badge
+                          variant="secondary"
+                          className="bg-background/80 backdrop-blur-sm"
+                        >
+                          {project.category}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardHeader className="relative z-10">
+                      <CardTitle className="text-xl group-hover:text-primary transition-colors duration-300">
+                        {project.title}
+                      </CardTitle>
+                      <CardDescription className="line-clamp-2 mt-2 leading-relaxed">
+                        {project.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="mt-auto relative z-10">
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tags.map((tag, i) => (
+                          <Badge key={i} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex gap-4">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          asChild
+                        >
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <ExternalLink className="h-4 w-4 mr-2" /> Live Demo
+                          </a>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+          </div>
+        </div>
+      </AnimatedSection>
+
+      {/* CTA */}
+      <AnimatedSection className="py-24 bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold mb-6"
+          >
+            {content.cta.title}
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-primary-foreground/80 mb-8 max-w-2xl mx-auto text-lg leading-relaxed"
+          >
+            {content.cta.description}
+          </motion.p>
+          <Link href="/contact">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                size="lg"
+                variant="secondary"
+                className="text-lg px-10 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                {content.cta.buttonText}
+              </Button>
+            </motion.div>
+          </Link>
+        </div>
+      </AnimatedSection>
+    </div>
+  );
 }

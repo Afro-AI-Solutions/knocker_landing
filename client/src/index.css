@@ -138,6 +138,16 @@
     text-transform: lowercase;
     color: #2C2C2A;
   }
+
+  .font-script {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .hero-image-glow {
+    filter: drop-shadow(0 24px 48px rgba(30, 55, 100, 0.22));
+  }
 }
 
 /* Marquee Animation */
